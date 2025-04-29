@@ -1,10 +1,13 @@
 import express from 'express';
-//Behövs för att använda .env
+// Behövs för att använda .env
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-// Måste deklareras högst upp i filen (process.env)
+// Routes import 
+import moviesRouter from './src/routes/movies.router.js';
 
+
+// Måste deklareras högst upp i filen (process.env)
 dotenv.config();
 
 // Express init
@@ -18,6 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Routes
+app.use("/api/movies", moviesRouter);
+
 // Behövs för att lägga ut server på Render sen
 const port = process.env.PORT || 5080;
 
@@ -29,8 +35,6 @@ try {
   console.log('❌ Not connected to MongoDB');
   console.log(`❌ MONGO_URI: ${process.env.MONGO_URI ? ' Active ' : ' Inactive '}`);
 }
-
-
 
 // Starta server
 app.listen(port, () => {
