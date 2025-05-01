@@ -8,6 +8,6 @@ const moviesSchema = new mongoose.Schema({
   rating: Number,
 });
 
-const Movie = mongoose.model('Movie', moviesSchema);
+const Movie = mongoose.models.Movie || mongoose.model('Movie', moviesSchema);
 
 export default Movie;
