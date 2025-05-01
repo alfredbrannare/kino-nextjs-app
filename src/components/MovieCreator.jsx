@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const MovieCreator = () => {
+const MovieCreator = ({ setUpdate }) => {
   const [id, setId] = useState('');
   const [secret, setSecret] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,14 +20,15 @@ const MovieCreator = () => {
 
       if (response.ok) {
         setId('');
-        setSecret('');
         alert('Film is added successfully!')
+        setUpdate(true);
+      }else{
+        alert('Error while adding film');
       }
     } catch (err) {
       console.log('Movie is not found', err);
     } finally {
       setLoading(false);
-      alert('Error while adding film')
     }
   };
   return (

@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 const MovieDetails = ({ movie }) => {
-  console.log(movie);
   return (
     <>
     <h1>{movie.title}</h1>

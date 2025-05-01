@@ -6,6 +6,7 @@ import MovieCreator from "src/components/MovieCreator";
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,13 +21,14 @@ const MoviesPage = () => {
       }
     };
     fetchData();
-  }, [])
+    setUpdate(false);
+  }, [update]);
 
   if (loading) return <p>Loading...</p>
 
   return (
     <>
-      <MovieCreator />
+      <MovieCreator setUpdate={setUpdate} />
       <h1>Movies:</h1>
       {movies.map(movie => (
         <div key={movie._id} className="movie">
