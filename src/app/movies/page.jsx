@@ -23,7 +23,6 @@ const MoviesPage = () => {
     fetchData();
     setUpdate(false);
   }, [update]);
-
   if (loading) return <p>Loading...</p>
 
   return (
@@ -35,7 +34,6 @@ const MoviesPage = () => {
           <h2>{movie.title}</h2>
           <Link href={`/movies/` + movie._id}>Details</Link>
         </div>
-
       ))}
     </>
   );

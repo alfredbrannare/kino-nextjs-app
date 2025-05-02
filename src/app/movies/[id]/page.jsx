@@ -6,8 +6,7 @@ const Movie = ({ params }) => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const resolvedParams = use(params); // Unwrap the params promise/object
-  const id = resolvedParams.id;
+  const { id } = use(params); // Unwrap the params promise/object
 
   useEffect(() => {
     const fetchData = async () => {
