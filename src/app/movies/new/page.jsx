@@ -23,6 +23,20 @@ const MoviesPage = () => {
     fetchData();
     setUpdate(false);
   }, [update]);
+
+  const deleteMovie = async (id) => {
+    try {
+      await fetch(`/api/movies/${id}`, {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      console.error('Error deleting movie movies:', error);
+    } finally {
+      setUpdate(true);
+    }
+  }
+
+
   if (loading) return <p>Loading...</p>
 
   return (
@@ -32,7 +46,10 @@ const MoviesPage = () => {
       {movies.map(movie => (
         <div key={movie._id} className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
           <h2 className="">{movie.title}</h2>
-          <Link href={`/movies/new/` + movie._id}>Details</Link>
+          <div>
+          <Link className="btn" href={`/movies/new/` + movie._id}>Details</Link>
+          <button onClick={() => deleteMovie(movie._id)} className="btn btn-error">Delete</button>
+          </div>
         </div>
       ))}
     </>

@@ -6,6 +6,7 @@ const moviesSchema = new mongoose.Schema({
   year: Number,
   image: String,
   rating: Number,
+  inCinemas: {type:Boolean, default:false},
 });
 
 const Movie = mongoose.models.Movie || mongoose.model('Movie', moviesSchema);
