@@ -11,7 +11,7 @@ const MoviesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('api/movies');
+        const res = await fetch('/api/movies');
         const data = await res.json();
         setMovies(data);
       } catch (error) {
@@ -30,9 +30,9 @@ const MoviesPage = () => {
       <MovieCreator setUpdate={setUpdate} />
       <h1 className="italic font-semibold text-3xl text-center pt-10">Movies:</h1><br />
       {movies.map(movie => (
-        <div key={movie._id} className="p-4 mb-3 bg-base-300 flex justify-between">
+        <div key={movie._id} className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
           <h2 className="">{movie.title}</h2>
-          <Link href={`/movies/` + movie._id}>Details</Link>
+          <Link href={`/movies/new/` + movie._id}>Details</Link>
         </div>
       ))}
     </>

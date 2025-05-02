@@ -35,7 +35,6 @@ const Header = () => {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <li><Link href='/movies'>Movies</Link></li>
             <li>
               <details>
                 <summary>Parent</summary>
@@ -49,7 +48,7 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-primary-muted">Custom Button</a>
+        <Link className='btn' href='/movies/new'>Add Movie</Link>
         </div>
       </nav>
     </header>

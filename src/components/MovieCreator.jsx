@@ -32,7 +32,7 @@ const MovieCreator = ({ setUpdate }) => {
     }
   };
   return (
-    <>
+    <div className="pt-10 text-center">
       <input
       className="input"
         type="text"
@@ -51,7 +51,7 @@ const MovieCreator = ({ setUpdate }) => {
       <button className="btn" onClick={addFilm} disabled={loading}>
         {loading ? 'Adding film...' : 'Add film'}
       </button>
-    </>
+    </div>
   );
 };
 
