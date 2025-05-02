@@ -28,10 +28,10 @@ const MoviesPage = () => {
   return (
     <>
       <MovieCreator setUpdate={setUpdate} />
-      <h1>Movies:</h1>
+      <h1 className="italic font-semibold text-3xl text-center pt-10">Movies:</h1><br />
       {movies.map(movie => (
-        <div key={movie._id} className="movie">
-          <h2>{movie.title}</h2>
+        <div key={movie._id} className="p-4 mb-3 bg-base-300 flex justify-between">
+          <h2 className="">{movie.title}</h2>
           <Link href={`/movies/` + movie._id}>Details</Link>
         </div>
       ))}

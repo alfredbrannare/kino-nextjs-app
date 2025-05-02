@@ -34,6 +34,7 @@ const MovieCreator = ({ setUpdate }) => {
   return (
     <>
       <input
+      className="input"
         type="text"
         placeholder="IMDb id (tt512332)"
         value={id}
@@ -41,12 +42,13 @@ const MovieCreator = ({ setUpdate }) => {
       />
 
       <input
+      className="input"
         type="password"
         placeholder="Secret key"
         value={secret}
         onChange={(e) => setSecret(e.target.value)}
       />
-      <button onClick={addFilm} disabled={loading}>
+      <button className="btn" onClick={addFilm} disabled={loading}>
         {loading ? 'Adding film...' : 'Add film'}
       </button>
     </>
