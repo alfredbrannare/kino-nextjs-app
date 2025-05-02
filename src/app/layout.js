@@ -2,9 +2,9 @@ import Header from "src/components/Header";
 import "./globals.css";
 
 export const metadata = {
-  title: "Kino bio Uppsala",
+  title: "Kino Uppsala",
   icons: {
-    icon: "/favicon.ico", // путь из public
+    icon: "/favicon.ico",
   },
 };
 
