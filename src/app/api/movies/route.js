@@ -95,14 +95,3 @@ export const POST = async (req) => {
     );
   }
 };
-
-export const DELETE = async (req, { params }) => {
-  try {
-    const id = params.id;
-    await connectDB();
-
-    await Movie.findByIdAndDelete(id);
-  }catch(error){
-    console.error(error);
-  }
-};
