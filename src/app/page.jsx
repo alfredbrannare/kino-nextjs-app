@@ -1,5 +1,5 @@
 const Main = () => {
-  return(
+  return (
     <h1>Home page</h1>
   )
 }
