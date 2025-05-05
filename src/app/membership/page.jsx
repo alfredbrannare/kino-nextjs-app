@@ -2,9 +2,9 @@
 
 export default function MembershipPage() {
   return (
-<div className="min-h-screen flex justify-center items-center bg-[#2B0404]">
+    <div className="min-h-screen flex justify-center items-center bg-[#2B0404]">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-2/3 lg:w-1/2">
-      <h3 className="text-4xl font-bold pb-4 text-center">Profilsida</h3>
+        <h3 className="text-4xl font-bold pb-4 text-center">Profilsida</h3>
         <div className="flex items-center space-x-6 mb-6">
           <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
             <img src="https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff&size=150" alt="" className="w-full h-full object-cover" />

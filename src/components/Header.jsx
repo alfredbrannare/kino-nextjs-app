@@ -48,11 +48,11 @@ const Header = () => {
             <li><a>Item 3</a></li>
           </ul>
         </div>
-        <div className ="membership">
+        <div className="navbar-end">
           <Login />
         </div>
         <div className="navbar-end">
-        <Link className='btn' href='/movies/new'>Add Movie</Link>
+          <Link className='btn' href='/movies/new'>Add Movie</Link>
         </div>
       </nav>
     </header>
