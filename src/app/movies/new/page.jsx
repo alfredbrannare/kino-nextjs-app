@@ -53,7 +53,6 @@ const MoviesPage = () => {
   return (
     <>
       <MovieCreator setUpdate={setUpdate} />
-      <h1 className="text-3xl text-center pt-10">Test</h1>
       <h1 className="italic font-semibold text-3xl text-center pt-10">Movies:</h1><br />
       {movies.map(movie => (
         <div key={movie._id} className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
