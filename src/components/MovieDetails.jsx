@@ -1,8 +1,58 @@
 import Link from "next/link"
+import Views from "./views/Views"
+import ReviewForm from "./reviews/ReviewForm"
+import { useState } from "react"
 
-const mockView = { tid: "2025-02-26 17:00", sal: "Stora Salongen" }
+// remove mockView and send Viewdata from db in to <Views />
+const mockView = {
+	view1: {
+		tid: "2025-02-26 17:00",
+		sal: "Stora Salongen",
+		maxSeats: 100,
+		emptySeats: 16,
+	},
+	view2: {
+		tid: "2025-03-26 13:00",
+		sal: "Lilla Salongen",
+		maxSeats: 100,
+		emptySeats: 52,
+	},
+	view3: {
+		tid: "2025-03-26 13:00",
+		sal: "Lilla Salongen",
+		maxSeats: 100,
+		emptySeats: 95,
+	},
+}
+
+const mockReviews = {
+	review1: {
+		rating: 5,
+		text: "Super good movie",
+		user: "Gurra G",
+	},
+	review2: {
+		rating: 3,
+		text: "movie",
+		user: "Gurra GG",
+	},
+	review3: {
+		rating: 1,
+		text: "Super bad movie",
+		user: "Gurra GGG",
+	},
+}
+//
 
 const MovieDetails = ({ movie }) => {
+	const [reviews, setReviews] = useState()
+
+	// to get new review
+	// const handleAddReview = (newReview) => {
+	// 	setReviews((prevReviews) => [...prevReviews, newReview])
+	// 	console.log(reviews)
+	// }
+
 	return (
 		<>
 			<div className="grid grid-cols-6 gap-4">
@@ -22,31 +72,33 @@ const MovieDetails = ({ movie }) => {
 						Back
 					</Link>
 				</div>
-				<div className="col-span-2 bg-blue-500 border">
-					<div className="bg-pink-500 flex-col justify-center  ">
-						<h3 className="flex justify-center mb-4 mt-4">
+				<div className="col-span-2 bg-[#2b0404]">
+					<div className="flex-col  justify-center">
+						<h3 className="card-title flex justify-center mb-4 mt-4">
 							Filmen går följande tider
 						</h3>
+
 						{/* showings ska vara här, det här kan vara en komponent */}
-						<div className="ml-4 mb-4 ">
-							<p>Tid: {mockView.tid}</p>
-							<p>Sal: {mockView.sal}</p>
-						</div>
-						<div className="ml-4 mb-4">
-							<p>Tid: {mockView.tid}</p>
-							<p>Sal: {mockView.sal}</p>
-						</div>
-						<div className="ml-4 mb-4">
-							<p>Tid: {mockView.tid}</p>
-							<p>Sal: {mockView.sal}</p>
-						</div>
+						{Object.entries(mockView).map(([key, view]) => (
+							<Views
+								key={key}
+								views={view}
+							/>
+						))}
+						{/*  */}
 					</div>
+					{/* button to get tickets */}
 					<div className=" border flex justify-center w-full">
 						<button className="btn">Boka biljett</button>
 					</div>
+					{/*  */}
 					<div className="col-span-3 grid grid-cols-subgrid border mt-10 bg-red-500">
-						{/* reviews ska vara här */}
-						next
+						<div className="flex justify-center">
+							{/* reviews ska vara här */}
+							<h2 className="card-title">Reviews</h2>
+							<div></div>
+						</div>
+						<div>{/* <ReviewForm /> */}</div>
 					</div>
 				</div>
 			</div>
