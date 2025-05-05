@@ -3,7 +3,11 @@
 export default function MembershipPage() {
   return (
     <div className="min-h-screen flex justify-center items-center bg-[#2B0404]">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-2/3 lg:w-1/2">
+      <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col items-center">
+        
+        <h1 className="text-xl font-semibold text-white mb-4">Aktuell medlemsnivå: Filmguru</h1>
+        
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         <h3 className="text-4xl font-bold pb-4 text-center">Profilsida</h3>
         <div className="flex items-center space-x-6 mb-6">
           <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
@@ -32,6 +36,7 @@ export default function MembershipPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
