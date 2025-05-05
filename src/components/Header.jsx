@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Login from './Login';
 
 const Header = () => {
   return (
@@ -46,6 +47,9 @@ const Header = () => {
             </li>
             <li><a>Item 3</a></li>
           </ul>
+        </div>
+        <div className ="membership">
+          <Login />
         </div>
         <div className="navbar-end">
         <Link className='btn' href='/movies/new'>Add Movie</Link>
