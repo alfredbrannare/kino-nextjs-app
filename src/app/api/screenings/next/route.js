@@ -51,6 +51,18 @@ export const GET = async () => {
             },
             {
                 $unwind: "$movie"
+            },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: ["$movie", "$$ROOT"]
+                    }
+                }
+            },
+            {
+                $project: {
+                    movie: 0
+                }
             }
         ]);
 
