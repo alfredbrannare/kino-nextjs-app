@@ -2,6 +2,8 @@ import Link from "next/link"
 import Views from "./views/Views"
 import ReviewForm from "./reviews/ReviewForm"
 import { useState } from "react"
+import UserReview from "./reviews/UserReview"
+import ReviewsList from "./reviews/ReviewsList"
 
 // remove mockView and send Viewdata from db in to <Views />
 const mockView = {
@@ -33,7 +35,7 @@ const mockReviews = {
 	},
 	review2: {
 		rating: 3,
-		text: "movie",
+		text: "just a movie",
 		user: "Gurra GG",
 	},
 	review3: {
@@ -45,13 +47,13 @@ const mockReviews = {
 //
 
 const MovieDetails = ({ movie }) => {
-	const [reviews, setReviews] = useState()
+	const [reviews, setReviews] = useState(Object.values(mockReviews))
 
 	// to get new review
-	// const handleAddReview = (newReview) => {
-	// 	setReviews((prevReviews) => [...prevReviews, newReview])
-	// 	console.log(reviews)
-	// }
+	const handleAddReview = (newReview) => {
+		setReviews((prevReviews) => [...prevReviews, newReview])
+		console.log(reviews)
+	}
 
 	return (
 		<>
@@ -74,9 +76,9 @@ const MovieDetails = ({ movie }) => {
 				</div>
 				<div className="col-span-2 bg-[#2b0404]">
 					<div className="flex-col  justify-center">
-						<h3 className="card-title flex justify-center mb-4 mt-4">
+						<h2 className="card-title text-2xl flex justify-center mb-4 mt-4">
 							Filmen går följande tider
-						</h3>
+						</h2>
 
 						{/* showings ska vara här, det här kan vara en komponent */}
 						{Object.entries(mockView).map(([key, view]) => (
@@ -88,17 +90,22 @@ const MovieDetails = ({ movie }) => {
 						{/*  */}
 					</div>
 					{/* button to get tickets */}
-					<div className=" border flex justify-center w-full">
+					<div className="flex justify-center w-full">
 						<button className="btn">Boka biljett</button>
 					</div>
 					{/*  */}
-					<div className="col-span-3 grid grid-cols-subgrid border mt-10 bg-red-500">
+					<div className="col-span-3 grid grid-cols-subgrid mt-10 bg-[#2b0404]">
 						<div className="flex justify-center">
 							{/* reviews ska vara här */}
-							<h2 className="card-title">Reviews</h2>
-							<div></div>
+							<h2 className="text-2xl  card-title ">Reviews</h2>
 						</div>
-						<div>{/* <ReviewForm /> */}</div>
+						<div>
+							<ReviewForm handleAddReview={handleAddReview} />
+						</div>
+						<div className="mb-5">
+							{/* ReviewsList */}
+							<ReviewsList reviews={reviews} />
+						</div>
 					</div>
 				</div>
 			</div>

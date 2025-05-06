@@ -1,43 +1,40 @@
+import { useState } from "react"
+
 export default function ReviewForm({ handleAddReview }) {
+	const [rating, setRating] = useState(0)
+	const [text, setText] = useState("")
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		handleAddReview({
+			rating: parseInt(rating),
+			text,
+			user: "Anonymous", //fetch from login
+		})
+		setRating(0)
+		setText("")
+	}
+
 	return (
 		<form
-			onSubmit={handleAddReview()}
+			onSubmit={handleSubmit}
 			className="p-4 space-y-4">
 			<div className="form-control">
-				<label className="label block mb-1">
+				<label className="label block">
 					<span className="label-text">Your Rating</span>
 				</label>
 				<div className="rating">
-					<input
-						type="radio"
-						name="rating"
-						className="mask mask-star-2 bg-yellow-400"
-						value="1"
-					/>
-					<input
-						type="radio"
-						name="rating"
-						className="mask mask-star-2 bg-yellow-400"
-						value="2"
-					/>
-					<input
-						type="radio"
-						name="rating"
-						className="mask mask-star-2 bg-yellow-400"
-						value="3"
-					/>
-					<input
-						type="radio"
-						name="rating"
-						className="mask mask-star-2 bg-yellow-400"
-						value="4"
-					/>
-					<input
-						type="radio"
-						name="rating"
-						className="mask mask-star-2 bg-yellow-400"
-						value="5"
-					/>
+					{[1, 2, 3, 4, 5].map((num) => (
+						<input
+							key={num}
+							type="radio"
+							name="rating"
+							className="mask mask-star-2 bg-yellow-400"
+							value={num}
+							checked={parseInt(rating) === num}
+							onChange={(e) => setRating(e.target.value)}
+						/>
+					))}
 				</div>
 			</div>
 
@@ -48,7 +45,8 @@ export default function ReviewForm({ handleAddReview }) {
 				<textarea
 					className="textarea textarea-bordered"
 					placeholder="Write your review here"
-					name="review"
+					value={text}
+					onChange={(e) => setText(e.target.value)}
 				/>
 			</div>
 

@@ -25,7 +25,9 @@ const Movie = ({ params }) => {
 		fetchData()
 	}, [id])
 
+	// if (loading) return <div className="skeleton h-32 w-full"> </div>
 	if (loading) return <p>Loading...</p>
+
 	if (!movie) return <p>Movie not found</p>
 
 	return (
