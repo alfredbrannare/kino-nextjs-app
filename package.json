@@ -13,7 +13,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "next lint --dir src --fix"
+      "eslint --fix src/**/*.{js,jsx,ts,tsx}"
     ]
   },
   "husky": {
