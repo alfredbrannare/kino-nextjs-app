@@ -17,10 +17,10 @@ const Header = () => {
             <ul
               tabIndex="0"
               className="menu menu-sm dropdown-content bg-[#2B0404] text-[#CDCDCD] rounded-box z-10 mt-3 w-52 p-2 shadow">
-              <li><Link href="/tickets">BILJETTER</Link></li>
-              <li><Link href="/events">EVENEMANG</Link></li>
-              <li><Link href="/movies">FILMER</Link></li>
-              <li><Link href="/about">OM OSS</Link></li>
+              <li><Link href="/tickets" className="text-lg font-bold">BILJETTER</Link></li>
+              <li><Link href="/events" className="text-lg font-bold">EVENEMANG</Link></li>
+              <li><Link href="/movies" className="text-lg font-bold">FILMER</Link></li>
+              <li><Link href="/about" className="text-lg font-bold">OM OSS</Link></li>
             </ul>
           </div>
 
