@@ -12,7 +12,7 @@ const Main = () => {
   useEffect(() => {
     const fetchUpcomingMovies = async () => {
       try {
-        const res = await fetch('/api/screenings/next');
+        const res = await fetch('/api/screenings/net');
         const data = await res.json();
         setMovies(data);
       } catch (error) {
@@ -33,10 +33,10 @@ const Main = () => {
           <div className="alert alert-warning shadow-lg justify-center align-center mx-auto my-10 max-w-100">
             <div className="text-center text-black">
               <Info />
-              <span >Fel</span>
+              <span className="font-weight-700 text-xl"><strong>Fel</strong></span>
             </div>
-            <div className="text-sm text-black">
-              {error}
+            <div className="text-sm text-black font-weight-700 text-xl text-center">
+              <strong>{error}</strong>
             </div>
           </div>
         )}
