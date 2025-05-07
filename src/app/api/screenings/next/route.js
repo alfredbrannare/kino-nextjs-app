@@ -67,7 +67,7 @@ export const GET = async () => {
         ]);
 
         console.log(upcomingScreenings);
-        return NextResponse.json(upcomingScreenings);
+        return NextResponse.json(upcomingScreenings, { status: 200 });
     } catch (error) {
         console.error("Error fetching upcoming screenings", error);
         return NextResponse.json({ error: "Failed to fetch screenings" }, { status: 500 });

@@ -12,7 +12,7 @@ const Main = () => {
   useEffect(() => {
     const fetchUpcomingMovies = async () => {
       try {
-        const res = await fetch('/api/screenings/net');
+        const res = await fetch('/api/screenings/next');
         const data = await res.json();
         setMovies(data);
       } catch (error) {
