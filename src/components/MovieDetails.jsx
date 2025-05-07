@@ -5,7 +5,7 @@ import { useState } from "react"
 import UserReview from "./reviews/UserReview"
 import ReviewsList from "./reviews/ReviewsList"
 
-// remove mockView and send Viewdata from db in to <Views />
+// TODO remove mockView and send Viewdata from db in to <Views />
 const mockView = {
 	view1: {
 		tid: "2025-02-26 17:00",
@@ -26,7 +26,7 @@ const mockView = {
 		emptySeats: 95,
 	},
 }
-
+// TODO replace with reviews from db
 const mockReviews = {
 	review1: {
 		rating: 5,
@@ -57,8 +57,8 @@ const MovieDetails = ({ movie }) => {
 
 	return (
 		<>
-			<div className="grid grid-cols-6 gap-4">
-				<div className="col-start-2 col-span-3 text-center pt-10 border border-solid-red-500">
+			<div className="lg:grid grid-cols-6 gap-4">
+				<div className="col-start-1 col-span-3 text-center pt-10">
 					<h1 className="font-semibold text-3xl">{movie.title}</h1>
 					<span>{movie.description}</span>
 					<br />
@@ -74,7 +74,7 @@ const MovieDetails = ({ movie }) => {
 						Back
 					</Link>
 				</div>
-				<div className="col-span-2 bg-[#2b0404]">
+				<div className="col-start-5 col-span-2 ml-5 ">
 					<div className="flex-col  justify-center">
 						<h2 className="card-title text-2xl flex justify-center mb-4 mt-4">
 							Filmen går följande tider

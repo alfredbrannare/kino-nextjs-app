@@ -6,6 +6,7 @@ export default function ReviewForm({ handleAddReview }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+		if (rating === 0) return alert("Need to select a rating")
 		handleAddReview({
 			rating: parseInt(rating),
 			text,
@@ -20,7 +21,7 @@ export default function ReviewForm({ handleAddReview }) {
 			onSubmit={handleSubmit}
 			className="p-4 space-y-4">
 			<div className="form-control">
-				<label className="label block">
+				<label className="label block text-white">
 					<span className="label-text">Your Rating</span>
 				</label>
 				<div className="rating">
@@ -39,8 +40,8 @@ export default function ReviewForm({ handleAddReview }) {
 			</div>
 
 			<div className="form-control">
-				<label className="label">
-					<span className="label-text">Your Review</span>
+				<label className="label block">
+					<span className="label-text text-white">Your Review</span>
 				</label>
 				<textarea
 					className="textarea textarea-bordered"
