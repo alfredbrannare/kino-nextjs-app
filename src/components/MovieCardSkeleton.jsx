@@ -1,6 +1,6 @@
 const MovieCardSkeleton = () => {
     return (
-        <div className="skeleton w-72 h-96"></div>
+        <div className="skeleton min-w-72 min-h-96 max-w-72 max-h-96"></div>
     )
 }
 
