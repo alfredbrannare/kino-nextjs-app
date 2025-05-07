@@ -24,14 +24,22 @@ const Main = () => {
     <div>
       <h1>Home page!</h1>
 
-      <div>
-        {movies.map((movie) => (
-          <h1 key={movie.id}>{movie.title}</h1>
-        ))}
+      <div className="flex flex-row flex-wrap">
+        {loading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="skeleton h-32 w-32 mb-4 flex align-center justify-center">
+            </div>
+          ))
+        ) : (
+          movies.map((movie) => (
+            <div key={movie.id}>
+              <h1>{movie.title}</h1>
+            </div>
+          ))
+        )}
       </div>
     </div>
-
-  )
+  );
 }
 
 export default Main;
