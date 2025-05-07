@@ -13,6 +13,8 @@ const SmallHallPage = () => {
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
+    const [isBooking, setIsBooking] = useState(false);
+    const [bookingSuccess, setBookingSuccess] = useState(false);
 
     useEffect(() => {
         fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
@@ -65,7 +67,11 @@ const SmallHallPage = () => {
                 </div>
             ))}
             <button
+                disabled={isBooking || selectedSeats.length === 0}
                 onClick={() => {
+                    setIsBooking(true);
+                    setBookingSuccess(false);
+
                     fetch('/api/bookings', {
                         method: 'POST',
                         headers: { 'Content-type': 'application/json' },
@@ -79,18 +85,24 @@ const SmallHallPage = () => {
                         .then(data => {
                             console.log('Bokning klar:', data);
                             setSelectedSeats([]);
+                            setBookingSuccess(true);
 
                             fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
                                 .then(res => res.json())
                                 .then(updated => {
                                     setBookedSeats(updated);
-                                });
+                                })
+                                .finally(() => setIsBooking(false));
                         });
                 }}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
+                className={`mt-4 px-4 py-2 rounded text-white ${isBooking ? 'bg-gray-400' : 'bg-blue-600'
+                    }`}
             >
-                Boka
+                {isBooking ? 'Bokar valda platser...' : 'Boka'}
             </button>
+            {bookingSuccess && (
+                <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>
+            )}
         </div>
     );
 };
