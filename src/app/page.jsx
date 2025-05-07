@@ -24,10 +24,9 @@ const Main = () => {
 
   return (
     <div>
-      <h1>Home page!</h1>
-      <div className="justify-center align-center">
+      <div className="justify-center align-center my-6">
         <h1 className="text-4xl font-weight-700 text-center">Visas nu</h1>
-        <div className="flex flex-row justify-start xl:justify-center items-center overflow-x-auto space-x-4 px-4 my-6">
+        <div className="flex flex-row justify-start xl:justify-center items-center overflow-x-auto space-x-4 px-4 my-6 mx-4">
           {loading ? (
             Array.from({ length: 5 }).map((_, i) => (
               <MovieCardSkeleton key={i} className="flex-shrink-0" />
