@@ -1,4 +1,6 @@
 'use client'
+import MovieCard from "src/components/MovieCard";
+import MovieCardSkeleton from "src/components/MovieCardSkeleton";
 const { useEffect, useState } = require("react");
 
 const Main = () => {
@@ -23,20 +25,19 @@ const Main = () => {
   return (
     <div>
       <h1>Home page!</h1>
-
-      <div className="flex flex-row flex-wrap">
-        {loading ? (
-          Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="skeleton h-32 w-32 mb-4 flex align-center justify-center">
-            </div>
-          ))
-        ) : (
-          movies.map((movie) => (
-            <div key={movie.id}>
-              <h1>{movie.title}</h1>
-            </div>
-          ))
-        )}
+      <div className="justify-center align-center">
+        <h1 className="text-4xl font-weight-700 text-center">Visas nu</h1>
+        <div className="flex flex-row justify-start xl:justify-center items-center overflow-x-auto space-x-4 px-4 my-6">
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <MovieCardSkeleton key={i} className="flex-shrink-0" />
+            ))
+          ) : (
+            movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} className="flex-shrink-0" />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
