@@ -3,15 +3,17 @@ import { useState } from "react"
 export default function ReviewForm({ handleAddReview }) {
 	const [rating, setRating] = useState(0)
 	const [text, setText] = useState("")
+	const [hasRating, setHasRating] = useState(null)
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if (rating === 0) return alert("Need to select a rating")
+		if (rating === 0) return setHasRating(false)
 		handleAddReview({
 			rating: parseInt(rating),
 			text,
 			user: "Anonymous", //fetch from login
 		})
+		setHasRating(null)
 		setRating(0)
 		setText("")
 	}
@@ -44,11 +46,16 @@ export default function ReviewForm({ handleAddReview }) {
 					<span className="label-text text-white">Your Review</span>
 				</label>
 				<textarea
+					maxLength={256}
 					className="textarea textarea-bordered"
 					placeholder="Write your review here"
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 				/>
+				<div className="text-white text-sm mt-1">{text.length}/256 words</div>
+				{hasRating === false ? (
+					<div className="text-red-500"> You must provide a rating! </div>
+				) : null}
 			</div>
 
 			<button
