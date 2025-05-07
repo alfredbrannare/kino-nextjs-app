@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SmallHallPage = () => {
     const salong = [
@@ -8,7 +8,19 @@ const SmallHallPage = () => {
         [{ row: 3, seat: 1 }, { row: 3, seat: 2 }, { row: 3, seat: 3 }, { row: 3, seat: 4 }, { row: 3, seat: 5 }]
     ];
 
+    const movieId = '123';
+    const screeningTime = '2025-05-08 18:00';
+
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [bookedSeats, setBookedSeats] = useState([]);
+
+    useEffect(() => {
+        fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setBookedSeats(data);
+            });
+    }, [movieId, screeningTime]);
 
     const toggleSeat = (seat) => {
         const isSelected = selectedSeats.some(
@@ -31,6 +43,9 @@ const SmallHallPage = () => {
             {salong.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex gap-2">
                     {row.map((seat, seatIndex) => {
+                        const isBooked = bookedSeats.some(
+                            (b) => b.row === seat.row && b.seat === seat.seat
+                        );
                         const isSelected = selectedSeats.some(
                             (s) => s.row === seat.row && s.seat === seat.seat
                         );
@@ -39,8 +54,9 @@ const SmallHallPage = () => {
                             <button
                                 key={seatIndex}
                                 onClick={() => toggleSeat(seat)}
-                                className={`w-10 h-10 rounded ${isSelected ? 'bg-gray-500' : 'bg-green-800'}
-                                text-white`}
+                                className={`w-10 h-10 rounded text-white ${isBooked ? 'bg-red-500 cursor-not-allowed' :
+                                    isSelected ? 'bg-gray-500' : 'bg-green-800'
+                                    }`}
                             >
                                 {seat.seat}
                             </button>
@@ -48,6 +64,33 @@ const SmallHallPage = () => {
                     })}
                 </div>
             ))}
+            <button
+                onClick={() => {
+                    fetch('/api/bookings', {
+                        method: 'POST',
+                        headers: { 'Content-type': 'application/json' },
+                        body: JSON.stringify({
+                            movieId: '123',
+                            screeningTime: '2025-05-08 18:00',
+                            seats: selectedSeats,
+                            userId: '456'
+                        })
+                    }).then(res => res.json())
+                        .then(data => {
+                            console.log('Bokning klar:', data);
+                            setSelectedSeats([]);
+
+                            fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
+                                .then(res => res.json())
+                                .then(updated => {
+                                    setBookedSeats(updated);
+                                });
+                        });
+                }}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
+            >
+                Boka
+            </button>
         </div>
     );
 };
