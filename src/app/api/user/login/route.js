@@ -29,9 +29,7 @@ export const POST = async (req) => {
     return NextResponse.json(
       {
         message: "User logging successful",
-        user: {
-          token,
-        },
+        token
       },
       { status: 200 }
     );

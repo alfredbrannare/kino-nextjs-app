@@ -6,11 +6,24 @@ import { X } from 'lucide-react';
 const Login = () => {
     const router = useRouter();
     const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState(undefined);
+    const [password, setPassword] = useState(undefined);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        setOpen(false);
-        router.push('/membership');
+        const response = await fetch('/api/user/login',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+        const data = await response.json();
+        if (data.token) {
+            localStorage.setItem("token", data.token);
+            setOpen(false);
+        }
     };
 
     return (
@@ -44,6 +57,8 @@ const Login = () => {
                                     type="email"
                                     className="input input-bordered w-full"
                                     required
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                 />
                             </div>
 
@@ -55,6 +70,8 @@ const Login = () => {
                                     type="password"
                                     className="input input-bordered w-full"
                                     required
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
                                 />
                             </div>
 
