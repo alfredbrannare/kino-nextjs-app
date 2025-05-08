@@ -26,6 +26,7 @@ const Main = () => {
   }, []);
 
   return (
+
     <div>
       <div className="justify-center align-center my-6">
         <h1 className="text-4xl font-weight-700 text-center">Visas nu</h1>
