@@ -17,7 +17,7 @@ export const POST = async (req) => {
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return NextResponse.json({ message: "User with this email already exists" }, { status: 409 }); // 409 Conflict
+    return NextResponse.json({ message: "User with this email already exists" }, { status: 409 });
   }
 
   const hashedPassword = await bcrypt.hash(body.password, 10);
