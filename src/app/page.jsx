@@ -12,7 +12,7 @@ const Main = () => {
   useEffect(() => {
     const fetchUpcomingMovies = async () => {
       try {
-        const res = await fetch('/api/screenings/net');
+        const res = await fetch('/api/screenings/next');
         const data = await res.json();
         setMovies(data);
       } catch (error) {
@@ -47,7 +47,7 @@ const Main = () => {
             ))
           ) : (
             movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} className="flex-shrink-0" />
+              <MovieCard key={movie._id} movie={movie} className="flex-shrink-0" />
             ))
           )}
         </div>
