@@ -71,7 +71,7 @@ const Main = () => {
       </div>
 
       <div className="justify-center align-center my-6">
-        <h1 className="text-4xl font-weight-700 text-center">Visas nu</h1>
+        <h1 className="text-4xl text-[#CDCDCD] font-weight-700 text-center">Visas nu</h1>
         {error && (
           <div className="alert alert-warning shadow-lg justify-center align-center mx-auto my-10 max-w-100">
             <div className="text-center text-black">
