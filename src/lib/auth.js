@@ -1,10 +1,20 @@
-export const checkAuth = (req) => {
+import User from "src/models/model.users";
+import jwt from "jsonwebtoken";
+
+export const checkAuth = async (req) => {
   const authHeader = req.headers.get('authorization');
   const token = authHeader?.split(" ")[1];
-  console.log(authHeader);
 
-  if (token !== `${process.env.SECRET}`) {
-    return false;
+  if (!token) {
+    return null;
   }
-  return true;
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findById(decoded.id).select("-password");
+
+  if(!user){
+    return null;
+  }
+
+  return user;
 };

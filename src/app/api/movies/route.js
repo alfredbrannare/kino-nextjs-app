@@ -24,7 +24,9 @@ export const GET = async () => {
 export const POST = async (req) => {
   await connectDB();
 
-  if (!checkAuth(req)) {
+  const authenticatedUser = await checkAuth(req);
+
+  if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
