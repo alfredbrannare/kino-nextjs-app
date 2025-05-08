@@ -6,10 +6,12 @@ import { X } from 'lucide-react';
 const Login = () => {
     const router = useRouter();
     const [open, setOpen] = useState(false);
-    const [email, setEmail] = useState(undefined);
-    const [password, setPassword] = useState(undefined);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
+        setLoading(true);
         e.preventDefault();
         const response = await fetch('/api/user/login',
             {
@@ -23,6 +25,7 @@ const Login = () => {
         if (data.token) {
             localStorage.setItem("token", data.token);
             setOpen(false);
+            setLoading(false);
         }
     };
 
@@ -76,7 +79,7 @@ const Login = () => {
                             </div>
 
                             <div className="modal-action">
-                                <button type="submit" className="btn bg-yellow-400 text-black hover:bg-yellow-300">
+                                <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : ''}`}>
                                     Logga in
                                 </button>
                             </div>
