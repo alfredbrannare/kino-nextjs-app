@@ -27,8 +27,8 @@ const Main = () => {
 
   return (
     <div>
-      <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
-      <div className="carousel w-full">
+      <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]  p-4 sm:p-6 md:p-8 lg:px-20">
+{/*       <div className="carousel w-full">
         <div id="slide1" className="carousel-item relative w-full">
           <img
             src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
@@ -69,12 +69,12 @@ const Main = () => {
             <a href="#slide1" className="btn btn-circle">❯</a>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <div className="justify-center align-center my-6">
-        <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
+<div className="flex flex-col justify-start items-center my-6 w-full">
+  <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
         {error && (
-          <div className="alert alert-warning shadow-lg justify-center align-center mx-auto my-10 max-w-100">
+          <div className="alert alert-warning shadow-lg justify-center align-center mx-auto my-10 max-full max-w-screen-lg">
             <div className="text-center text-black">
               <Info />
               <span className="font-weight-700 text-xl"><strong>Fel</strong></span>
@@ -95,6 +95,8 @@ const Main = () => {
             ))
           )}
         </div>
+        </div>
+        <div>
         <div className="flex justify-center gap-20 my-10">
           <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">            BOKA BILJETT
           </button>
@@ -125,10 +127,10 @@ const Main = () => {
         </div>
 
         <div className="hero bg-[#2B0404] py-0 px-4">
-          <div className="hero-content flex-col lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
+          <div className="hero-content min-w-0 flex-col lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
             <img
               src="/KinoEntrance.png"
-              className="max-w-sm rounded-lg shadow-2xl"
+              className="w-full max-w-sm h-auto"
               alt="Kino Entrance"
             />
             <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
@@ -143,10 +145,10 @@ const Main = () => {
           </div>
         </div>
         <div className="hero bg-[#2B0404] py-0 px-4">
-          <div className="hero-content flex-col lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+          <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
             <img
               src="/KinoDoors.png"
-              className="max-w-sm rounded-lg shadow-2xl"
+              className="w-full max-w-sm h-auto"
               alt="Kino Entrance"
             />
             <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4">
@@ -174,10 +176,10 @@ const Main = () => {
 
 
         <div className="hero bg-[#2B0404] py-0 px-4">
-          <div className="hero-content flex-col lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
+          <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
             <img
               src="/KinoScreen.png"
-              className="max-w-sm rounded-lg shadow-2xl"
+              className="w-full max-w-sm h-auto"
               alt="Kino Entrance"
             />
             <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
@@ -192,10 +194,10 @@ const Main = () => {
           </div>
         </div>
         <div className="hero bg-[#2B0404] py-0 px-4">
-          <div className="hero-content flex-col lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+          <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
             <img
               src="/KinoSeats.png"
-              className="max-w-sm rounded-lg shadow-2xl"
+              className="w-full max-w-sm h-auto"
               alt="Kino Entrance"
             />
             <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4">
