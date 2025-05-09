@@ -27,8 +27,10 @@ const Main = () => {
 
   return (
     <div>
-      <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]  p-4 sm:p-6 md:p-8 lg:px-20">
-{/*       <div className="carousel w-full">
+      <div className="w-full">
+        <div className="max-w-screen-2xl mx-auto px-0">
+      <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+       <div className="carousel w-full">
         <div id="slide1" className="carousel-item relative w-full">
           <img
             src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
@@ -69,44 +71,47 @@ const Main = () => {
             <a href="#slide1" className="btn btn-circle">❯</a>
           </div>
         </div>
-      </div> */}
+      </div>
 
-<div className="flex flex-col justify-start items-center my-6 w-full">
-  <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
-        {error && (
-          <div className="alert alert-warning shadow-lg justify-center align-center mx-auto my-10 max-full max-w-screen-lg">
-            <div className="text-center text-black">
-              <Info />
-              <span className="font-weight-700 text-xl"><strong>Fel</strong></span>
-            </div>
-            <div className="text-sm text-black font-weight-700 text-xl text-center">
-              <strong>{error}</strong>
-            </div>
-          </div>
+<div className="w-full max-w-screen-xl mx-auto px-4 my-6">
+  <h1 className="text-3xl text-[#CDCDCD] font-bold text-center mb-6">FILMER PÅ KINO</h1>
+
+  {error && (
+    <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
+      <div className="text-center text-black flex flex-col items-center">
+        <Info />
+        <span className="font-bold text-xl">Fel</span>
+        <strong className="text-sm text-black font-bold text-xl">{error}</strong>
+      </div>
+    </div>
+  )}
+
+  {/* Grid for the cards */}
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 px-4 my-6 w-full">
+    {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
+      <div key={movie?._id || i} className="flex justify-center">
+        {loading ? (
+          <MovieCardSkeleton />
+        ) : (
+          <MovieCard movie={movie} />
         )}
-        <div className="flex flex-row justify-start xl:justify-center items-center overflow-x-auto space-x-4 px-4 my-6 mx-4">
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <MovieCardSkeleton key={i} className="flex-shrink-0" />
-            ))
-          ) : (
-            movies.map((movie) => (
-              <MovieCard key={movie._id} movie={movie} className="flex-shrink-0" />
-            ))
-          )}
-        </div>
-        </div>
+      </div>
+    ))}
+  </div>
+</div>
         <div>
-        <div className="flex justify-center gap-20 my-10">
-          <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">            BOKA BILJETT
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
+          <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">BOKA BILJETT
           </button>
           <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
             SE ALLA FILMER
           </button>
         </div>
 
+          <div className="w-full my-6">
         <div className="justify-center align-center my-6">
           <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+        </div>
         </div>
 
         <div className="bg-[#CDCDCD] py-16 px-4 text-center">
@@ -213,6 +218,8 @@ const Main = () => {
         </div>
 
       </div>
+    </div>
+    </div>
     </div>
     </div>
   );
