@@ -25,14 +25,18 @@ export const POST = async (req) => {
   await connectDB();
 
   const authenticatedUser = await checkAuth(req);
-  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  const isAdmin = authenticatedUser.role === "admin";
+
   if (!isAdmin) {
-    return NextResponse.json({ message: "You dont have the right to use this feature!" }, { status: 401 });
+    return NextResponse.json(
+      { message: "You dont have the right to use this feature!" },
+      { status: 403 }
+    );
   }
 
   try {

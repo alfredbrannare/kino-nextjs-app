@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,} from "react";
 
 const MovieCreator = ({ setUpdate }) => {
   const [id, setId] = useState('');
@@ -8,15 +8,15 @@ const MovieCreator = ({ setUpdate }) => {
   const addFilm = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch('/api/movies', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${secret || ''}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ id: id || '' }),
       });
-      const data = await response.json();
 
       if (response.ok) {
         setId('');

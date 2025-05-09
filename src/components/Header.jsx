@@ -1,9 +1,13 @@
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
 import './header.css'
+import { useAuth } from './user/AuthData';
 
 const Header = () => {
+    const { isLoggedIn, isLoading, logout } = useAuth();
+
   return (
     <header>
       <nav className="navbar bg-[#2B0404] shadow-sm py-5 px-4">
@@ -43,12 +47,14 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <Login />
+          {isLoading ? (
+            <span className="loading"></span> 
+          ) : !isLoggedIn ? (
+            <Login />
+          ) : (
+            <button onClick={logout} className="btn btn-ghost">Logout</button>
+          )}
         </div>
-        {/* Temporary(?) button that will be adjusted/moved/removed later */}
-{/*         <div className="navbar-end">
-          <Link className='btn' href='/movies/new'>Add Movie</Link>
-        </div> */}
       </nav>
     </header>
   )

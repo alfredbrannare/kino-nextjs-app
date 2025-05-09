@@ -2,11 +2,23 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import MovieCreator from "src/components/MovieCreator"
+import { useAuth } from "src/components/user/AuthData"
+import { useRouter } from "next/navigation";
 
 const MoviesPage = () => {
 	const [movies, setMovies] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
+	const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthLoading) {
+      if (!isAdmin) {
+        router.push("/");
+      }
+    }
+  }, [isLoggedIn, isAdmin, isAuthLoading, router]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -25,9 +37,11 @@ const MoviesPage = () => {
 	}, [update])
 
 	const deleteMovie = async (id) => {
+		const token = localStorage.getItem('token');
 		try {
 			await fetch(`/api/movies/${id}`, {
 				method: "DELETE",
+				headers: { 'Authorization': `Bearer ${token}` },
 			})
 		} catch (error) {
 			console.error("Error deleting movie movies:", error)
@@ -37,17 +51,21 @@ const MoviesPage = () => {
 	}
 
 	const updateMovie = async (id, inCinemas) => {
+		const token = localStorage.getItem('token');
 		await fetch(`/api/movies/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
+				'Authorization': `Bearer ${token}`,
+				
 			},
 			body: JSON.stringify({ inCinemas }),
 		})
 		setUpdate(true)
 	}
 
-	if (loading) return <p>Loading...</p>
+	if (isAuthLoading || loading) return <p>Loading page data...</p>;
+  if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;
 
 	return (
 		<>

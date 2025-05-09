@@ -2,16 +2,15 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { X } from 'lucide-react';
+import { useAuth } from './user/AuthData';
 
 const Login = () => {
-    const router = useRouter();
+    const { login, loading } = useAuth();
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
-        setLoading(true);
         e.preventDefault();
         const response = await fetch('/api/user/login',
             {
@@ -23,9 +22,12 @@ const Login = () => {
             });
         const data = await response.json();
         if (data.token) {
-            localStorage.setItem("token", data.token);
+            login(data.token, data.user);
             setOpen(false);
-            setLoading(false);
+            setEmail('');
+            setPassword('');
+        } else {
+            setOpen(false);
         }
     };
 
