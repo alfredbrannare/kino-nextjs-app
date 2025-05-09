@@ -9,7 +9,7 @@ const MoviesPage = () => {
 	const [movies, setMovies] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
 	const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +37,6 @@ const MoviesPage = () => {
 	}, [update])
 
 	const deleteMovie = async (id) => {
-		const token = localStorage.getItem('token');
 		try {
 			await fetch(`/api/movies/${id}`, {
 				method: "DELETE",
@@ -51,7 +50,6 @@ const MoviesPage = () => {
 	}
 
 	const updateMovie = async (id, inCinemas) => {
-		const token = localStorage.getItem('token');
 		await fetch(`/api/movies/${id}`, {
 			method: "PUT",
 			headers: {

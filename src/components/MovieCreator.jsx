@@ -40,14 +40,6 @@ const MovieCreator = ({ setUpdate }) => {
         value={id}
         onChange={(e) => setId(e.target.value)}
       />
-
-      <input
-      className="input"
-        type="password"
-        placeholder="Secret key"
-        value={secret}
-        onChange={(e) => setSecret(e.target.value)}
-      />
       <button className="btn" onClick={addFilm} disabled={loading}>
         {loading ? 'Adding film...' : 'Add film'}
       </button>

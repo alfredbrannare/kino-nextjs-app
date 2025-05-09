@@ -9,76 +9,82 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
-      const checkToken = async () => {
-        const token = localStorage.getItem('token');
-        try {
-          if (token) {
-            const response = await fetch('/api/user/me', {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            const data = await response.json();
-            if (response.ok) {
-              const user = data.user || data;
-              setUserData(user);
-              setLoggedIn(true);
-              if(user && user.role === 'admin'){
-                setAdmin(true);
-              } else {
-                setAdmin(false);
-              }
+    const checkToken = async () => {
+      const localToken = localStorage.getItem('token');
+      try {
+        if (localToken) {
+          setToken(localToken);
+          const response = await fetch('/api/user/me', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${localToken}`,
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            const user = data.user || data;
+            setUserData(user);
+            setLoggedIn(true);
+            if (user && user.role === 'admin') {
+              setAdmin(true);
             } else {
-              localStorage.removeItem('token');
               setAdmin(false);
-              setLoggedIn(false);
-              setUserData(null);
-              console.log('Error checking token:', data.message);
             }
           } else {
-            setLoggedIn(false);
+            localStorage.removeItem('token');
+            setToken('');
             setAdmin(false);
+            setLoggedIn(false);
             setUserData(null);
+            console.log('Error checking token:', data.message);
           }
-        } catch (error) {
-          console.error("Failed to check token:", error);
+        } else {
           setLoggedIn(false);
           setAdmin(false);
           setUserData(null);
-        } finally {
-          setLoading(false);
         }
-      };
-  
-      checkToken();
-    }, []);
-
-    const login = (token, userDataFromLogin) => {
-      localStorage.setItem("token", token);
-      setUserData(userDataFromLogin || null);
-      setLoggedIn(true);
-      if (userDataFromLogin && userDataFromLogin.role === 'admin') {
-        setAdmin(true);
-      } else {
+      } catch (error) {
+        console.error("Failed to check token:", error);
+        setToken('');
+        setLoggedIn(false);
         setAdmin(false);
+        setUserData(null);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const logout = () => {
-      localStorage.removeItem("token");
-      setUserData(null);
-      setLoggedIn(false);
+    checkToken();
+  }, []);
+
+  const login = (apiToken, userDataFromLogin) => {
+    localStorage.setItem("token", apiToken);
+    setToken(apiToken);
+    setUserData(userDataFromLogin || null);
+    setLoggedIn(true);
+    if (userDataFromLogin && userDataFromLogin.role === 'admin') {
+      setAdmin(true);
+    } else {
       setAdmin(false);
-    };
-    
-    return (
-      <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin }}>
-        {children}
-      </AuthData.Provider>
-    );
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken('');
+    setUserData(null);
+    setLoggedIn(false);
+    setAdmin(false);
+  };
+
+  return (
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin, token }}>
+      {children}
+    </AuthData.Provider>
+  );
 }
 
 export const useAuth = () => useContext(AuthData);
