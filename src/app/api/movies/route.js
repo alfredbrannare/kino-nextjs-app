@@ -45,10 +45,10 @@ export const POST = async (req) => {
     }
 
     const response = await fetch(
-      `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
+      `https://api.themoviedb.org/3/movie/${body.id}?api_key=${process.env.TMDB}&language=en-EN`
+      // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
     );
     const data = await response.json();
-
     if (data.Error) {
       return NextResponse.json(
         { status: "IMDb ID is invalid or OMDb API error." },
@@ -57,15 +57,15 @@ export const POST = async (req) => {
     }
 
     const movie = new Movie({
-      title: data.Title,
-      description: data.Plot,
-      year: parseInt(data.Year),
-      image: data.Poster,
-      rating: parseFloat(data.imdbRating),
+      title: data.title,
+      description: data.overview,
+      year: data.release_date,
+      image: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
+      rating: data.vote_average,
     });
 
     // Kolar om filmen finns redan i databasen
-    const existing = await Movie.findOne({ title: data.Title });
+    const existing = await Movie.findOne({ title: data.title });
     if (existing) {
       return new Response(
         JSON.stringify({
