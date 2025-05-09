@@ -1,19 +1,22 @@
 import connectDB from "src/lib/mongodb";
-import Movie from "src/models/model.movies.js";
+import Screening from "src/models/model.screenings";
 import { checkAuth } from "src/lib/auth";
 import { NextResponse } from "next/server"; // Import NextResponse
+import Movie from "src/models/model.movies";
 
 export const GET = async () => {
   try {
     await connectDB();
-    const movies = await Movie.find();
-    return new Response(JSON.stringify(movies), {
+    const screenings = await Screening.find().populate("movieId", "title -_id");
+
+    return new Response(JSON.stringify(screenings), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } catch (error) {
+    console.error('Error in /api/screenings:', error);
     return new Response(JSON.stringify({ error: "Database error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -24,8 +27,19 @@ export const GET = async () => {
 export const POST = async (req) => {
   await connectDB();
 
-  if (!checkAuth(req)) {
+  const authenticatedUser = await checkAuth(req);
+
+  if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const isAdmin = authenticatedUser.role === "admin";
+
+  if (!isAdmin) {
+    return NextResponse.json(
+      { message: "You dont have the right to use this feature!" },
+      { status: 403 }
+    );
   }
 
   try {

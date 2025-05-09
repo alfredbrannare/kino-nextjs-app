@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const screeningsSchema = new mongoose.Schema({
-    movieId: mongoose.Schema.Types.ObjectId,
+    movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' },
+    auditoriumId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auditorium' },
     startTime: Date,
-    auditoriumId: mongoose.Schema.Types.ObjectId,
 });
 
 const Screening = mongoose.models.Movie || mongoose.model('Screening', screeningsSchema);
