@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import MovieCreator from "src/components/MovieCreator"
+import ScreeningCreator from "src/components/ScreeningCreator"
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 
@@ -66,7 +66,7 @@ const ScreeningsPage = () => {
 
 	return (
 		<>
-			<MovieCreator setUpdate={setUpdate} />
+			<ScreeningCreator setUpdate={setUpdate} />
 			<h1 className="italic font-semibold text-3xl text-center pt-10">
 				Visningar:
 			</h1>
