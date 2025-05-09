@@ -1,5 +1,6 @@
 import connectDB from "src/lib/mongodb";
 import Screening from "src/models/model.screenings";
+import Auditorium from "src/models/model.auditorium";
 import { checkAuth } from "src/lib/auth";
 import { NextResponse } from "next/server"; // Import NextResponse
 import Movie from "src/models/model.movies";
@@ -7,7 +8,7 @@ import Movie from "src/models/model.movies";
 export const GET = async () => {
   try {
     await connectDB();
-    const screenings = await Screening.find().populate("movieId", "title -_id");
+    const screenings = await Screening.find().populate("movieId", "title").populate("auditoriumId", "name");
 
     return new Response(JSON.stringify(screenings), {
       status: 200,
@@ -46,10 +47,10 @@ export const POST = async (req) => {
     const body = await req.json();
     console.log("Received request body:", body);
 
-    if (!body.id) {
+    if (!body.movieId || !body.auditoriumId || !body.startTime) {
       return new Response(
         JSON.stringify({
-          status: "IMDb film ID is required",
+          status: "movieId, auditoriumIdis and startTime is required",
         }),
         {
           status: 400,
@@ -58,49 +59,35 @@ export const POST = async (req) => {
       );
     }
 
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${body.id}?api_key=${process.env.TMDB}&language=en-EN`
-      // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
-    );
-    const data = await response.json();
-    if (data.Error) {
-      return NextResponse.json(
-        { status: "IMDb ID is invalid or OMDb API error." },
-        { status: 400 }
-      );
-    }
-
-    const movie = new Movie({
-      title: data.title,
-      description: data.overview,
-      year: data.release_date,
-      image: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
-      rating: data.vote_average,
+    const screening = new Screening({
+      movieId: body.movieId,
+      auditoriumId: body.auditoriumId,
+      startTime: body.startTime
     });
 
-    // Kolar om filmen finns redan i databasen
-    const existing = await Movie.findOne({ title: data.title });
-    if (existing) {
-      return new Response(
-        JSON.stringify({
-          status: "Movie already exists in the database.",
-        }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    }
+    // Kolar om screening finns redan i databasen
+    // const existing = await Screening.findOne({ auditoriumId: data.auditoriumId });
+    // if (existing) {
+    //   return new Response(
+    //     JSON.stringify({
+    //       status: "Movie already exists in the database.",
+    //     }),
+    //     {
+    //       status: 400,
+    //       headers: { "Content-Type": "application/json" },
+    //     }
+    //   );
+    // }
     // Sparar till databasen och returnerar response
-    await movie.save();
-    return new Response(JSON.stringify(movie), {
+    await screening.save();
+    return new Response(JSON.stringify(screening), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch {
     return new Response(
       JSON.stringify({
-        status: "IMDb ID is invalid or the OMDb API is not responding.",
+        status: "Server is not responding.",
       }),
       {
         status: 400,

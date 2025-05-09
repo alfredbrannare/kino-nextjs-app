@@ -36,19 +36,18 @@ const ScreeningsPage = () => {
 		setUpdate(false)
 	}, [update])
 
-	// const deleteMovie = async (id) => {
-	// 	try {
-	// 		await fetch(`/api/movies/${id}`, {
-	// 			method: "DELETE",
-	// 			headers: { 'Authorization': `Bearer ${token}` },
-	// 		})
-	// 	} catch (error) {
-	// 		console.error("Error deleting movie movies:", error)
-	// 	} finally {
-	// 		setUpdate(true)
-	// 	}
-	// }
-
+	const deleteMovie = async (id) => {
+		try {
+			await fetch(`/api/screenings/${id}`, {
+				method: "DELETE",
+				headers: { 'Authorization': `Bearer ${token}` },
+			})
+		} catch (error) {
+			console.error("Error deleting movie movies:", error)
+		} finally {
+			setUpdate(true)
+		}
+	}
 	// const updateMovie = async (id, inCinemas) => {
 	// 	await fetch(`/api/movies/${id}`, {
 	// 		method: "PUT",
@@ -76,7 +75,8 @@ const ScreeningsPage = () => {
 				<div
 					key={screenings._id}
 					className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
-					<h2 className="">{screening.movieId.title}</h2>
+					<h2 className="">{screening.movieId ? screening.movieId.title : "No movie title available"}</h2>
+					<h2 className="">{screening.auditoriumId.name}</h2>
 					<div>
 						<Link
 							className="btn mr-1"

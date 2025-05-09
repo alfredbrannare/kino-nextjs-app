@@ -43,7 +43,6 @@ export const DELETE = async (req, { params }) => {
 export const PUT = async (req, { params }) => {
   await connectDB();
   const authenticatedUser = await checkAuth(req);
-  console.log(authenticatedUser);
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
