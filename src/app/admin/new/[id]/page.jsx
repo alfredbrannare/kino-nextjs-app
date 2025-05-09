@@ -15,7 +15,6 @@ const Movie = ({ params }) => {
         const data = await response.json();
 
         setMovie(data);
-        console.log(movie)
       } catch (error) {
         console.error('Error fetching movies:', error);
       } finally {
