@@ -95,8 +95,7 @@ const Main = () => {
           )}
         </div>
         <div className="flex justify-center gap-20 my-10">
-          <button class="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-            BOKA BILJETT
+          <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">            BOKA BILJETT
           </button>
           <button class="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
             SE ALLA FILMER
@@ -136,30 +135,80 @@ const Main = () => {
               <p className="py-6 text-[#CDCDCD] ">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
-              <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all">
+              <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
                 LÄS MER
               </button>
             </div>
           </div>
         </div>
         <div className="hero bg-[#2B0404] py-0 px-4">
-  <div className="hero-content flex-col lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
-    <img
-      src="/KinoDoors.png"
-      className="max-w-sm rounded-lg shadow-2xl"
-      alt="Kino Entrance"
-    />
-    <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
-      <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
-      <p className="py-6 text-[#CDCDCD]">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </p>
-      <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all">
-        LÄS MER
-      </button>
-    </div>
-  </div>
-</div>
+          <div className="hero-content flex-col lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+            <img
+              src="/KinoDoors.png"
+              className="max-w-sm rounded-lg shadow-2xl"
+              alt="Kino Entrance"
+            />
+            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
+              <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
+              <p className="py-6 text-[#CDCDCD]">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                LÄS MER
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#CDCDCD] py-16 px-4 text-center">
+          <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
+            SÄKRA DIN BILJETT TILL KOMMANDE EVENEMANG
+          </h2>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
+            <button className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
+              SE EVENEMANG
+            </button>
+          </div>
+        </div>
+
+
+        <div className="hero bg-[#2B0404] py-0 px-4">
+          <div className="hero-content flex-col lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
+            <img
+              src="/KinoScreen.png"
+              className="max-w-sm rounded-lg shadow-2xl"
+              alt="Kino Entrance"
+            />
+            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
+              <h1 className="text-3xl font-bold text-[#CDCDCD]">BÄTTRE LJUD OCH BILD ÄN HEMMA</h1>
+              <p className="py-6 text-[#CDCDCD] ">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                BOKA BILJETT
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="hero bg-[#2B0404] py-0 px-4">
+          <div className="hero-content flex-col lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+            <img
+              src="/KinoSeats.png"
+              className="max-w-sm rounded-lg shadow-2xl"
+              alt="Kino Entrance"
+            />
+            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
+              <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
+              <p className="py-6 text-[#CDCDCD]">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                BOKA BILJETT
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
