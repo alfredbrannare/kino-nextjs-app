@@ -2,7 +2,6 @@ import { useState,} from "react";
 
 const MovieCreator = ({ setUpdate }) => {
   const [id, setId] = useState('');
-  const [secret, setSecret] = useState('');
   const [loading, setLoading] = useState(false);
 
   const addFilm = async () => {

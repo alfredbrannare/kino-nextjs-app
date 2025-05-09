@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from './user/AuthData';
@@ -81,7 +80,7 @@ const Login = () => {
                             </div>
 
                             <div className="modal-action">
-                                <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : ''}`}>
+                                <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : null}`}>
                                     Logga in
                                 </button>
                             </div>
