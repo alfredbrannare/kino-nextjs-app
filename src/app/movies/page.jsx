@@ -1,14 +1,16 @@
 'use client'
 import { useEffect, useState } from "react";
 import MovieCard from "src/components/MovieCard";
+import SortMoviesDropdown from "src/components/movies/SortMoviesDropdown";
 import { fetchMovies } from "src/lib/fetchMovies";
-import { sortTopRated } from "src/utils/sortTopRated";
+import { sortMovies } from "src/utils/movies/sortMovies";
 
 export default function MoviesPage() {
     const [unsortedMovies, setUnsort] = useState([]);
     const [movies, setMovies] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sortOptions, setSortOptions] = useState('');
 
     useEffect(() => {
         const loadMovies = async () => {
@@ -27,23 +29,21 @@ export default function MoviesPage() {
     }, []);
 
     useEffect(() => {
-        console.log("Movies state updated:", movies);
-    }, [movies]);
+        const sortedMovies = sortMovies(unsortedMovies, sortOptions);
+        setMovies(sortedMovies);
+    }, [sortOptions, unsortedMovies]);
 
-    const handleSortTopRated = () => {
-        setMovies(sortTopRated(movies));
+
+    const handleSortChange = (event) => {
+        setSortOptions(event.target.value);
     };
 
     return (
         <div>
-            <button
-                onClick={handleSortTopRated}
-            >Click here</button>
-            <button
-                onClick={() => {
-                    setMovies(unsortedMovies)
-                }}
-            >Reset</button>
+            <button onClick={() => setMovies(unsortedMovies)}>Reset</button>
+
+            <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
+
             <div className="flex flex-row flex-wrap justify-center">
                 {movies.map((movie) => (
                     <MovieCard
