@@ -66,7 +66,7 @@ const Header = () => {
           <ul
             tabIndex="0"
             className="menu menu-sm dropdown-content bg-[#2B0404] text-[#CDCDCD] rounded-box z-10 mt-3 w-auto p-2 shadow">
-            <li><Link href="/movies/new" className="text-lg font-bold">Lägga till film</Link></li>
+            <li><Link href="/admin/new" className="text-lg font-bold">Lägga till film</Link></li>
           </ul>
         </div> : null}
         {/* END */}
