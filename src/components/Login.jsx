@@ -25,6 +25,8 @@ const Login = () => {
             setOpen(false);
             setEmail('');
             setPassword('');
+            window.location.reload();
+
         } else {
             setOpen(false);
         }
