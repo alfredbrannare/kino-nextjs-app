@@ -40,8 +40,6 @@ export default function MoviesPage() {
 
     return (
         <div>
-            <button onClick={() => setMovies(unsortedMovies)}>Reset</button>
-
             <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
 
             <div className="flex flex-row flex-wrap justify-center">
