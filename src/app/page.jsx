@@ -27,6 +27,7 @@ const Main = () => {
 
   return (
     <div>
+      <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
       <div className="carousel w-full">
         <div id="slide1" className="carousel-item relative w-full">
           <img
@@ -97,7 +98,7 @@ const Main = () => {
         <div className="flex justify-center gap-20 my-10">
           <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">            BOKA BILJETT
           </button>
-          <button class="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+          <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
             SE ALLA FILMER
           </button>
         </div>
@@ -148,7 +149,7 @@ const Main = () => {
               className="max-w-sm rounded-lg shadow-2xl"
               alt="Kino Entrance"
             />
-            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
+            <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4">
               <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
               <p className="py-6 text-[#CDCDCD]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -197,7 +198,7 @@ const Main = () => {
               className="max-w-sm rounded-lg shadow-2xl"
               alt="Kino Entrance"
             />
-            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4">
+            <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4">
               <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
               <p className="py-6 text-[#CDCDCD]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -210,6 +211,7 @@ const Main = () => {
         </div>
 
       </div>
+    </div>
     </div>
   );
 };
