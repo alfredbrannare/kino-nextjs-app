@@ -42,7 +42,7 @@ const Header = () => {
             <li><Link href="/about"className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">OM OSS</Link></li>
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end mr-6">
           <Login />
         </div>
         {/* Temporary(?) button that will be adjusted/moved/removed later */}

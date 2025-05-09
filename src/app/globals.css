@@ -3,6 +3,8 @@
 
 body {
 	background: #2b0404;
+	margin: 0;
+	padding: 0;
 }
 main {
 	max-width: 1280px;
