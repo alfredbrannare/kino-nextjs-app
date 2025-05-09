@@ -26,6 +26,10 @@ const MovieCard = ({ movie }) => {
                 <img
                     src={movie.image}
                     alt={movie.title}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/kino-card.jpg";
+                    }}
                     className="w-full h-full object-fit"
                 />
 

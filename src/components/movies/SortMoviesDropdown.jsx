@@ -1,7 +1,7 @@
 const SortMoviesDropdown = ({ value, onChange }) => {
     return (
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend">Sortera efter:</legend>
+        <fieldset className="fieldset">
+            <legend className="fieldset-legend">Sortera efter:</legend>
             <select value={value} onChange={onChange} className="select">
                 <option value="">Inga</option>
                 <option value="top_rated">Högst betyg</option>
