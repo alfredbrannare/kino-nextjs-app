@@ -66,6 +66,9 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
 
     return (
         <div className="p-4 space-y-4">
+            <div className="flex justify-center mb-6">
+                <div className="w-5/8 h-6 bg-gray-700 rounded-sm shadow-sm text-black font-bold mb-6">Bioduk</div>
+            </div>
             {salong.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex justify-center gap-2">
                     {row.map((seat, seatIndex) => {
@@ -87,7 +90,8 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
                                         : seat.isWheelchair
                                             ? 'bg-blue-500'
                                             : 'bg-green-800'
-                                    }`}
+                                    }
+                                    hover:border-3 hover:border-white hover:scale-105 transition`}
                             >
                                 {seat.seat}
                             </button>
