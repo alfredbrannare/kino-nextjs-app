@@ -2,6 +2,7 @@ import Header from "src/components/Header";
 import "./globals.css";
 import Footer from "src/components/Footer";
 import { AuthDataProvider } from "src/components/user/AuthData";
+import CookieBanner from "src/components/user/CookieBanner";
 
 export const metadata = {
   title: "Kino Uppsala",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
           <main className="flex-1">{children}</main>
           <Footer />
         </AuthDataProvider>
+        <CookieBanner />
       </body>
     </html>
   );
