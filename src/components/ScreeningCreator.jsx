@@ -117,7 +117,7 @@ const ScreeningCreator = ({ setUpdate }) => {
       </select>
       <br />
       <button className="btn" onClick={addFilm} disabled={loading}>
-        {loading ? 'Adding film...' : 'Add film'}
+        {loading ? 'Ny visning...' : 'Ny visning'}
       </button>
     </div>
   );

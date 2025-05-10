@@ -40,7 +40,7 @@ const MovieCreator = ({ setUpdate }) => {
         onChange={(e) => setId(e.target.value)}
       />
       <button className="btn" onClick={addFilm} disabled={loading}>
-        {loading ? 'Adding film...' : 'Add film'}
+        {loading ? 'Ny film...' : 'Ny film'}
       </button>
     </div>
   );
