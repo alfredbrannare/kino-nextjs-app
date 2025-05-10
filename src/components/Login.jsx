@@ -11,6 +11,7 @@ const Login = () => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
+    const [responseMsg, setResponseMsg] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,9 +30,9 @@ const Login = () => {
             setEmail('');
             setPassword('');
             window.location.reload();
-
+            setResponseMsg(data.message)
         } else {
-            setOpen(false);
+            setResponseMsg(data.message)
         }
     };
 
@@ -53,9 +54,9 @@ const Login = () => {
             setEmail('');
             setPassword('');
             window.location.reload();
-
+            setResponseMsg(data.message)
         } else {
-            setOpen(false);
+            setResponseMsg(data.message)
         }
     };
 
@@ -108,7 +109,7 @@ const Login = () => {
                                     value={password}
                                 />
                             </div>
-
+                            <span className='text-red-600'>{responseMsg}</span>
                             <div className="modal-action">
                                 <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : null}`}>
                                     Logga in
@@ -180,7 +181,7 @@ const Login = () => {
                                     value={passwordRepeat}
                                 />
                             </div>
-
+                            <span className='text-red-600'>{responseMsg}</span>
                             <div className="modal-action">
                                 <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : null}`}>
                                     Registrera
