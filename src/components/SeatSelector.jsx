@@ -82,7 +82,7 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
     return (
         <div className="p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <div className="flex justify-center mb-6">
-                <div className="w-full max-w-md sm:max-w-lg h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6">Bioduk</div>
+                <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6">Bioduk</div>
             </div>
             {salong.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex justify-center gap-3">
@@ -127,12 +127,13 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
                 </div>
             </div>
             <button
+                title={selectedSeats.length === 0 ? 'Välj platser först' : ''}
                 disabled={isBooking || selectedSeats.length === 0}
                 onClick={handleBooking}
-                className={`mt-6 px-4 py-2 rounded text-black cursor-pointer ${isBooking ? 'bg-gray-400' : 'bg-yellow-400'
+                className={`mt-6 px-4 py-2 rounded text-black transition ${isBooking || selectedSeats.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-400 cursor-pointer'
                     }`}
             >
-                {isBooking ? 'Bokar valda platser...' : 'Boka'}
+                {isBooking ? 'Bokar valda platser...' : 'Boka platser'}
             </button>
             <WheelchairModal
                 seat={pendingWheelchairSeat}
