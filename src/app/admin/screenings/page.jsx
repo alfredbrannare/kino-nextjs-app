@@ -73,7 +73,7 @@ const ScreeningsPage = () => {
 			<br />
 			{screenings.map((screening) => (
 				<div
-					key={screenings._id}
+					key={screening._id}
 					className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
 					<h2 className="">{screening.movieId ? screening.movieId.title : "No movie title available"}</h2>
 					<h2 className="">{screening.auditoriumId.name}</h2>
