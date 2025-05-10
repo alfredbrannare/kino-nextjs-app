@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
+import { TimePicker } from 'react-accessible-time-picker';
 
 const ScreeningCreator = ({ setUpdate }) => {
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState();
+  const [selectedDate, setSelectedDate] = useState();
+  const [selectedTime, setSelectedTime] = useState({ hour: 12, minute: 0 });
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState("");
   const [screenings, setScreenings] = useState([]);
@@ -31,6 +33,16 @@ const ScreeningCreator = ({ setUpdate }) => {
 
   const addFilm = async () => {
     setLoading(true);
+    let combinedDateTime;
+    if (selectedDate && selectedTime) {
+      combinedDateTime = new Date(selectedDate);
+      combinedDateTime.setHours(selectedTime.hour, selectedTime.minute, 0, 0);
+    } else {
+      alert("Please select a date and time.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/screenings/', {
@@ -39,14 +51,15 @@ const ScreeningCreator = ({ setUpdate }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: date }),
+        body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: combinedDateTime }),
       });
       console.log(response)
       if (response.ok) {
         alert('Screening added successfully!')
         setUpdate(true);
         setSelectedMovie('');
-        setDate(undefined);
+        setSelectedDate(undefined);
+        setSelectedTime({ hour: 12, minute: 0 });
       } else {
         alert('Error while adding screening');
       }
@@ -58,12 +71,20 @@ const ScreeningCreator = ({ setUpdate }) => {
   };
   return (
     <div className="pt-10 text-center">
-      <button popoverTarget="rdp-popover" className="input input-border" style={{ anchorName: "--rdp" }}>
-        {date ? date.toLocaleDateString() : "Pick a date"}
-      </button>
-      <div popover="auto" id="rdp-popover" className="dropdown" style={{ positionAnchor: "--rdp" }}>
-        <DayPicker className="react-day-picker" mode="single" selected={date} onSelect={setDate} />
-      </div><br />
+      <div className="flex justify-center items-center">
+        <button popoverTarget="rdp-popover" className="input input-border w-51" style={{ anchorName: "--rdp" }}>
+          {selectedDate ? selectedDate.toLocaleDateString('sv-SE') : "Välj datum"}
+        </button>
+        <div popover="auto" id="rdp-popover" className="dropdown" style={{ positionAnchor: "--rdp" }}>
+          <DayPicker className="react-day-picker" mode="single" selected={selectedDate} onSelect={setSelectedDate} />
+        </div>
+        <div>
+        <TimePicker
+          value={selectedTime}
+          onChange={setSelectedTime}
+        />
+        </div>
+      </div>
 
       <select
         className="select select-bordered"
@@ -89,9 +110,9 @@ const ScreeningCreator = ({ setUpdate }) => {
           -- Välj salong --
         </option>
         {screenings.map((screening) => (
-             <option key={screening._id} value={screening._id}>
-             {screening.name}
-             </option>
+          <option key={screening._id} value={screening._id}>
+            {screening.name}
+          </option>
         ))}
       </select>
       <br />
