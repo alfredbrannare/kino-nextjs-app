@@ -8,7 +8,7 @@ const auditoriumSchema = new mongoose.Schema({
   seats: [
     {
       row: { type: Number, required: true },
-      seatNumber: { type: Number, required: true },
+      seat: { type: Number, required: true },
     },
   ],
 });
