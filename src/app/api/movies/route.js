@@ -60,7 +60,7 @@ export const POST = async (req) => {
       // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
     );
     const data = await response.json();
-    if (data.Error) {
+    if (!data.success) {
       return NextResponse.json(
         { status: "IMDb ID is invalid or OMDb API error." },
         { status: 400 }
