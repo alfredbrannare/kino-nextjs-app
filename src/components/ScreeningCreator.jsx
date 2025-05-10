@@ -1,11 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 
 const ScreeningCreator = ({ setUpdate }) => {
-  const [id, setId] = useState('');
-  const [idS, setIdS] = useState('');
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState();
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState("");
+  const [screenings, setScreenings] = useState([]);
+  const [selectedScreenings, setSelectedScreenings] = useState("");
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const res = await fetch("/api/movies");
+      const data = await res.json();
+      setMovies(data);
+    };
+
+    fetchMovies();
+  }, []);
+
+  useEffect(() => {
+    const fetchScreenings = async () => {
+      const res = await fetch("/api/auditoriums");
+      const data = await res.json();
+      setScreenings(data);
+    };
+
+    fetchScreenings();
+  }, []);
 
   const addFilm = async () => {
     setLoading(true);
@@ -17,13 +39,14 @@ const ScreeningCreator = ({ setUpdate }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ movieId: id, auditoriumId: idS, startTime:date}),
+        body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: date }),
       });
-
+      console.log(response)
       if (response.ok) {
-        setId('');
-        alert('Screening is added successfully!')
+        alert('Screening added successfully!')
         setUpdate(true);
+        setSelectedMovie('');
+        setDate(undefined);
       } else {
         alert('Error while adding screening');
       }
@@ -40,22 +63,38 @@ const ScreeningCreator = ({ setUpdate }) => {
       </button>
       <div popover="auto" id="rdp-popover" className="dropdown" style={{ positionAnchor: "--rdp" }}>
         <DayPicker className="react-day-picker" mode="single" selected={date} onSelect={setDate} />
-      </div>
+      </div><br />
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Screening id"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
-            <input
-        className="input"
-        type="text"
-        placeholder="Sal id"
-        value={idS}
-        onChange={(e) => setIdS(e.target.value)}
-      /> <br />
+      <select
+        className="select select-bordered"
+        value={selectedMovie}
+        onChange={(e) => setSelectedMovie(e.target.value)}
+      >
+        <option value="">
+          -- Välj film --
+        </option>
+        {movies.map((movie) => (
+          <option key={movie._id} value={movie._id}>
+            {movie.title}
+          </option>
+        ))}
+      </select>
+      <br />
+      <select
+        className="select select-bordered"
+        value={selectedScreenings}
+        onChange={(e) => setSelectedScreenings(e.target.value)}
+      >
+        <option value="">
+          -- Välj salong --
+        </option>
+        {screenings.map((screening) => (
+             <option key={screening._id} value={screening._id}>
+             {screening.name}
+             </option>
+        ))}
+      </select>
+      <br />
       <button className="btn" onClick={addFilm} disabled={loading}>
         {loading ? 'Adding film...' : 'Add film'}
       </button>
