@@ -1,22 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react";
-
-function generateSalong(rows, seatsPerRow) {
-    const layout = [];
-    for (let row = 1; row <= rows; row++) {
-        const rowSeats = [];
-        for (let seat = 1; seat <= seatsPerRow; seat++) {
-            const isWheelchair = row === rows && (seat === 1 || seat === seatsPerRow);
-            rowSeats.push({ row, seat, isWheelchair });
-        }
-        layout.push(rowSeats);
-    }
-    return layout;
-};
+import { generateSalong } from "src/lib/salongLayout";
 
 export default function SeatSelector({ movieId, screeningTime, userId, rows = 5, seatsPerRow = 8 }) {
 
-    const salong = generateSalong(rows, seatsPerRow);
+    const layoutConfig = [8, 10, 12, 10, 8, 8]
+    const salong = generateSalong(layoutConfig);
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -78,7 +67,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
     return (
         <div className="p-4 space-y-4">
             {salong.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex gap-2">
+                <div key={rowIndex} className="flex justify-center gap-2">
                     {row.map((seat, seatIndex) => {
                         const isBooked = bookedSeats.some(
                             (b) => b.row === seat.row && b.seat === seat.seat
