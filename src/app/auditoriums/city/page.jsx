@@ -4,8 +4,8 @@ import SeatSelector from "src/components/SeatSelector";
 const cityPage = () => {
     return (
         <main className="p-6 text-center">
-            <h1 className="text-xl font-bold mb-4">Salong: "Uppsala City"</h1>
-            <h2 className="text-xl font-bold mb-4">Boka platser</h2>
+            <h1 className="text-xl font-bold m-4">Salong: "Uppsala City"</h1>
+            <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>
 
             <SeatSelector
                 movieId="123"

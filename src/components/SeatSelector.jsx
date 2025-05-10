@@ -74,18 +74,18 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
 
     const Legend = ({ color, label }) => (
         <div className="flex items-center gap-2">
-            <div className={`w-5 h-5 rounded ${color}`}></div>
+            <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded ${color}`}></div>
             <span>{label}</span>
         </div>
     );
 
     return (
-        <div className="p-4 space-y-4">
+        <div className="p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <div className="flex justify-center mb-6">
-                <div className="w-5/8 h-6 bg-gray-700 rounded-sm shadow-sm text-black font-bold mb-6">Bioduk</div>
+                <div className="w-full max-w-md sm:max-w-lg h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6">Bioduk</div>
             </div>
             {salong.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex justify-center gap-2">
+                <div key={rowIndex} className="flex justify-center gap-3">
                     {row.map((seat, seatIndex) => {
                         const isBooked = bookedSeats.some(
                             (b) => b.row === seat.row && b.seat === seat.seat
@@ -99,16 +99,15 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
                                 key={seatIndex}
                                 onClick={() => toggleSeat(seat)}
                                 disabled={isBooked}
-                                className={`w-10 h-10 rounded text-white ${isBooked
+                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded text-white ${isBooked
                                     ? 'bg-red-500 cursor-not-allowed'
                                     : isSelected ? 'bg-green-800 border-3 border-white cursor-pointer'
                                         : seat.isWheelchair
                                             ? 'bg-blue-500 cursor-pointer'
-                                            : 'bg-gray-600 cursor-pointer'
+                                            : 'bg-gray-500 cursor-pointer'
                                     }
                                     hover:border-3 hover:border-white hover:scale-110 transition`}
                             >
-                                {seat.seat}
                             </button>
                         );
                     })}
@@ -120,7 +119,7 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
             )}
             <div className="mt-6 space-y-2">
                 <p className="text-sm font-medium">Stolguide:</p>
-                <div className="flex gap-6 flex-wrap text-sm justify-center">
+                <div className="flex gap-6 flex-wrap text-sm sm:text-base justify-center">
                     <Legend color="bg-gray-500" label="Valbar plats" />
                     <Legend color="bg-green-800" label="Vald plats" />
                     <Legend color="bg-blue-500" label="Rullstolsplats" />
@@ -130,7 +129,7 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
             <button
                 disabled={isBooking || selectedSeats.length === 0}
                 onClick={handleBooking}
-                className={`mt-6 px-4 py-2 rounded text-white cursor-pointer ${isBooking ? 'bg-gray-400' : 'bg-blue-600'
+                className={`mt-6 px-4 py-2 rounded text-black cursor-pointer ${isBooking ? 'bg-gray-400' : 'bg-yellow-400'
                     }`}
             >
                 {isBooking ? 'Bokar valda platser...' : 'Boka'}
@@ -146,6 +145,5 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
                 }}
             />
         </div>
-
     );
 };
