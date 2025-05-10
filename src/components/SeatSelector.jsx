@@ -1,16 +1,19 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { generateSalong } from "src/lib/salongLayout";
+import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId, rows = 5, seatsPerRow = 8 }) {
+export default function SeatSelector({ movieId, screeningTime, userId }) {
 
-    const layoutConfig = [8, 10, 12, 10, 8, 8]
-    const salong = generateSalong(layoutConfig);
+    const cityLayoutConfig = [8, 10, 12, 10, 8, 8]
+    const salong = generateSalong(cityLayoutConfig);
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
     const [isBooking, setIsBooking] = useState(false);
     const [bookingSuccess, setBookingSuccess] = useState(false);
+    const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState(null);
+
 
     useEffect(() => {
         fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
@@ -20,18 +23,23 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
             });
     }, [movieId, screeningTime]);
 
-    const toggleSeat = (seat) => {
+    const toggleSeat = (seat, bypassModal = false) => {
         const isSelected = selectedSeats.some(
             (s) => s.row === seat.row && s.seat === seat.seat
         );
 
+        if (seat.isWheelchair && !bypassModal && !isSelected) {
+            setPendingWheelchairSeat(seat);
+            return;
+        }
+
         if (isSelected) {
-            // Ta bort stolen från listan
+            // Avmarkera redan vald plats
             setSelectedSeats(selectedSeats.filter(
                 (s) => !(s.row === seat.row && s.seat === seat.seat)
             ));
         } else {
-            // Lägg till stolen
+            // Markera vald plats
             setSelectedSeats([...selectedSeats, seat]);
         }
     };
@@ -127,6 +135,16 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
             >
                 {isBooking ? 'Bokar valda platser...' : 'Boka'}
             </button>
+            <WheelchairModal
+                seat={pendingWheelchairSeat}
+                onConfirm={() => {
+                    toggleSeat(pendingWheelchairSeat, true);
+                    setPendingWheelchairSeat(null);
+                }}
+                onCancel={() => {
+                    setPendingWheelchairSeat(null);
+                }}
+            />
         </div>
 
     );
