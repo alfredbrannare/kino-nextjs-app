@@ -17,19 +17,44 @@ export const POST = async (req) => {
     );
   }
 
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!validateEmail(email)) {
+    return NextResponse.json(
+      {
+        message: "Invalid email format",
+      },
+      { status: 400 }
+    );
+  }
+
+  if (password.length < 6) {
+    return NextResponse.json(
+      {
+        message: "Password should be longer than 6 characters",
+      },
+      { status: 400 }
+    );
+  }
+
   const user = await User.findOne({ email });
+  if (!user) {
+    return NextResponse.json(
+      {
+        message: "User is not valid",
+      },
+      { status: 400 }
+    );
+  }
 
   const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
-
   if (isPasswordValid) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
-
     return NextResponse.json(
       {
         message: "User logging successful",
-        token
+        token,
       },
       { status: 200 }
     );
