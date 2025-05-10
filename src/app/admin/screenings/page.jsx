@@ -85,7 +85,7 @@ const ScreeningsPage = () => {
 					<div>
 						<Link
 							className="btn mr-1"
-							href={`/admin/new/` + screening._id}>
+							href={`/admin/screenings/` + screening._id}>
 							Details
 						</Link>
 						<button
