@@ -1,7 +1,7 @@
 "use client"
 import SeatSelector from "src/components/SeatSelector";
 
-const SmallHallPage = () => {
+const cityPage = () => {
     return (
         <main className="p-6 text-center">
             <h1 className="text-xl font-bold mb-4">Salong: "Uppsala City"</h1>
@@ -16,4 +16,4 @@ const SmallHallPage = () => {
     );
 };
 
-export default SmallHallPage;
+export default cityPage;
