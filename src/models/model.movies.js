@@ -9,6 +9,6 @@ const moviesSchema = new mongoose.Schema({
   inCinemas: {type:Boolean, default:false},
 });
 
-const Movie = mongoose.models.Movie || mongoose.model('Movies', moviesSchema);
+const Movie = mongoose.models.Movies || mongoose.model('Movies', moviesSchema);
 
 export default Movie;

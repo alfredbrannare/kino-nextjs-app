@@ -11,11 +11,13 @@ const screeningsSchema = new mongoose.Schema({
     ref: "Auditoriums",
     required: true,
   },
-  startTime: Date,
-  required: true,
+  startTime: {
+    type: Date,
+    required: true,
+  }
 });
 
 const Screening =
-  mongoose.models.Movie || mongoose.model("Screenings", screeningsSchema);
+  mongoose.models.Screenings || mongoose.model("Screenings", screeningsSchema);
 
 export default Screening;

@@ -14,6 +14,6 @@ const auditoriumSchema = new mongoose.Schema({
 });
 
 const Auditorium =
-  mongoose.models.Auditorium || mongoose.model("Auditoriums", auditoriumSchema);
+  mongoose.models.Auditoriums || mongoose.model("Auditoriums", auditoriumSchema);
 
 export default Auditorium;
