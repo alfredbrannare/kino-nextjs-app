@@ -80,7 +80,7 @@ const MoviesPage = () => {
 					<div>
 						<Link
 							className="btn mr-1"
-							href={`/admin/new/` + movie._id}>
+							href={`/admin/movies/` + movie._id}>
 							Details
 						</Link>
 						{movie.inCinemas ? (

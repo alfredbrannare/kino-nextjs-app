@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState, use } from 'react';
-import MovieDetails from 'src/components/MovieDetails';
+import Link from 'next/link';
 
 const Movie = ({ params }) => {
   const [screening, setScreening] = useState(null);
@@ -24,17 +24,22 @@ const Movie = ({ params }) => {
     fetchData();
   }, [])
 
-if (loading) return <p>Loading...</p>
-if (!screening) return <p>Screening not found</p>;
+  if (loading) return <p>Loading...</p>
+  if (!screening) return <p>Screening not found</p>;
 
   return (
     <div className='post'>
       <h1>{screening.movieId.title}</h1>
       <span>{screening.auditoriumId.name}</span><br />
       <span>{new Date(screening.startTime).toLocaleString('sv-SE', {
-						dateStyle: 'medium',
-						timeStyle: 'short',
-					})}</span>
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      })}</span>
+      <Link
+        className="btn"
+        href={'/admin/screenings'}>
+        Back
+      </Link>
     </div>
   )
 }
