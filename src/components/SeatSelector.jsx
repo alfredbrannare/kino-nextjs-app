@@ -64,6 +64,13 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
             })
     }
 
+    const Legend = ({ color, label }) => (
+        <div className="flex items-center gap-2">
+            <div className={`w-5 h-5 rounded ${color}`}></div>
+            <span>{label}</span>
+        </div>
+    );
+
     return (
         <div className="p-4 space-y-4">
             <div className="flex justify-center mb-6">
@@ -86,12 +93,12 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
                                 disabled={isBooked}
                                 className={`w-10 h-10 rounded text-white ${isBooked
                                     ? 'bg-red-500 cursor-not-allowed'
-                                    : isSelected ? 'bg-gray-500'
+                                    : isSelected ? 'bg-green-800 border-3 border-white cursor-pointer'
                                         : seat.isWheelchair
-                                            ? 'bg-blue-500'
-                                            : 'bg-green-800'
+                                            ? 'bg-blue-500 cursor-pointer'
+                                            : 'bg-gray-600 cursor-pointer'
                                     }
-                                    hover:border-3 hover:border-white hover:scale-105 transition`}
+                                    hover:border-3 hover:border-white hover:scale-110 transition`}
                             >
                                 {seat.seat}
                             </button>
@@ -99,17 +106,28 @@ export default function SeatSelector({ movieId, screeningTime, userId, rows = 5,
                     })}
                 </div>
             ))}
+
+            {bookingSuccess && (
+                <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>
+            )}
+            <div className="mt-6 space-y-2">
+                <p className="text-sm font-medium">Stolguide:</p>
+                <div className="flex gap-6 flex-wrap text-sm justify-center">
+                    <Legend color="bg-gray-500" label="Valbar plats" />
+                    <Legend color="bg-green-800" label="Vald plats" />
+                    <Legend color="bg-blue-500" label="Rullstolsplats" />
+                    <Legend color="bg-red-500" label="Ej valbar (bokad)" />
+                </div>
+            </div>
             <button
                 disabled={isBooking || selectedSeats.length === 0}
                 onClick={handleBooking}
-                className={`mt-4 px-4 py-2 rounded text-white ${isBooking ? 'bg-gray-400' : 'bg-blue-600'
+                className={`mt-6 px-4 py-2 rounded text-white cursor-pointer ${isBooking ? 'bg-gray-400' : 'bg-blue-600'
                     }`}
             >
                 {isBooking ? 'Bokar valda platser...' : 'Boka'}
             </button>
-            {bookingSuccess && (
-                <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>
-            )}
         </div>
+
     );
 };
