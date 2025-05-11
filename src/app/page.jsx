@@ -125,9 +125,9 @@ const Main = () => {
                   <button className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
                     BLI MEDLEM
                   </button>
-                  <button className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                  <a href="/events" className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
                     EVENEMANG
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -145,9 +145,9 @@ const Main = () => {
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                       </p>
                       <div className="flex justify-center lg:justify-start mt-6">
-                      <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105">
-                        LÄS MER
-                      </button>
+                        <a href="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105">
+                          LÄS MER
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -168,9 +168,9 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                        <a href ="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
                           LÄS MER
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -182,9 +182,9 @@ const Main = () => {
                   SÄKRA DIN BILJETT TILL KOMMANDE EVENEMANG
                 </h2>
                 <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
-                  <button className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                  <a href="/events" className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
                     SE EVENEMANG
-                  </button>
+                  </a>
                 </div>
               </div>
 
