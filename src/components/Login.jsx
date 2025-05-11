@@ -16,7 +16,7 @@ const Login = () => {
     return (
         <div>
             <button
-                className="btn bg-yellow-400 text-black hover:bg-yellow-300"
+                className="btn bg-yellow-400 text-black hover:bg-yellow-300 "
                 onClick={() => setOpen(true)}
             >
                 Logga in
