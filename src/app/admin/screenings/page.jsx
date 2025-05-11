@@ -49,19 +49,7 @@ const ScreeningsPage = () => {
 			setUpdate(true)
 		}
 	}
-	// const updateMovie = async (id, inCinemas) => {
-	// 	await fetch(`/api/movies/${id}`, {
-	// 		method: "PUT",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			'Authorization': `Bearer ${token}`,
-
-	// 		},
-	// 		body: JSON.stringify({ inCinemas }),
-	// 	})
-	// 	setUpdate(true)
-	// }
-
+	
 	if (isAuthLoading || loading) return <p>Loading page data...</p>;
 	if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;
 

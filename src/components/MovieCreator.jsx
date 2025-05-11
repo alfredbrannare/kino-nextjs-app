@@ -16,13 +16,13 @@ const MovieCreator = ({ setUpdate }) => {
         },
         body: JSON.stringify({ id: id || '' }),
       });
-
+      const body = await response.json();
       if (response.ok) {
         setId('');
-        alert('Film is added successfully!')
+        alert(`Film is added successfully !br / ${JSON.stringify(body.movie)}}`)
         setUpdate(true);
       }else{
-        alert('Error while adding film');
+        alert(`${body.status}`);
       }
     } catch (err) {
       console.log('Movie is not found', err);

@@ -41,7 +41,6 @@ export const POST = async (req) => {
 
   try {
     const body = await req.json();
-    console.log("Received request body:", body);
 
     if (!body.id) {
       return new Response(
@@ -60,9 +59,9 @@ export const POST = async (req) => {
       // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
     );
     const data = await response.json();
-    if (!data.success) {
+    if (data.success === false) {
       return NextResponse.json(
-        { status: "IMDb ID is invalid or OMDb API error." },
+        { status: "IMDb ID is invalid or OMDb API error."},
         { status: 400 }
       );
     }
@@ -81,6 +80,7 @@ export const POST = async (req) => {
       return new Response(
         JSON.stringify({
           status: "Movie already exists in the database.",
+          originalData: data, 
         }),
         {
           status: 400,
@@ -90,14 +90,15 @@ export const POST = async (req) => {
     }
     // Sparar till databasen och returnerar response
     await movie.save();
-    return new Response(JSON.stringify(movie), {
+    return new Response(JSON.stringify({movie, originalData: data}), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch {
+  } catch(error){
     return new Response(
       JSON.stringify({
         status: "IMDb ID is invalid or the OMDb API is not responding.",
+        errorMsg: error,
       }),
       {
         status: 400,
