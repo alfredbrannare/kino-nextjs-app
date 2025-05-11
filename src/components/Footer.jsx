@@ -5,10 +5,10 @@ const Footer = () => {
     return (
         <footer className="footer flex flex-col items-center bg-[#2B0404] text-[#CDCDCD] rounded p-10 gap-6">
             <nav className="flex flex-col sm:flex-row gap-4 items-center text-center">
-                <a className="link link-hover">OM KINO</a>
+                <a href="/about" className="link link-hover">OM KINO</a>
                 <a className="link link-hover">KONTAKTA OSS</a>
                 <a className="link link-hover">MEDLEMSKAP</a>
-                <a className="link link-hover">EVENEMANG</a>
+                <a href="/events" className="link link-hover">EVENEMANG</a>
                 <a className="link link-hover">BILJETTER</a>
             </nav>
             <nav>
