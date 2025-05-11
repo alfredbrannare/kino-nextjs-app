@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const Footer = () => {
     return (
-        <footer className="footer footer-horizontal footer-center bg-[#2B0404] text-[#CDCDCD] rounded p-10">
-            <nav className="grid grid-flow-col gap-4">
+        <footer className="footer flex flex-col items-center bg-[#2B0404] text-[#CDCDCD] rounded p-10 gap-6">
+            <nav className="flex flex-col sm:flex-row gap-4 items-center text-center">
                 <a className="link link-hover">OM KINO</a>
                 <a className="link link-hover">KONTAKTA OSS</a>
                 <a className="link link-hover">MEDLEMSKAP</a>
