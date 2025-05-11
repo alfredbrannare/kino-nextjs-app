@@ -1,9 +1,7 @@
 import connectDB from "src/lib/mongodb";
 import Screening from "src/models/model.screenings";
-import Auditorium from "src/models/model.auditorium";
 import { checkAuth } from "src/lib/auth";
-import { NextResponse } from "next/server"; // Import NextResponse
-import Movie from "src/models/model.movies";
+import { NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
@@ -65,20 +63,6 @@ export const POST = async (req) => {
       startTime: body.startTime
     });
 
-    // Kolar om screening finns redan i databasen
-    // const existing = await Screening.findOne({ auditoriumId: data.auditoriumId });
-    // if (existing) {
-    //   return new Response(
-    //     JSON.stringify({
-    //       status: "Movie already exists in the database.",
-    //     }),
-    //     {
-    //       status: 400,
-    //       headers: { "Content-Type": "application/json" },
-    //     }
-    //   );
-    // }
-    // Sparar till databasen och returnerar response
     await screening.save();
     return new Response(JSON.stringify(screening), {
       status: 200,

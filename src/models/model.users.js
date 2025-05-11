@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "member", "admin"],
     default: "user"
   },
+  benefits: {
+    type: [String],
+    default: ["2 små läsk för priset av en!"]
+  }
 });
 
 const User = mongoose.models.Users || mongoose.model("Users", userSchema);

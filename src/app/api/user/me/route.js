@@ -16,6 +16,7 @@ export const GET = async (req) => {
         name: authenticatedUser.name,
         email: authenticatedUser.email,
         role: authenticatedUser.role,
+        benefits: authenticatedUser.benefits,
       },
       { status: 200 }
     );

@@ -3,7 +3,7 @@
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LogOut, LockKeyhole  } from 'lucide-react';
+import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
 import Link from "next/link";
 
 export default function MembershipPage() {
@@ -23,7 +23,7 @@ export default function MembershipPage() {
     <div className="min-h-screen flex justify-center items-center bg-[#2B0404] md:flex-row space-x-6">
       <div>
 
-        <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role==='user' ? 'Filmguru' : 'Admin'}`}</h1>
+        <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}</h1>
 
         <div className="bg-white p-8 rounded-lg shadow-lg w-full">
           <div className="flex justify-end items-center space-x-4 mb-4">
@@ -57,15 +57,17 @@ export default function MembershipPage() {
 
           <div className="flex space-x-6">
             <div className="bg-white p-6 rounded-lg shadow-md flex-1">
-              <h3 className="text-xl text-black font-semibold mb-4 border-b border-gray-400 pb-2">Dina Biljetter</h3>
+              <h3 className="text-xl text-black font-semibold mb-4 border-b border-gray-400 pb-2">Dina Biljetter<Ticket /></h3>
               <ul className="space-y-4">
                 <li className="text-gray-700">x2 Forrest Gump</li>
               </ul>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md flex-1">
-              <h3 className="text-black text-xl font-semibold mb-4 border-b border-gray-400 pb-2">Veckans erbjudande</h3>
+            <div className="bg-white p-6 rounded-lg shadow-md flex-2">
+              <h3 className="text-black text-xl font-semibold mb-4 border-b border-gray-400 pb-2">Veckans erbjudande<Popcorn /></h3>
               <ul className="space-y-4">
-                <li className="text-gray-700">2 små läsk för priset av en!</li>
+                {userData?.benefits.map((benefit, index) => (
+                  <li key={index} className="text-gray-700">{benefit}</li>
+                ))}
               </ul>
             </div>
           </div>
