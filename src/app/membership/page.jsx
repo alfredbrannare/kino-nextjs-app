@@ -23,7 +23,7 @@ export default function MembershipPage() {
     <div className="min-h-screen flex justify-center items-center bg-[#2B0404] md:flex-row space-x-6">
       <div>
 
-        <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role}`}</h1>
+        <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role==='user' ? 'Filmguru' : 'Admin'}`}</h1>
 
         <div className="bg-white p-8 rounded-lg shadow-lg w-full">
           <div className="flex justify-end items-center space-x-4 mb-4">

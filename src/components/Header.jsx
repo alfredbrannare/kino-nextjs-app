@@ -54,7 +54,7 @@ const Header = () => {
           ) : !isLoggedIn ? (
             <Login />
           ) : (
-            <Link href="/membership" className="text-lg font-bold"><UserRoundPen className='hover:scale-110 mr-5' /></Link>
+            <Link href="/membership" className="text-lg font-bold "><UserRoundPen className='hover:scale-110 mr-5 text-yellow-400' /></Link>
             // <button onClick={logout} className="btn hover:scale-110">Logout</button>
           )}
         </div>

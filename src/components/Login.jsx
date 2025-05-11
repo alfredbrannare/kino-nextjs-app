@@ -64,7 +64,7 @@ const Login = () => {
     return (
         <div>
               <LogIn 
-                className="hover:scale-110"
+                className="hover:scale-110 text-yellow-400"
                 onClick={() => setOpen(true)}
                 />
             {/* LOGIN */}
