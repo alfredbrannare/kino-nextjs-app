@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Movie from "src/models/model.movies";
+import Auditorium from "src/models/model.auditoriums";
 
 const screeningsSchema = new mongoose.Schema({
   movieId: {

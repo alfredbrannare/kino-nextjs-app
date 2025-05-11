@@ -1,5 +1,5 @@
 import connectDB from "src/lib/mongodb";
-import Auditorium from "src/models/model.auditorium";
+import Auditorium from "src/models/model.auditoriums";
 
 export const GET = async () => {
   try {

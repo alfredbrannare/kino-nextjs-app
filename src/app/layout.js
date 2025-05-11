@@ -17,7 +17,11 @@ export default function RootLayout({ children }) {
       <body data-theme="dark" className="min-h-screen flex flex-col">
         <AuthDataProvider>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+              {children}
+            </div>
+          </main>
           <Footer />
         </AuthDataProvider>
         <CookieBanner />

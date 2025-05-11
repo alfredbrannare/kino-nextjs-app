@@ -3,7 +3,7 @@ import Screening from "src/models/model.screenings";
 import { NextResponse } from "next/server";
 import { checkAuth } from "src/lib/auth";
 import Movie from "src/models/model.movies";
-import Auditorium from "src/models/model.auditorium";
+import Auditorium from "src/models/model.auditoriums";
 
 export const GET = async (req, { params }) => {
   const id = await params.id;

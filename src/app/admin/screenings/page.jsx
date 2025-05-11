@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import ScreeningCreator from "src/components/ScreeningCreator"
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
-import input from "daisyui/components/input"
 
 const ScreeningsPage = () => {
 	const [screenings, setScreenings] = useState([])
