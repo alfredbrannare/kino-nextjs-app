@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from './user/AuthData';
+import { LogIn  } from 'lucide-react';
 
 const Login = () => {
     const { login, loading } = useAuth();
@@ -62,12 +63,10 @@ const Login = () => {
 
     return (
         <div>
-            <button
-                className="btn bg-yellow-400 text-black hover:bg-yellow-300"
+              <LogIn 
+                className="hover:scale-110"
                 onClick={() => setOpen(true)}
-            >
-                Logga in
-            </button>
+                />
             {/* LOGIN */}
             {open && isLogin && (
                 <div className="modal modal-open">

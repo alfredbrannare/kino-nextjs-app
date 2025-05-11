@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Login from './Login';
 import './header.css'
 import { useAuth } from './user/AuthData';
+import { UserRoundPen} from 'lucide-react';
 
 const Header = () => {
-  const { isLoggedIn, isLoading, logout, isAdmin } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
 
   return (
     <header>
@@ -46,30 +47,17 @@ const Header = () => {
             <li><Link href="/about" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">OM OSS</Link></li>
           </ul>
         </div>
-
-        <div className="navbar-end">
+        {/* Login */}
+        <div className="navbar-end mr-5">
           {isLoading ? (
             <span className="loading"></span>
           ) : !isLoggedIn ? (
             <Login />
           ) : (
-            <button onClick={logout} className="btn btn-ghost">Logout</button>
+            <Link href="/membership" className="text-lg font-bold"><UserRoundPen className='hover:scale-110 mr-5' /></Link>
+            // <button onClick={logout} className="btn hover:scale-110">Logout</button>
           )}
         </div>
-        {/* Admin panel */}
-        {!isLoading && isAdmin ? <div className="dropdown custom-sm ml-4">
-          <div tabIndex="0" role="button" className="btn btn-ghost">
-            <button className="btn btn-primary">
-              Admin
-            </button>
-          </div>
-          <ul
-            tabIndex="0"
-            className="menu menu-sm dropdown-content bg-[#2B0404] text-[#CDCDCD] rounded-box z-10 mt-3 w-auto p-2 shadow">
-            <li><Link href="/admin/movies" className="text-lg font-bold">Lägg till film</Link></li>
-            <li><Link href="/admin/screenings" className="text-lg font-bold">Lägg till visning</Link></li>
-          </ul>
-        </div> : null}
         {/* END */}
       </nav>
     </header>
