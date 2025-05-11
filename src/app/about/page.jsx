@@ -6,7 +6,7 @@ export default function About() {
         <div>
             <h1 className="ml-2 text-3xl font-bold text-[#CDCDCD] ">OM OSS</h1>
         </div>
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6">
+        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
       <section className="pl-10 pr-10">
         <h2 className="text-2xl font-bold text-[#CDCDCD] mb-4">Din lokala biograf</h2>
         <p className="text-[#CDCDCD] leading-relaxed">
