@@ -44,7 +44,7 @@ export default function MoviesPage() {
 
     return (
         <div className="relative">
-            <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 py-4 px-4 controls-container flex flex-row justify-between">
+            <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 py-4 px-4 controls-container flex flex-row justify-center">
                 <SearchMoviesInput value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }}></SearchMoviesInput>
                 <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
             </div>
