@@ -39,7 +39,6 @@ const Header = () => {
               />
             </Link>
           </div>
-
           <div className="navbar-center hidden custom-sm:flex justify-center text-[#CDCDCD]">
             <ul className="flex gap-8">
               <li><Link href="/tickets" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">BILJETTER</Link></li>
