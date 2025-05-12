@@ -1,6 +1,4 @@
 export const searchMovies = (movies, searchInput) => {
-    const sortedMovies = [...movies];
-
     if (!searchInput) {
         return movies;
     }
