@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { generateSalong } from "src/lib/salongLayout";
 import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId }) {
+export default function SeatSelector({ movieId, screeningTime, userId, auditorium }) {
 
     const cityLayoutConfig = [8, 10, 12, 10, 8, 8]
     const salong = generateSalong(cityLayoutConfig);
@@ -16,7 +16,7 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
 
 
     useEffect(() => {
-        fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
+        fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
             .then((res) => res.json())
             .then((data) => {
                 setBookedSeats(data);
@@ -55,7 +55,8 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
                 movieId,
                 screeningTime,
                 seats: selectedSeats,
-                userId
+                userId,
+                auditorium
             })
         })
             .then(res => res.json())
@@ -63,7 +64,7 @@ export default function SeatSelector({ movieId, screeningTime, userId }) {
                 console.log('Bokning klar', data);
                 setSelectedSeats([]);
 
-                fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}`)
+                fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
                     .then(res => res.json())
                     .then(updated => {
                         setBookedSeats(updated);

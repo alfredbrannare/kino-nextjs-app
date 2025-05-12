@@ -9,7 +9,8 @@ const bookingSchema = new mongoose.Schema({
     movieId: String,
     screeningTime: String,
     seats: [seatSchema],
-    userId: String
+    userId: String,
+    auditorium: String
 });
 
 const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);

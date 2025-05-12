@@ -5,6 +5,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const movieId = searchParams.get('movieId');
     const screeningTime = searchParams.get('screeningTime');
+    const auditorium = searchParams.get('auditorium');
 
     try {
         await connectDB();
@@ -20,11 +21,11 @@ export async function GET(request) {
 
 export async function  POST(request) {
     const body = await request.json();
-    const { movieId, screeningTime, seats, userId } = body;
+    const { movieId, screeningTime, seats, userId, auditorium } = body;
 
     try {
         await connectDB();
-        const booking = await Booking.create({ movieId, screeningTime, seats, userId });
+        const booking = await Booking.create({ movieId, screeningTime, seats, userId, auditorium });
         return Response.json(booking, { status: 201 });
     } catch (err) {
         console.error('Booking error', err);
