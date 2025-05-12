@@ -29,5 +29,30 @@ export async function POST(request) {
 		);
 	}
 }
+export async function GET(request) {
+	await connectDB();
+	const { searchParams } = new URL(request.url);
+	const movieId = searchParams.get('movieId');
+
+	if (!movieId) {
+		return new Response(
+			JSON.stringify({ success: false, message: 'Missing movieId' }),
+			{ status: 400 }
+		);
+	}
+
+	try {
+		const reviews = await Review.find({ movieId });
+		return new Response(JSON.stringify({ success: true, reviews }), {
+			status: 200,
+		});
+	} catch (error) {
+		return new Response(
+			JSON.stringify({ success: false, message: error.message }),
+			{ status: 500 }
+		);
+	}
+}
+
 // API route files need to use POST or GET exports, not the old handler(req, res)
 // paginering kan göras på db så det kan vara lättare

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserReview from './reviews/UserReview';
 import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
@@ -49,6 +49,24 @@ const mockReviews = {
 
 const MovieDetails = ({ movie }) => {
 	const [reviews, setReviews] = useState(Object.values(mockReviews));
+
+	useEffect(() => {
+		const fetchReviews = async () => {
+			try {
+				const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+				const data = await res.json();
+				if (res.ok) {
+					setReviews(data.reviews);
+				} else {
+					console.error('Failed to fetch reviews:', data.message);
+				}
+			} catch (error) {
+				console.error('Error fetching reviews:', error);
+			}
+		};
+		fetchReviews();
+	}, [movie._id]);
+
 	const params = useParams();
 	const movieId = params.id;
 
@@ -61,10 +79,12 @@ const MovieDetails = ({ movie }) => {
 		});
 
 		if (response.ok) {
-			const errorText = await response.text();
 			const data = await response.json();
-			console.log('Review saved:', data.review, response.status, errorText);
+			console.log('Review saved:', data.review);
 			// refresh reviews here
+			const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+			const latest = await res.json();
+			setReviews(latest.reviews);
 		} else {
 			console.error('Failed to save review');
 		}
@@ -125,6 +145,7 @@ const MovieDetails = ({ movie }) => {
 						<ReviewsList reviews={reviews} />
 					</div>
 				</div>
+				<a href="/movies/new"></a>
 			</div>
 		</>
 	);
