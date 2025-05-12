@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
-import './header.css'
 
 const Header = () => {
   return (
     <header>
       <nav className="navbar bg-[#2B0404] shadow-sm py-5 px-4">
+        <div className="header-container w-full max-w-[1280px] mx-auto flex justify-between items-center">
         <div className="navbar-start text-[#CDCDCD]">
           <div className="dropdown custom-sm:hidden">
             <div tabIndex="0" role="button" className="btn btn-ghost">
@@ -42,13 +42,14 @@ const Header = () => {
             <li><Link href="/about" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">OM OSS</Link></li>
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end mr-6">
           <Login />
         </div>
         {/* Temporary(?) button that will be adjusted/moved/removed later */}
         {/*         <div className="navbar-end">
           <Link className='btn' href='/movies/new'>Add Movie</Link>
         </div> */}
+        </div>
       </nav>
     </header>
   )
