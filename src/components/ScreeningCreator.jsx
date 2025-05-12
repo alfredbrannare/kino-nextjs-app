@@ -53,7 +53,7 @@ const ScreeningCreator = ({ setUpdate }) => {
         },
         body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: combinedDateTime }),
       });
-      console.log(response)
+      const body = await response.json();
       if (response.ok) {
         alert('Screening added successfully!')
         setUpdate(true);
@@ -61,7 +61,7 @@ const ScreeningCreator = ({ setUpdate }) => {
         setSelectedDate(undefined);
         setSelectedTime({ hour: 12, minute: 0 });
       } else {
-        alert('Error while adding screening');
+        alert(`${body.status}`);
       }
     } catch (err) {
       console.log('Screening is not found', err);
