@@ -22,7 +22,7 @@ const MovieCard = ({ movie }) => {
 
     return (
         <div>
-            <Link href={`/movies/${movie._id}`} className="relative w-50 h-83 rounded overflow-hidden shadow-lg mx-4 group block" id={movie._id}>
+            <Link href={`/movies/${movie._id}`} className="relative w-50 h-83 rounded overflow-hidden shadow-lg mx-4 group block my-2" id={movie._id}>
                 <img
                     src={movie.image}
                     alt={movie.title}
