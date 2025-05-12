@@ -1,6 +1,6 @@
 const SearchMoviesInput = ({ value, onChange }) => {
     return (
-        <fieldset className="fieldset">
+        <fieldset className="fieldset mx-2">
             <legend className="fieldset-legend">Sök film:</legend>
             <input type="text" placeholder="Skriv in filmtitel..." className="input" value={value} onChange={onChange}></input>
         </fieldset>
