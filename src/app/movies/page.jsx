@@ -43,8 +43,8 @@ export default function MoviesPage() {
     };
 
     return (
-        <div className="relative">
-            <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 py-4 px-4 controls-container flex flex-row justify-center">
+        <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+            <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 mx-5 py-4 px-4 controls-container flex flex-row justify-center">
                 <SearchMoviesInput value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }}></SearchMoviesInput>
                 <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
             </div>
