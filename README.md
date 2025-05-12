@@ -13,6 +13,7 @@ MONGO_URI=mongodb://localhost:27017
 - **Description**: Returns the 5 upcoming screenings starting from the current time, sorted chronologically. Each screening is unique per movie and only includes films currently shown in cinemas.
 - **Response**: JSON array of screening objects with embedded movie data.
 - **Example Response**:
+
   ```
   [
   {
@@ -41,3 +42,67 @@ MONGO_URI=mongodb://localhost:27017
   }
   ]
   ```
+
+## Review API
+
+### POST a New Review
+
+- **URL**: `/api/reviews`
+- **Method**: `POST`
+- **Description**: Saves a new review for a specific movie. All fields are required.
+- **Request Body(JSON)**:`
+{
+  "movieId": "681b3a14a20707b6cf797187",
+  "rating": 4,
+  "text": "Great movie, very entertaining!",
+  "user": "Jane Doe"
+}`
+- **Response**: Returns the saved review document.
+- **Example Response**:
+
+```
+{
+  "success": true,
+  "review": {
+    "_id": "681b4c5ae98f5cd9e6d6d891",
+    "movieId": "681b3a14a20707b6cf797187",
+    "rating": 4,
+    "text": "Great movie, very entertaining!",
+    "userName": "Jane Doe",
+    "__v": 0
+  }
+}
+```
+
+### GET Reviews for a Movie
+
+- **URL**: `/api/reviews?movieId=[id]`
+- **Method**: `GET`
+- **Description**: Fetches all reviews for the specified movie.
+- **Query Parameters**:movieId (required): The ID of the movie you want reviews for.
+- **Response**: JSON array of review objects
+- **Example Response**:
+
+```
+{
+  "success": true,
+  "reviews": [
+    {
+      "_id": "681b4c5ae98f5cd9e6d6d891",
+      "movieId": "681b3a14a20707b6cf797187",
+      "rating": 4,
+      "text": "Great movie, very entertaining!",
+      "userName": "Jane Doe",
+      "__v": 0
+    },
+    {
+      "_id": "681b4c7de98f5cd9e6d6d892",
+      "movieId": "681b3a14a20707b6cf797187",
+      "rating": 2,
+      "text": "Not my taste, too slow.",
+      "userName": "John Smith",
+      "__v": 0
+    }
+  ]
+}
+```
