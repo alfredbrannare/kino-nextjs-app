@@ -1,29 +1,33 @@
+// app/api/reviews/route.js
 import connectDB from 'src/lib/mongodb';
 import Review from 'src/models/model.reviews';
 
-export default async function handler(req, res) {
-	await dbConnect();
+export async function POST(request) {
+	await connectDB();
 
-	if (req.method === 'POST') {
-		const { movieId, rating, text, user } = req.body;
+	const body = await request.json();
+	const { movieId, rating, text, user } = body;
 
-		if (!movieId || !rating || !text || !user) {
-			return res
-				.status(400)
-				.json({ success: false, message: 'Missing fields' });
-		}
+	if (!movieId || !rating || !text || !user) {
+		return new Response(
+			JSON.stringify({ success: false, message: 'Missing fields' }),
+			{ status: 400 }
+		);
+	}
 
-		try {
-			const review = new Review({ movieId, rating, text, userName: user });
-			await review.save();
-			return res.status(201).json({ success: true, review });
-		} catch (erro) {
-			return res.status(500).json({ success: false, message: error.message });
-		}
-	} else {
-		res.setHeader('allow', ['POST']);
-		res.status(405).end(`Method ${req.method} Not Allowed`);
+	try {
+		const review = new Review({ movieId, rating, text, userName: user });
+		await review.save();
+
+		return new Response(JSON.stringify({ success: true, review }), {
+			status: 201,
+		});
+	} catch (error) {
+		return new Response(
+			JSON.stringify({ success: false, message: error.message }),
+			{ status: 500 }
+		);
 	}
 }
-
+// API route files need to use POST or GET exports, not the old handler(req, res)
 // paginering kan göras på db så det kan vara lättare

@@ -4,6 +4,7 @@ import ReviewForm from './reviews/ReviewForm';
 import { useState } from 'react';
 import UserReview from './reviews/UserReview';
 import ReviewsList from './reviews/ReviewsList';
+import { useParams } from 'next/navigation';
 
 // TODO remove mockView and send Viewdata from db in to <Views />
 const mockView = {
@@ -48,11 +49,27 @@ const mockReviews = {
 
 const MovieDetails = ({ movie }) => {
 	const [reviews, setReviews] = useState(Object.values(mockReviews));
+	const params = useParams();
+	const movieId = params.id;
 
 	// to get new review
-	const handleAddReview = (newReview) => {
-		setReviews((prevReviews) => [...prevReviews, newReview]);
-		console.log(reviews);
+	const handleAddReview = async ({ rating, text, user }) => {
+		const response = await fetch('/api/reviews', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ movieId, rating, text, user }),
+		});
+
+		if (response.ok) {
+			const errorText = await response.text();
+			const data = await response.json();
+			console.log('Review saved:', data.review, response.status, errorText);
+			// refresh reviews here
+		} else {
+			console.error('Failed to save review');
+		}
+		// setReviews((prevReviews) => [...prevReviews, newReview]);
+		// console.log(reviews);
 	};
 
 	return (
