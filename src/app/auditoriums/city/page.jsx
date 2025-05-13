@@ -1,6 +1,7 @@
 "use client"
 import { useSearchParams } from "next/navigation";
 import SeatSelector from "src/components/SeatSelector";
+import TicketSelector from "src/components/TicketSelector";
 
 const cityPage = () => {
     const searchParams = useSearchParams();
@@ -17,6 +18,8 @@ const cityPage = () => {
     return (
         <main className="p-6 text-center">
             <h1 className="text-xl font-bold m-4">Salong: "Uppsala City"</h1>
+            <h3 className="text-l mt-10 mb-10">Välj biljetter</h3>
+            <TicketSelector onChange={() => { }} />
             <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>
 
             <SeatSelector
