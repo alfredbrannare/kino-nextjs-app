@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { generateSalong } from "src/lib/salongLayout";
 import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId, auditorium }) {
+export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats }) {
 
     const cityLayoutConfig = [8, 10, 12, 10, 8, 8]
     const salong = generateSalong(cityLayoutConfig);
@@ -13,6 +13,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     const [isBooking, setIsBooking] = useState(false);
     const [bookingSuccess, setBookingSuccess] = useState(false);
     const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState(null);
+    const [showSeatWarning, setShowSeatWarning] = useState(false);
 
 
     useEffect(() => {
@@ -30,6 +31,12 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
 
         if (seat.isWheelchair && !bypassModal && !isSelected) {
             setPendingWheelchairSeat(seat);
+            return;
+        }
+
+        if (!isSelected && selectedSeats.length >= maxSeats) {
+            setShowSeatWarning(true);
+            setTimeout(() => setShowSeatWarning(false), 3000);
             return;
         }
 
@@ -114,6 +121,11 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                     })}
                 </div>
             ))}
+            {showSeatWarning && (
+                <p className="text-center text-sm text-red-400">
+                    Du kan inte välja fler platser än antal biljetter
+                </p>
+            )}
 
             {bookingSuccess && (
                 <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>

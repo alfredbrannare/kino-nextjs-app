@@ -1,9 +1,12 @@
 "use client"
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import SeatSelector from "src/components/SeatSelector";
 import TicketSelector from "src/components/TicketSelector";
 
 const cityPage = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [ticketInfo, setTicketInfo] = useState({ total: 0, details: {}, totalPrice: 0 });
     const searchParams = useSearchParams();
 
     const movieId = searchParams.get("movieId");
@@ -19,7 +22,10 @@ const cityPage = () => {
         <main className="p-6 text-center">
             <h1 className="text-xl font-bold m-4">Salong: "Uppsala City"</h1>
             <h3 className="text-l mt-10 mb-10">Välj biljetter</h3>
-            <TicketSelector onChange={() => { }} />
+            <TicketSelector
+                isLoggedIn={isLoggedIn}
+                onChange={(total, details) => setTicketInfo({ total, details, totalPrice: details.totalPrice })}
+            />
             <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>
 
             <SeatSelector
@@ -27,6 +33,7 @@ const cityPage = () => {
                 screeningTime={screeningTime}
                 auditorium={auditorium}
                 userId={userId}
+                maxSeats={ticketInfo.total}
             />
         </main>
     );
