@@ -2,11 +2,24 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import MovieCreator from "src/components/MovieCreator"
+import { useAuth } from "src/components/user/AuthData"
+import { useRouter } from "next/navigation";
 
 const MoviesPage = () => {
 	const [movies, setMovies] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
+	const [inputSearch, setInputSearch] = useState('');
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!isAuthLoading) {
+			if (!isAdmin) {
+				router.push("/");
+			}
+		}
+	}, [isLoggedIn, isAdmin, isAuthLoading, router]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -28,6 +41,7 @@ const MoviesPage = () => {
 		try {
 			await fetch(`/api/movies/${id}`, {
 				method: "DELETE",
+				headers: { 'Authorization': `Bearer ${token}` },
 			})
 		} catch (error) {
 			console.error("Error deleting movie movies:", error)
@@ -41,22 +55,42 @@ const MoviesPage = () => {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
+				'Authorization': `Bearer ${token}`,
+
 			},
 			body: JSON.stringify({ inCinemas }),
 		})
 		setUpdate(true)
 	}
 
-	if (loading) return <p>Loading...</p>
+	if (isAuthLoading || loading) return <p>Loading page data...</p>;
+	if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;
+
+	const filteredMovies = movies.filter(movie => {
+
+		if (!inputSearch) return true;
+
+		const movieTitle = movie.title?.toLowerCase() || '';
+		return movieTitle.includes(inputSearch.toLowerCase());
+	});
 
 	return (
 		<>
 			<MovieCreator setUpdate={setUpdate} />
+
+			<input
+				type="text"
+				className="input block mx-auto mt-10"
+				placeholder="Sök"
+				value={inputSearch}
+				onChange={(e) => setInputSearch(e.target.value)}
+			/>
+
 			<h1 className="italic font-semibold text-3xl text-center pt-10">
 				Movies:
 			</h1>
 			<br />
-			{movies.map((movie) => (
+			{filteredMovies.map((movie) => (
 				<div
 					key={movie._id}
 					className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
@@ -64,7 +98,7 @@ const MoviesPage = () => {
 					<div>
 						<Link
 							className="btn mr-1"
-							href={`/movies/` + movie._id}>
+							href={`/admin/movies/` + movie._id}>
 							Details
 						</Link>
 						{movie.inCinemas ? (

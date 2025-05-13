@@ -1,48 +1,48 @@
 import connectDB from "src/lib/mongodb";
-import Movie from "src/models/model.movies.js";
+import Screening from "src/models/model.screenings";
 import { NextResponse } from "next/server";
 import { checkAuth } from "src/lib/auth";
+import Movie from "src/models/model.movies";
+import Auditorium from "src/models/model.auditorium";
 
 export const GET = async (req, { params }) => {
   const id = await params.id;
   await connectDB();
-  const movie = await Movie.findById(id);
+  const screenings = await Screening.findById(id).populate("movieId", "title").populate("auditoriumId", "name");
 
-  return new Response(JSON.stringify(movie), {
+  return new Response(JSON.stringify(screenings), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
 };
 
 export const DELETE = async (req, { params }) => {
-  await connectDB();
-  const authenticatedUser = await checkAuth(req);
-
-  if (!authenticatedUser) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const isAdmin = authenticatedUser.role === "admin";
-
-  if (!isAdmin) {
-    return NextResponse.json(
-      { message: "You dont have the right to use this feature!" },
-      { status: 403 }
-    );
-  }
-
   try {
-    const id = params.id;
+    await connectDB();
+    const authenticatedUser = await checkAuth(req);
 
-    await Movie.findByIdAndDelete(id);
+    if (!authenticatedUser || authenticatedUser.role !== "admin") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
+    }
+
+    const id = params.id;
+    const deleted = await Screening.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return NextResponse.json({ message: "Screening not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Deleted" }, { status: 200 });
   } catch (error) {
     console.error(error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };
 
 export const PUT = async (req, { params }) => {
   await connectDB();
   const authenticatedUser = await checkAuth(req);
+  console.log(authenticatedUser);
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

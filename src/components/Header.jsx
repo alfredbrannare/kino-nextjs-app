@@ -1,8 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
+import { useAuth } from './user/AuthData';
+import { UserRound } from 'lucide-react';
 
 const Header = () => {
+  const { isLoggedIn, isLoading } = useAuth();
   return (
     <header>
       <nav className="navbar bg-[#2B0404] shadow-sm py-5 px-4">
@@ -43,12 +48,15 @@ const Header = () => {
           </ul>
         </div>
         <div className="navbar-end mr-6">
-          <Login />
+          {isLoading ? (
+              <span className="loading"></span>
+            ) : !isLoggedIn ? (
+              <Login />
+            ) : (
+              <Link href="/membership" className="text-lg font-bold "><UserRound className='hover:scale-110 mr-5 text-yellow-400' /></Link>
+              // <button onClick={logout} className="btn hover:scale-110">Logout</button>
+            )}
         </div>
-        {/* Temporary(?) button that will be adjusted/moved/removed later */}
-        {/*         <div className="navbar-end">
-          <Link className='btn' href='/movies/new'>Add Movie</Link>
-        </div> */}
         </div>
       </nav>
     </header>

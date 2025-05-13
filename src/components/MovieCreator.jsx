@@ -1,29 +1,28 @@
-import { useState } from "react";
+import { useState,} from "react";
 
 const MovieCreator = ({ setUpdate }) => {
   const [id, setId] = useState('');
-  const [secret, setSecret] = useState('');
   const [loading, setLoading] = useState(false);
 
   const addFilm = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch('/api/movies', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${secret || ''}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ id: id || '' }),
       });
-      const data = await response.json();
-
+      const body = await response.json();
       if (response.ok) {
         setId('');
-        alert('Film is added successfully!')
+        alert(`Film is added successfully !br / ${JSON.stringify(body.movie)}}`)
         setUpdate(true);
       }else{
-        alert('Error while adding film');
+        alert(`${body.status}`);
       }
     } catch (err) {
       console.log('Movie is not found', err);
@@ -40,16 +39,8 @@ const MovieCreator = ({ setUpdate }) => {
         value={id}
         onChange={(e) => setId(e.target.value)}
       />
-
-      <input
-      className="input"
-        type="password"
-        placeholder="Secret key"
-        value={secret}
-        onChange={(e) => setSecret(e.target.value)}
-      />
       <button className="btn" onClick={addFilm} disabled={loading}>
-        {loading ? 'Adding film...' : 'Add film'}
+        {loading ? 'Ny film...' : 'Ny film'}
       </button>
     </div>
   );
