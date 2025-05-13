@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
 import { useAuth } from './user/AuthData';
-import { UserRoundPen } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 
 const Header = () => {
   const { isLoggedIn, isLoading } = useAuth();
@@ -53,7 +53,7 @@ const Header = () => {
             ) : !isLoggedIn ? (
               <Login />
             ) : (
-              <Link href="/membership" className="text-lg font-bold "><UserRoundPen className='hover:scale-110 mr-5 text-yellow-400' /></Link>
+              <Link href="/membership" className="text-lg font-bold "><UserRound className='hover:scale-110 mr-5 text-yellow-400' /></Link>
               // <button onClick={logout} className="btn hover:scale-110">Logout</button>
             )}
         </div>

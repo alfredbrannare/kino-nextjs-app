@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from './user/AuthData';
-import { LogIn  } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 const Login = () => {
     const { login, loading } = useAuth();
@@ -63,10 +63,10 @@ const Login = () => {
 
     return (
         <div>
-              <LogIn 
-                className="hover:scale-110 text-yellow-400"
+            <button
+                className="btn bg-yellow-400 text-black hover:bg-yellow-300 "
                 onClick={() => setOpen(true)}
-                />
+            >Logga in</button>
             {/* LOGIN */}
             {open && isLogin && (
                 <div className="modal modal-open">
@@ -114,7 +114,7 @@ const Login = () => {
                                     Logga in
                                 </button>
                             </div>
-                            <span onClick={() => setIsLogin(false)} className={'hover:'}>Inte medlem? Registrera dig här!</span>
+                            <span onClick={() => setIsLogin(false)} className={'cursor-pointer hover:font-bold'}>Inte medlem? <span className='text-yellow-400'>Registrera dig här!</span></span>
                         </form>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ const Login = () => {
                                     Registrera
                                 </button>
                             </div>
-                            <span onClick={() => setIsLogin(true)} className={'hover:'}>Medlem? Logga in här!</span>
+                            <span onClick={() => setIsLogin(true)} className={'cursor-pointer hover:font-bold'}>Medlem? Logga in här!</span>
                         </form>
                     </div>
                 </div>
