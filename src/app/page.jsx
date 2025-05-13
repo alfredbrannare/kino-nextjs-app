@@ -120,7 +120,7 @@ const Main = () => {
                 <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
-          <Login />
+                <Login />
               </div>
 
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
@@ -160,7 +160,7 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <a href ="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                        <a href="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
                           LÄS MER
                         </a>
                       </div>
