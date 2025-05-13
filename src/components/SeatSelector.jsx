@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { generateSalong } from "src/lib/salongLayout";
 import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats }) {
+export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, totalPrice }) {
 
     const cityLayoutConfig = [8, 10, 12, 10, 8, 8]
     const salong = generateSalong(cityLayoutConfig);
@@ -63,7 +63,8 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 screeningTime,
                 seats: selectedSeats,
                 userId,
-                auditorium
+                auditorium,
+                totalPrice
             })
         })
             .then(res => res.json())
@@ -88,7 +89,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     );
 
     return (
-        <div className="p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="p-4 mb-8 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <div className="flex justify-center mb-6">
                 <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6">Bioduk</div>
             </div>
@@ -122,7 +123,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 </div>
             ))}
             {showSeatWarning && (
-                <p className="text-center text-sm text-red-400">
+                <p className="text-center text-sm text-red-500">
                     Du kan inte välja fler platser än antal biljetter
                 </p>
             )}

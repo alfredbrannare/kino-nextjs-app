@@ -21,11 +21,11 @@ export async function GET(request) {
 
 export async function  POST(request) {
     const body = await request.json();
-    const { movieId, screeningTime, seats, userId, auditorium } = body;
+    const { movieId, screeningTime, seats, userId, auditorium, totalPrice } = body;
 
     try {
         await connectDB();
-        const booking = await Booking.create({ movieId, screeningTime, seats, userId, auditorium });
+        const booking = await Booking.create({ movieId, screeningTime, seats, userId, auditorium, totalPrice });
         return Response.json(booking, { status: 201 });
     } catch (err) {
         console.error('Booking error', err);
