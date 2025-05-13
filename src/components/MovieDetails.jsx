@@ -128,7 +128,9 @@ const MovieDetails = ({ movie }) => {
 					<div>
 						{/* TODO: hide if not login */}
 						{!isLoggedIn ? (
-							<p>Logga in för att lämna en review</p>
+							<p className="justify-self-center my-4">
+								Logga in för att lämna en review
+							</p>
 						) : (
 							<ReviewForm
 								handleAddReview={handleAddReview}
