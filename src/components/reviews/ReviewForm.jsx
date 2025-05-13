@@ -3,19 +3,33 @@ import { useState } from 'react';
 export default function ReviewForm({ handleAddReview }) {
 	const [rating, setRating] = useState(0);
 	const [text, setText] = useState('');
-	const [hasRating, setHasRating] = useState(null);
+	// const [hasRating, setHasRating] = useState(null);
+	// const [hasText, setHasText] = useState(null);
+	const [errors, setErrors] = useState({ rating: false, text: false });
+
+	// used to validate the form
+	const validateForm = () => {
+		const newErrors = {
+			text: text === '',
+			rating: rating === 0,
+		};
+		setErrors(newErrors);
+		return !newErrors.text && !newErrors.rating;
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (rating === 0) return setHasRating(false);
+
+		if (!validateForm()) return;
+
 		handleAddReview({
 			rating: parseInt(rating),
 			text,
 			user: 'Anonymous', //fetch from login
 		});
-		setHasRating(null);
 		setRating(0);
 		setText('');
+		setErrors({ rating: false, text: false });
 	};
 
 	return (
@@ -53,7 +67,7 @@ export default function ReviewForm({ handleAddReview }) {
 					onChange={(e) => setText(e.target.value)}
 				/>
 				<div className="text-white text-sm my-3">{text.length}/256 words</div>
-				{hasRating === false ? (
+				{errors.text && (
 					<div
 						role="alert"
 						className="alert alert-error">
@@ -69,9 +83,28 @@ export default function ReviewForm({ handleAddReview }) {
 								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
 							/>
 						</svg>
-						<span className="font-bold">Error! Require Rating.</span>
+						<span className="font-bold">Error! A comment is Required.</span>
 					</div>
-				) : null}
+				)}
+				{errors.rating && (
+					<div
+						role="alert"
+						className="alert alert-error">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6 shrink-0 stroke-current"
+							fill="none"
+							viewBox="0 0 24 24">
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth="2"
+								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+						<span className="font-bold">Error! Rating is required.</span>
+					</div>
+				)}
 			</div>
 
 			<button

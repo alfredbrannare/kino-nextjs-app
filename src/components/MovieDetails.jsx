@@ -27,28 +27,9 @@ const mockView = {
 		emptySeats: 95,
 	},
 };
-// TODO replace with reviews from db
-const mockReviews = {
-	review1: {
-		rating: 5,
-		text: 'Super good movie',
-		user: 'Gurra G',
-	},
-	review2: {
-		rating: 3,
-		text: 'just a movie',
-		user: 'Gurra GG',
-	},
-	review3: {
-		rating: 1,
-		text: 'Super bad movie',
-		user: 'Gurra GGG',
-	},
-};
-//
 
 const MovieDetails = ({ movie }) => {
-	const [reviews, setReviews] = useState(Object.values(mockReviews));
+	const [reviews, setReviews] = useState([]);
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -145,7 +126,6 @@ const MovieDetails = ({ movie }) => {
 						<ReviewsList reviews={reviews} />
 					</div>
 				</div>
-				<a href="/movies/new"></a>
 			</div>
 		</>
 	);
