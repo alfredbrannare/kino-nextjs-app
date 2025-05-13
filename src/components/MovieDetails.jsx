@@ -95,7 +95,7 @@ const MovieDetails = ({ movie }) => {
 					<br />
 					<Link
 						className="btn"
-						href={'/movies/new'}>
+						href={'/movies'}>
 						Back
 					</Link>
 				</div>
