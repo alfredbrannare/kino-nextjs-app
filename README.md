@@ -106,3 +106,69 @@ MONGO_URI=mongodb://localhost:27017
   ]
 }
 ```
+
+### Instructions for Using the Auth Context
+
+Import the useAuth Hook
+First, import the useAuth hook in your component:
+
+    import { useAuth } from "src/components/user/AuthData";
+
+Destructure Auth Data
+Then, use the useAuth hook to get the user data, authentication status, loading state, and other necessary values:
+
+    const { userData, isLoggedIn, isLoading, logout, login, isAdmin, token } = useAuth();
+
+Now, you can use these values throughout your component as needed!
+
+### Example: Protecting Pages for Logged-in Users
+
+If you want to protect specific pages so that only logged-in users can access them, you can implement a simple check using the useAuth hook and useEffect:
+
+    import { useAuth } from "src/components/user/AuthData";
+    import { useRouter } from "next/navigation";
+    import { useEffect } from "react";
+
+    const { userData, isLoggedIn, isLoading, logout, isAdmin } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+      if (!isLoading && !isLoggedIn) {
+       router.push("/"); // Redirect to the home page if the user is not logged in
+      }
+    }, [isLoggedIn, isLoading, router]);
+
+    if (isLoading) return <p>Loading page data...</p>;
+    if (!isLoggedIn) return <p>Access Denied. You are not authorized to view this page.</p>;
+
+### Example: Backend Token Validation
+
+On the backend, you can check the user's token to validate their authentication. Here's how you might check the token:
+
+    import { useAuth } from "src/components/user/AuthData";
+    import { NextResponse } from "next/server"; // Import NextResponse
+
+    const authenticatedUser = await checkAuth(req);
+       if (!authenticatedUser) {
+         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+       }
+
+      // Optionally, check if the user is an admin
+     const isAdmin = authenticatedUser.role === "admin";
+       if (!isAdmin) {
+        return NextResponse.json(
+         { message: "You don't have the right to use this feature!" },
+         { status: 403 }
+        );
+      }
+
+### Example: Hiding Components Based on Login Status
+
+You can also conditionally render components based on whether the user is logged in. Here's an example of how to hide or show content depending on the login status:
+
+    const { isLoggedIn, isLoading } = useAuth();
+    {!isLoggedIn ? (
+      <p>Show this data to non-logged-in users</p>
+       ) : (
+      <p>Hide this data for logged-in users</p>
+     )}

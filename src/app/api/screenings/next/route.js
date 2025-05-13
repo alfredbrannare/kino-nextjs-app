@@ -66,7 +66,7 @@ export const GET = async () => {
             }
         ]);
 
-        console.log(upcomingScreenings);
+        // console.log(upcomingScreenings);
         return NextResponse.json(upcomingScreenings, { status: 200 });
     } catch (error) {
         console.error("Error fetching upcoming screenings", error);

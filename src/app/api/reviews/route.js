@@ -1,14 +1,23 @@
 // app/api/reviews/route.js
 import connectDB from 'src/lib/mongodb';
 import Review from 'src/models/model.reviews';
+import { checkAuth } from 'src/lib/auth';
+// kolla upp nextResponse istället för new Response
 
 export async function POST(request) {
 	await connectDB();
+	const authenticatedUser = await checkAuth(request);
 
 	const body = await request.json();
-	const { movieId, rating, text, user } = body;
+	const { movieId, rating, text } = body;
 
-	if (!movieId || !rating || !text || !user) {
+	if (!authenticatedUser)
+		return new Response(
+			JSON.stringify({ success: false, message: 'Missing Login' }),
+			{ status: 401 }
+		);
+
+	if (!movieId || !rating || !text) {
 		return new Response(
 			JSON.stringify({ success: false, message: 'Missing fields' }),
 			{ status: 400 }
@@ -16,7 +25,12 @@ export async function POST(request) {
 	}
 
 	try {
-		const review = new Review({ movieId, rating, text, userName: user });
+		const review = new Review({
+			movieId,
+			rating,
+			text,
+			userName: authenticatedUser.name,
+		});
 		await review.save();
 
 		return new Response(JSON.stringify({ success: true, review }), {

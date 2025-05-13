@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ReviewForm({ handleAddReview }) {
+export default function ReviewForm({ handleAddReview, userData }) {
 	const [rating, setRating] = useState(0);
 	const [text, setText] = useState('');
 	// const [hasRating, setHasRating] = useState(null);
@@ -25,7 +25,7 @@ export default function ReviewForm({ handleAddReview }) {
 		handleAddReview({
 			rating: parseInt(rating),
 			text,
-			user: 'Anonymous', //fetch from login
+			// user: userData.name,
 		});
 		setRating(0);
 		setText('');

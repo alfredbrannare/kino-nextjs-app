@@ -6,6 +6,9 @@ import UserReview from './reviews/UserReview';
 import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
 
+import { useAuth } from 'src/components/user/AuthData';
+
+// TODO fix check for backend for rating and text reviws
 // TODO remove mockView and send Viewdata from db in to <Views />
 const mockView = {
 	view1: {
@@ -29,6 +32,7 @@ const mockView = {
 };
 
 const MovieDetails = ({ movie }) => {
+	const { isLoggedIn, userData, token } = useAuth();
 	const [reviews, setReviews] = useState([]);
 
 	useEffect(() => {
@@ -55,7 +59,10 @@ const MovieDetails = ({ movie }) => {
 	const handleAddReview = async ({ rating, text, user }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			body: JSON.stringify({ movieId, rating, text, user }),
 		});
 
@@ -119,7 +126,15 @@ const MovieDetails = ({ movie }) => {
 					{/* reviews ska vara här */}
 					<h2 className="text-2xl  card-title ">Reviews</h2>
 					<div>
-						<ReviewForm handleAddReview={handleAddReview} />
+						{/* TODO: hide if not login */}
+						{!isLoggedIn ? (
+							<p>Logga in för att lämna en review</p>
+						) : (
+							<ReviewForm
+								handleAddReview={handleAddReview}
+								userData={userData}
+							/>
+						)}
 					</div>
 					<div className="mb-5">
 						{/* ReviewsList */}
