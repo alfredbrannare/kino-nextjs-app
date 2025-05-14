@@ -26,53 +26,36 @@ const Main = () => {
     fetchUpcomingMovies();
   }, []);
 
+  const trailerMovies = movies.filter(movie => movie.trailerKey);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () =>
+    setCurrentSlide((prev) => (prev + 1) % trailerMovies.length);
+  const prevSlide = () =>
+    setCurrentSlide((prev) =>
+      (prev - 1 + trailerMovies.length) % trailerMovies.length
+    );
+
   return (
     <div>
       <div className="w-full">
         <div className="max-w-screen-2xl mx-auto px-0 sm:px-0">
           <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
-            <div className="carousel w-full">
-              <div id="slide1" className="carousel-item relative w-full">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-                  className="w-full"
+            {trailerMovies.length > 0 && (
+              <div className="w-full h-[400px] flex items-center justify-center bg-black relative">
+                <iframe
+                  key={trailerMovies[currentSlide]._id}
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${trailerMovies[currentSlide].trailerKey}?controls=0&rel=0&modestbranding=1&showinfo=0`}
+                  title={trailerMovies[currentSlide].title}
+                  allowFullScreen
                 />
-                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                  <a href="#slide4" className="btn btn-circle">❮</a>
-                  <a href="#slide2" className="btn btn-circle">❯</a>
+                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10 pointer-events-none">
+                  <button onClick={prevSlide} className="btn btn-circle pointer-events-auto">❮</button>
+                  <button onClick={nextSlide} className="btn btn-circle pointer-events-auto">❯</button>
                 </div>
               </div>
-              <div id="slide2" className="carousel-item relative w-full">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-                  className="w-full"
-                />
-                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                  <a href="#slide1" className="btn btn-circle">❮</a>
-                  <a href="#slide3" className="btn btn-circle">❯</a>
-                </div>
-              </div>
-              <div id="slide3" className="carousel-item relative w-full">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-                  className="w-full"
-                />
-                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                  <a href="#slide2" className="btn btn-circle">❮</a>
-                  <a href="#slide4" className="btn btn-circle">❯</a>
-                </div>
-              </div>
-              <div id="slide4" className="carousel-item relative w-full">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-                  className="w-full"
-                />
-                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                  <a href="#slide3" className="btn btn-circle">❮</a>
-                  <a href="#slide1" className="btn btn-circle">❯</a>
-                </div>
-              </div>
-            </div>
+            )}
 
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h1 className="text-3xl text-[#CDCDCD] font-bold text-center mb-6">FILMER PÅ KINO</h1>
@@ -131,13 +114,13 @@ const Main = () => {
                       className="w-full max-w-sm h-auto"
                       alt="Kino Entrance"
                     />
-                    <div className="ttext-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                    <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                       <h1 className="text-3xl font-bold text-[#CDCDCD]">DIN LOKALA BIOGRAF</h1>
                       <p className="py-6 text-[#CDCDCD]">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                       </p>
                       <div className="flex justify-center lg:justify-start mt-6">
-                        <a href="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105">
+                        <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                           LÄS MER
                         </a>
                       </div>
@@ -160,7 +143,7 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <a href="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                        <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                           LÄS MER
                         </a>
                       </div>
