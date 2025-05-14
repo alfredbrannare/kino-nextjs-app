@@ -56,7 +56,19 @@ export async function  POST(request) {
             totalPrice += count * basePrice * discount;
         }
 
-        const booking = await Booking.create({ movieId, screeningTime, seats, userId, auditorium, totalPrice });
+        // Seat label
+        const labeledSeats = [];
+        const seatQueue = [...seats];
+
+        for (const [type, count] of Object.entries(ticketInfo)) {
+            for (let i = 0; i < count; i++) {
+                const seat = seatQueue.shift();
+                if (!seat) break;
+                labeledSeats.push({ ...seat, type });
+            }
+        }
+
+        const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId, auditorium, totalPrice });
         return Response.json(booking, { status: 201 });
     } catch (err) {
         console.error('Booking error', err);
