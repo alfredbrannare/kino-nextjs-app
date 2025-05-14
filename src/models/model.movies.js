@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 const moviesSchema = new mongoose.Schema({
   title: String,
   description: String,
-  year: Number,
+  year: String,
   image: String,
-  rating: Number,
+  rating: String,
   inCinemas: {type:Boolean, default:false},
 });
 
-const Movie = mongoose.models.Movie || mongoose.model('Movie', moviesSchema);
+const Movie = mongoose.models.Movies || mongoose.model('Movies', moviesSchema);
 
 export default Movie;

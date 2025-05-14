@@ -24,13 +24,23 @@ export const GET = async () => {
 export const POST = async (req) => {
   await connectDB();
 
-  if (!checkAuth(req)) {
+  const authenticatedUser = await checkAuth(req);
+
+  if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const isAdmin = authenticatedUser.role === "admin";
+
+  if (!isAdmin) {
+    return NextResponse.json(
+      { message: "You dont have the right to use this feature!" },
+      { status: 403 }
+    );
   }
 
   try {
     const body = await req.json();
-    console.log("Received request body:", body);
 
     if (!body.id) {
       return new Response(
@@ -45,31 +55,32 @@ export const POST = async (req) => {
     }
 
     const response = await fetch(
-      `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
+      `https://api.themoviedb.org/3/movie/${body.id}?api_key=${process.env.TMDB}&language=en-EN`
+      // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
     );
     const data = await response.json();
-
-    if (data.Error) {
+    if (data.success === false) {
       return NextResponse.json(
-        { status: "IMDb ID is invalid or OMDb API error." },
+        { status: "IMDb ID is invalid or OMDb API error."},
         { status: 400 }
       );
     }
 
     const movie = new Movie({
-      title: data.Title,
-      description: data.Plot,
-      year: parseInt(data.Year),
-      image: data.Poster,
-      rating: parseFloat(data.imdbRating),
+      title: data.title,
+      description: data.overview,
+      year: data.release_date,
+      image: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
+      rating: data.vote_average,
     });
 
     // Kolar om filmen finns redan i databasen
-    const existing = await Movie.findOne({ title: data.Title });
+    const existing = await Movie.findOne({ title: data.title });
     if (existing) {
       return new Response(
         JSON.stringify({
           status: "Movie already exists in the database.",
+          originalData: data, 
         }),
         {
           status: 400,
@@ -79,14 +90,15 @@ export const POST = async (req) => {
     }
     // Sparar till databasen och returnerar response
     await movie.save();
-    return new Response(JSON.stringify(movie), {
+    return new Response(JSON.stringify({movie, originalData: data}), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch {
+  } catch(error){
     return new Response(
       JSON.stringify({
         status: "IMDb ID is invalid or the OMDb API is not responding.",
+        errorMsg: error,
       }),
       {
         status: 400,

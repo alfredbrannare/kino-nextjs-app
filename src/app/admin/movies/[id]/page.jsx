@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState, use } from 'react';
-import MovieDetails from 'src/components/MovieDetails';
+import Link from 'next/link';
 
 const Movie = ({ params }) => {
   const [movie, setMovie] = useState(null);
@@ -15,7 +15,6 @@ const Movie = ({ params }) => {
         const data = await response.json();
 
         setMovie(data);
-        console.log(movie)
       } catch (error) {
         console.error('Error fetching movies:', error);
       } finally {
@@ -25,12 +24,23 @@ const Movie = ({ params }) => {
     fetchData();
   }, [id])
 
-if (loading) return <p>Loading...</p>
-if (!movie) return <p>Movie not found</p>;
+  if (loading) return <p>Loading...</p>
+  if (!movie) return <p>Movie not found</p>;
 
   return (
     <div className='post'>
-      <MovieDetails movie={movie}/>
+      <h1>{movie.title}</h1>
+      <span>{movie.description}</span>
+      <img
+        className="block mx-auto pt-10 max-w-lg"
+        src={movie.image}
+        alt={movie.title}
+      />
+      <Link
+        className="btn"
+        href={'/admin/movies'}>
+        Back
+      </Link>
     </div>
   )
 }
