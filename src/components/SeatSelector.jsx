@@ -150,9 +150,14 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             </div>
             <button
                 title={selectedSeats.length === 0 ? 'Välj platser först' : ''}
-                disabled={isBooking || selectedSeats.length === 0}
+                disabled={
+                    isBooking ||
+                    selectedSeats.length !== maxSeats ||
+                    selectedSeats.length === 0
+                }
                 onClick={handleBooking}
-                className={`mt-6 px-4 py-2 rounded text-black transition ${isBooking || selectedSeats.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-400 cursor-pointer'
+                className={`mt-6 px-4 py-2 rounded text-black transition ${selectedSeats.length !== maxSeats || isBooking
+                        ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-400 cursor-pointer'
                     }`}
             >
                 {isBooking ? 'Bokar valda platser...' : 'Boka platser'}
