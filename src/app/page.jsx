@@ -3,6 +3,7 @@ import MovieCard from "src/components/MovieCard";
 import MovieCardSkeleton from "src/components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
+import Login from '../components/Login'
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
@@ -101,11 +102,9 @@ const Main = () => {
             </div>
             <div>
               <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
-                <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">BOKA BILJETT
-                </button>
-                <button className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                <a href="/movies" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                   SE ALLA FILMER
-                </button>
+                </a>
               </div>
 
               <div className="w-full my-6">
@@ -121,14 +120,7 @@ const Main = () => {
                 <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
-                <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
-                  <button className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
-                    BLI MEDLEM
-                  </button>
-                  <a href="/events" className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
-                    EVENEMANG
-                  </a>
-                </div>
+                <Login />
               </div>
 
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
@@ -168,7 +160,7 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <a href ="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                        <a href="/about" className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
                           LÄS MER
                         </a>
                       </div>
@@ -203,9 +195,6 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD] ">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
-                          BOKA BILJETT
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -225,9 +214,6 @@ const Main = () => {
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
-                        <button className="btn bg-[#2B0404] text-[#CDCDCD] hover:bg-[#CDCDCD] hover:text-[#2B0404] transition-all duration-300 ease-in-out hover:shadow-md hover:scale-105 hover:cursor-pointer">
-                          BOKA BILJETT
-                        </button>
                       </div>
                     </div>
                   </div>
