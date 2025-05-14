@@ -57,16 +57,23 @@ const MovieDetails = ({ movie }) => {
 
 	return (
 		<>
-			<div className="lg:grid grid-cols-8 gap-4">
+			<div className="lg:grid grid-cols-8 gap-4 relative">
 				<div className="col-start-3 col-span-4  text-center pt-10">
 					<h1 className="font-semibold text-3xl">{movie.title}</h1>
 					<span>{movie.description}</span>
 					<br />
-					<img
-						className="block mx-auto pt-10"
-						src={movie.image}
-						alt={movie.title}
-					/>
+					<div className="relative mx-auto pt-10">
+						<img
+							className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded relative z-10"
+							src={movie.image}
+							alt={movie.title}
+						/>
+						<img
+							className="absolute top-10 left-0 right-0 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg blur-lg rounded z-0"
+							src={movie.image}
+							alt={movie.title}
+						/>
+					</div>
 					<br />
 					<Link
 						className="btn"

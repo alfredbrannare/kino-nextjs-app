@@ -24,8 +24,24 @@ const MovieCard = ({ movie }) => {
     }
 
     return (
-        <div>
-            <Link href={`/movies/${movie._id}`} className="relative w-50 h-83 rounded overflow-hidden shadow-lg mx-4 group block my-2" id={movie._id}>
+        <div className="group relative">
+            <div className="absolute transition-all duration-300 opacity-0 group-hover:opacity-100">
+                <img
+                    src={movie.image}
+                    alt=""
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/kino-card.jpg";
+                    }}
+                    className="w-full h-full object-cover blur-xl"
+                />
+            </div>
+
+            <Link
+                href={`/movies/${movie._id}`}
+                className="relative block w-50 h-83 rounded overflow-hidden shadow-lg mx-4 my-2"
+                id={movie._id}
+            >
                 <img
                     src={movie.image}
                     alt={movie.title}
@@ -33,10 +49,10 @@ const MovieCard = ({ movie }) => {
                         e.target.onerror = null;
                         e.target.src = "/kino-card.jpg";
                     }}
-                    className="w-full h-full object-fit"
+                    className="w-full h-full object-fit z-10 relative"
                 />
 
-                <div className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.86)] text-white p-2 opacity-100 sm:opacity-100 xl:opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.86)] text-white p-2 opacity-100 sm:opacity-100 xl:opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-300 z-20">
                     <h2 className="text-lg font-semibold truncate">{movie.title}</h2>
                     <p className="text-sm">{roundedRating}⭐</p>
                     <p>{formattedDate}</p>
@@ -44,7 +60,6 @@ const MovieCard = ({ movie }) => {
                 </div>
             </Link>
         </div>
-
     );
 }
 
