@@ -45,7 +45,7 @@ const cityPage = () => {
                 auditorium={auditorium}
                 userId={userId}
                 maxSeats={ticketInfo.total}
-                totalPrice={ticketInfo.totalPrice}
+                ticketInfo={ticketInfo.details}
                 seatsFromDB={seatsFromDB}
             />
         </main>

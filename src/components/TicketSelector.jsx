@@ -33,8 +33,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                 child,
                 retired,
                 student,
-                member,
-                totalPrice
+                member
             });
         }
     }, [ordinary, child, retired, student, member]);
@@ -57,7 +56,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <span className="text-lg">Barn</span>
-                        <span className="text-gray-400 text-sm">(15% rabatt för barn under 11 år)</span>
+                        <span className="text-gray-400 text-sm">(20% rabatt för barn under 11 år)</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => setChild(child - 1 >= 0 ? child - 1 : 0)} className="bg-gray-600 px-2 rounded cursor-pointer border border-transparent hover:border-1 hover:border-white">−</button>
@@ -70,7 +69,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <span className="text-lg">Pensionär</span>
-                        <span className="text-gray-400 text-sm">(15% rabatt)</span>
+                        <span className="text-gray-400 text-sm">(20% rabatt)</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => setRetired(retired - 1 >= 0 ? retired - 1 : 0)} className="bg-gray-600 px-2 rounded cursor-pointer border border-transparent hover:border-1 hover:border-white">−</button>
@@ -83,7 +82,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <span className="text-lg">Student</span>
-                        <span className="text-gray-400 text-sm">(10% rabatt)</span>
+                        <span className="text-gray-400 text-sm">(15% rabatt)</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => setStudent(student - 1 >= 0 ? student - 1 : 0)} className="bg-gray-600 px-2 rounded cursor-pointer border border-transparent hover:border-1 hover:border-white">−</button>
@@ -97,7 +96,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                             <span className="text-lg">Medlem</span>
-                            <span className="text-gray-400 text-sm">(20% rabatt)</span>
+                            <span className="text-gray-400 text-sm">(25% rabatt)</span>
                         </div>
 
                         {!isLoggedIn && (

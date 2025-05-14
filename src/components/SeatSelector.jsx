@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, totalPrice, seatsFromDB }) {
+export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, seatsFromDB, ticketInfo }) {
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -62,7 +62,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 seats: selectedSeats,
                 userId,
                 auditorium,
-                totalPrice
+                ticketInfo
             })
         })
             .then(res => res.json())
