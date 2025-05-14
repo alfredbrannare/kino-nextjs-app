@@ -3,10 +3,14 @@ import Screening from "src/models/model.screenings";
 import { checkAuth } from "src/lib/auth";
 import { NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req) => {
   try {
     await connectDB();
-    const screenings = await Screening.find().populate("movieId", "title").populate("auditoriumId", "name");
+    const { searchParams } = new URL(req.url);
+    const movieId = searchParams.get("movieId");
+
+    const query = movieId ? { movieId } : {};
+    const screenings = await Screening.find(query).populate("movieId", "title").populate("auditoriumId", "name");
 
     return new Response(JSON.stringify(screenings), {
       status: 200,

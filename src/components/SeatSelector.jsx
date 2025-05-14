@@ -1,12 +1,8 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { generateSalong } from "src/lib/salongLayout";
 import WheelchairModal from "./WheelchairModal";
 
-export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, totalPrice }) {
-
-    const cityLayoutConfig = [8, 10, 12, 10, 8, 8]
-    const salong = generateSalong(cityLayoutConfig);
+export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, totalPrice, seatsFromDB }) {
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -14,6 +10,8 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     const [bookingSuccess, setBookingSuccess] = useState(false);
     const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState(null);
     const [showSeatWarning, setShowSeatWarning] = useState(false);
+    const salong = groupSeatsByRow(seatsFromDB || []);
+    console.log("Inkommande seatsFromDb:", seatsFromDB);
 
 
     useEffect(() => {
@@ -87,6 +85,16 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             <span>{label}</span>
         </div>
     );
+
+    function groupSeatsByRow(seats) {
+        const rows = {};
+        for (const seat of seats) {
+            if (!rows[seat.row]) rows[seat.row] = [];
+            rows[seat.row].push(seat);
+        }
+
+        return Object.values(rows).map(row => row.sort((a, b) => a.seat - b.seat)).sort((a, b) => a[0].row - b[0].row);
+    }
 
     return (
         <div className="p-4 mb-8 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">

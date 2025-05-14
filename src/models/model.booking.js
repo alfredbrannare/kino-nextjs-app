@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const seatSchema = new mongoose.Schema({
     row: Number,
-    seat: Number
+    seat: Number,
+    isWheelchair: Boolean
 });
 
 const bookingSchema = new mongoose.Schema({
