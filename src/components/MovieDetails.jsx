@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserReview from './reviews/UserReview';
 import ReviewsList from './reviews/ReviewsList';
+import { useParams } from 'next/navigation';
 
+import { useAuth } from 'src/components/user/AuthData';
+
+// TODO fix check for backend for rating and text reviws
 // TODO remove mockView and send Viewdata from db in to <Views />
 const mockView = {
 	view1: {
@@ -26,33 +30,54 @@ const mockView = {
 		emptySeats: 95,
 	},
 };
-// TODO replace with reviews from db
-const mockReviews = {
-	review1: {
-		rating: 5,
-		text: 'Super good movie',
-		user: 'Gurra G',
-	},
-	review2: {
-		rating: 3,
-		text: 'just a movie',
-		user: 'Gurra GG',
-	},
-	review3: {
-		rating: 1,
-		text: 'Super bad movie',
-		user: 'Gurra GGG',
-	},
-};
-//
 
 const MovieDetails = ({ movie }) => {
-	const [reviews, setReviews] = useState(Object.values(mockReviews));
+	const { isLoggedIn, userData, token } = useAuth();
+	const [reviews, setReviews] = useState([]);
+
+	useEffect(() => {
+		const fetchReviews = async () => {
+			try {
+				const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+				const data = await res.json();
+				if (res.ok) {
+					setReviews(data.reviews);
+				} else {
+					console.error('Failed to fetch reviews:', data.message);
+				}
+			} catch (error) {
+				console.error('Error fetching reviews:', error);
+			}
+		};
+		fetchReviews();
+	}, [movie._id]);
+
+	const params = useParams();
+	const movieId = params.id;
 
 	// to get new review
-	const handleAddReview = (newReview) => {
-		setReviews((prevReviews) => [...prevReviews, newReview]);
-		console.log(reviews);
+	const handleAddReview = async ({ rating, text, user }) => {
+		const response = await fetch('/api/reviews', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify({ movieId, rating, text, user }),
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			console.log('Review saved:', data.review);
+			// refresh reviews here
+			const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+			const latest = await res.json();
+			setReviews(latest.reviews);
+		} else {
+			console.error('Failed to save review');
+		}
+		// setReviews((prevReviews) => [...prevReviews, newReview]);
+		// console.log(reviews);
 	};
 
 	return (
@@ -70,7 +95,7 @@ const MovieDetails = ({ movie }) => {
 					<br />
 					<Link
 						className="btn"
-						href={'/movies/new'}>
+						href={'/movies'}>
 						Back
 					</Link>
 				</div>
@@ -101,7 +126,17 @@ const MovieDetails = ({ movie }) => {
 					{/* reviews ska vara här */}
 					<h2 className="text-2xl  card-title ">Reviews</h2>
 					<div>
-						<ReviewForm handleAddReview={handleAddReview} />
+						{/* TODO: hide if not login */}
+						{!isLoggedIn ? (
+							<p className="justify-self-center my-4">
+								Logga in för att lämna en review
+							</p>
+						) : (
+							<ReviewForm
+								handleAddReview={handleAddReview}
+								userData={userData}
+							/>
+						)}
 					</div>
 					<div className="mb-5">
 						{/* ReviewsList */}
