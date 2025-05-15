@@ -58,7 +58,7 @@ const Main = () => {
             )}
 
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center mb-6">FILMER PÅ KINO</h1>
+              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
@@ -71,9 +71,9 @@ const Main = () => {
               )}
 
               {/* Grid for the cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 px-4 my-6 w-full">
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full">
                 {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
-                  <div key={movie?._id || i} className="flex justify-center">
+                  <div key={movie?._id || i} className="flex justify-start">
                     {loading ? (
                       <MovieCardSkeleton />
                     ) : (

@@ -9,6 +9,9 @@ const MovieCard = ({ movie }) => {
 		);
 	}
 
+	const ratingNum = parseFloat(movie.rating);
+	const roundedRating = isNaN(ratingNum) ? 'N/A' : Math.round(ratingNum * 10) / 10;
+
 	let formattedDate = null;
 	let formattedTime = null;
 
@@ -28,30 +31,43 @@ const MovieCard = ({ movie }) => {
 	}
 
 	return (
-		<div>
+		<div className="group relative">
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100 w-48 h-79">
+				<img
+					src={movie.image}
+					alt=""
+					onError={(e) => {
+						e.target.onerror = null;
+						e.target.src = "/kino-card.jpg";
+					}}
+					className="w-full h-full object-cover blur-xl"
+				/>
+			</div>
+
 			<Link
 				href={`/movies/${movie.movieId ?? movie._id}`}
-				className="relative w-50 h-83 rounded overflow-hidden shadow-lg mx-4 group block my-2"
-				id={movie._id}>
+				className="relative block w-50 h-83 rounded overflow-hidden shadow-lg mx-4 my-2"
+				id={movie.movieId ?? movie._id}
+			>
 				<img
 					src={movie.image}
 					alt={movie.title}
 					onError={(e) => {
 						e.target.onerror = null;
-						e.target.src = '/kino-card.jpg';
+						e.target.src = "/kino-card.jpg";
 					}}
-					className="w-full h-full object-fit"
+					className="w-full h-full object-fit relative"
 				/>
 
 				<div className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.86)] text-white p-2 opacity-100 sm:opacity-100 xl:opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-300">
 					<h2 className="text-lg font-semibold truncate">{movie.title}</h2>
-					<p className="text-sm">{movie.rating}⭐</p>
+					<p className="text-sm">{roundedRating}⭐</p>
 					<p>{formattedDate}</p>
 					<p>{formattedTime}</p>
 				</div>
 			</Link>
 		</div>
 	);
-};
+}
 
 export default MovieCard;
