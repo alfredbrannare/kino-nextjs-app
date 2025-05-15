@@ -34,6 +34,7 @@ const mockView = {
 const MovieDetails = ({ movie }) => {
 	const { isLoggedIn, userData, token } = useAuth();
 	const [reviews, setReviews] = useState([]);
+	const [screenings, setScreenings] = useState([]); //- Patrik
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -49,7 +50,23 @@ const MovieDetails = ({ movie }) => {
 				console.error('Error fetching reviews:', error);
 			}
 		};
-		fetchReviews();
+		//- Patrik
+		const fetchScreenings = async () => {
+			try {
+				const res = await fetch(`/api/screenings?movieId=${movie._id}`);
+				const data = await res.json();
+				setScreenings(data.filter(s => s.movieId._id === movie._id));
+				console.log("Screenings för filmen:", data);
+
+			} catch (error) {
+				console.error("Error fetching screenings", error);
+			}
+		};
+
+		if (movie._id) {
+			fetchReviews();
+			fetchScreenings();
+		}
 	}, [movie._id]);
 
 	const params = useParams();
@@ -106,12 +123,44 @@ const MovieDetails = ({ movie }) => {
 						</h2>
 
 						{/* showings ska vara här, det här kan vara en komponent */}
-						{Object.entries(mockView).map(([key, view]) => (
+						{screenings.length === 0 ? (
+							<p className="text-sm text-gray-400">Inga visningar hittades.</p>
+						) : (
+							screenings.map((screening) => (
+								<Link
+									key={screening._id}
+									href={{
+										pathname: `/auditoriums/city`,
+										query: {
+											movieId: screening.movieId._id,
+											screeningTime: screening.startTime,
+											auditorium: "city",
+										},
+									}}
+								>
+									<Views
+										views={{
+											tid: new Date(screening.startTime).toLocaleString("sv-SE", {
+												weekday: "short",
+												day: "numeric",
+												month: "short",
+												hour: "2-digit",
+												minute: "2-digit",
+											}),
+											sal: screening.auditoriumId.name,
+											maxSeats: screening.auditoriumId.capacity ?? 100,
+											emptySeats: 100,
+										}}
+									/>
+								</Link>
+							))
+						)}
+						{/* {Object.entries(mockView).map(([key, view]) => (
 							<Views
 								key={key}
 								views={view}
 							/>
-						))}
+						))} */}
 						{/*  */}
 					</div>
 					{/* button to get tickets */}

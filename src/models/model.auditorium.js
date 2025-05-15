@@ -5,6 +5,11 @@ const auditoriumSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   seats: [
     {
       row: { type: Number, required: true },
