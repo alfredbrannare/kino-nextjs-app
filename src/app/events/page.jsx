@@ -1,29 +1,15 @@
 'use client';
+  
+import { useEffect, useState } from "react";
 
 export default function Events() {
-  const events = [
-    {
-      title: "Star Wars Maraton",
-      date: "2025-07-01",
-      time: "08:00",
-      description: "Se alla Star Wars filmer tillsammans med andra entusiaster. I priset ingår frukost-, lunch- och middagsbuffé samt obegränsat med läsk, popcorn och hot snacks.",
-        image: "/StarWars.png"
-    },
-    {
-      title: "Filmcirkel",
-      date: "2025-07-15",
-      time: "12:00",
-      description: "Kom och titta på Fight Club tillsammans med andra fans. Därefter träffas vi för att diskutera filmen över en kopp kaffe och donuts.",
-        image: "/FightClub.png"
-    },
-    {
-      title: "Familjedag med Paw Patrol-tema",
-      date: "2025-07-20",
-      time: "13:00",
-      description: "Paw Patrol, popcorn och pyssel efter temat. Perfekt för hela familjen.",
-        image: "/PawPatrol.png"
-    },
-  ];
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((res) => res.json())
+      .then((data) => setEvents(data));
+  }, []);
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
