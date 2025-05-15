@@ -54,6 +54,18 @@ export const POST = async (req) => {
       );
     }
 
+        // Fetching the trailers using the TMDb API
+    const trailerResponse = await fetch(
+      `https://api.themoviedb.org/3/movie/${body.id}/videos?api_key=${process.env.TMDB}&language=en-EN`
+    );
+    const trailerData = await trailerResponse.json();
+
+    let trailerKey = null;
+
+    if (trailerData.results && trailerData.results.length > 0) {
+      trailerKey = trailerData.results[0].key;
+    }
+
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${body.id}?api_key=${process.env.TMDB}&language=en-EN`
       // `http://www.omdbapi.com/?i=${body.id}&apikey=${process.env.OMDB}`
@@ -72,9 +84,10 @@ export const POST = async (req) => {
       year: data.release_date,
       image: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
       rating: data.vote_average,
+      trailerKey: trailerKey,
     });
 
-    // Kolar om filmen finns redan i databasen
+    // Kollar om filmen finns redan i databasen
     const existing = await Movie.findOne({ title: data.title });
     if (existing) {
       return new Response(
