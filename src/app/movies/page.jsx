@@ -43,7 +43,7 @@ export default function MoviesPage() {
     };
 
     return (
-        <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] xl:min-w-[1280px]">
             <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 mx-5 py-4 px-4 controls-container flex flex-row justify-center">
                 <SearchMoviesInput value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }}></SearchMoviesInput>
                 <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
@@ -53,7 +53,7 @@ export default function MoviesPage() {
                     Inga filmer matchar din sökning.
                 </h2>
             )}
-            <div className="flex flex-row flex-wrap justify-center">
+            <div className="flex flex-row flex-wrap justify-center py-6">
                 {loading ? (
                     Array.from({ length: 8 }).map((_, i) => (
                         <MovieCardSkeleton key={i} className="flex-shrink-0" />
