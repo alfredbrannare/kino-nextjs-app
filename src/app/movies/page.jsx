@@ -53,7 +53,7 @@ export default function MoviesPage() {
                     Inga filmer matchar din sökning.
                 </h2>
             )}
-            <div className="flex flex-row flex-wrap justify-center py-6">
+            <div className="flex flex-row flex-wrap justify-center py-6 mt-4">
                 {loading ? (
                     Array.from({ length: 8 }).map((_, i) => (
                         <MovieCardSkeleton key={i} className="flex-shrink-0" />
