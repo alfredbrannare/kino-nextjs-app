@@ -38,6 +38,7 @@ export default function MembershipPage() {
                   className="menu menu-sm dropdown-content bg-base-300 text-base-content rounded-box z-20 mt-3 w-52 p-2 shadow">
                   <li><Link href="/admin/movies" className="text-lg font-bold">Filmhantering</Link></li>
                   <li><Link href="/admin/screenings" className="text-lg font-bold">Visningshantering</Link></li>
+                  <li><Link href="/admin/reviews" className="text-lg font-bold">Reviewshantering</Link></li>
                 </ul>
               </div>
             ) : null}
