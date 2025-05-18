@@ -43,7 +43,7 @@ export default function MembershipPage() {
 
         <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}</h1>
 
-        <div className="bg-white p-24 rounded-lg shadow-lg w-full">
+        <div className="bg-white p-16 rounded-lg shadow-lg w-full">
           <div className="flex justify-end items-center space-x-4 mb-4">
             {/* Admin panel */}
             {!isLoading && isAdmin ? (
