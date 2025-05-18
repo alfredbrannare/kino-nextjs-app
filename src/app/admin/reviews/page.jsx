@@ -110,6 +110,7 @@ const ReviewsPage = () => {
 					key={review._id}
 					className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-2xl">
 					<h2>{review.text}</h2>
+					<span>{review.userName}</span>
 					<div>
 						<button
 							onClick={() => deleteReview(review._id)}
