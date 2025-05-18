@@ -2,12 +2,14 @@
 
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
 import Link from "next/link";
+import { Armchair, MapPin, Banknote  } from 'lucide-react';
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin } = useAuth();
+  const [booking, setBooking] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,16 +18,32 @@ export default function MembershipPage() {
     }
   }, [isLoggedIn, isLoading, router]);
 
+  useEffect(() => {
+    const localToken = localStorage.getItem('token');
+    const getBookings = async () => {
+      const response = await fetch('/api/bookings/user', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        }
+      });
+      const data = await response.json();
+
+      setBooking(Array.isArray(data) ? data : []);
+    }
+    getBookings();
+  }, []);
+
   if (isLoading || loading) return <p>Loading page data...</p>;
   if (!isLoggedIn) return <p>Access Denied. You are not authorized to view this page.</p>;
-
+  console.log(booking);
   return (
     <div className="min-h-screen flex justify-center items-center bg-[#2B0404] md:flex-row space-x-6">
       <div>
 
         <h1 className="text-xl font-semibold text-white mb-4">{`Aktuell medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}</h1>
 
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full">
+        <div className="bg-white p-24 rounded-lg shadow-lg w-full">
           <div className="flex justify-end items-center space-x-4 mb-4">
             {/* Admin panel */}
             {!isLoading && isAdmin ? (
@@ -56,12 +74,37 @@ export default function MembershipPage() {
             </div>
           </div>
 
-          <div className="flex space-x-6">
-            <div className="bg-white p-6 rounded-lg shadow-md flex-1">
+          <div className="flex space-x-18">
+            <div className="bg-white p-12 rounded-lg shadow-md flex-2">
               <h3 className="text-xl text-black font-semibold mb-4 border-b border-gray-400 pb-2">Dina Biljetter<Ticket /></h3>
               <ul className="space-y-4">
-                <li className="text-gray-700">x2 Forrest Gump</li>
+                {booking.map((booking) => (
+                  <li key={booking._id} className="text-gray-700 border-b pb-2">
+                    <div className="font-semibold">
+                      {booking.movieId?.title || "Okänd film"}{" "}
+                      {new Date(booking.screeningTime).toLocaleString()}
+                    </div>
+                    <div className="mt-2 text-sm text-gray-600">
+                      <MapPin /> Salong: <span className="font-medium">{booking.auditorium}</span>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2 items-center text-sm">
+                      <Armchair />  Platser:
+                      {booking.seats.map((seat, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded text-black"
+                        >
+                          Rad {seat.row}, Stol {seat.seat}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-2 text-sm text-gray-600">
+                      <Banknote /> Totalt: {booking.totalPrice} kr
+                    </div>
+                  </li>
+                ))}
               </ul>
+
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md flex-2">
               <h3 className="text-black text-xl font-semibold mb-4 border-b border-gray-400 pb-2">Veckans erbjudande<Popcorn /></h3>
