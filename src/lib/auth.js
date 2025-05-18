@@ -10,7 +10,7 @@ export const checkAuth = async (req) => {
   }
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded.id).select("-password");
+  const user = await User.findById(decoded.id).select("-hashedPassword");
 
   if(!user){
     return null;
