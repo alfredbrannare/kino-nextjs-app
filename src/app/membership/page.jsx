@@ -78,7 +78,7 @@ export default function MembershipPage() {
             <div className="bg-white p-12 rounded-lg shadow-md flex-2">
               <h3 className="text-xl text-black font-semibold mb-4 border-b border-gray-400 pb-2">Dina Biljetter<Ticket /></h3>
               <ul className="space-y-4">
-                {booking.map((booking) => (
+                {booking?.map((booking) => (
                   <li key={booking._id} className="text-gray-700 border-b pb-2">
                     <div className="font-semibold">
                       {booking.movieId?.title || "Okänd film"}{" "}
