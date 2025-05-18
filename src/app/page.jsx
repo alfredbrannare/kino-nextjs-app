@@ -40,8 +40,9 @@ const Main = () => {
   return (
     <div>
       <div className="w-full">
-        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0">
-          <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
+          <div className= "relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+          <div className="relative mx-auto w-full">
             {trailerMovies.length > 0 && (
               <>
                 <div className="w-full h-[400px] flex items-center justify-center bg-black relative">
@@ -80,8 +81,8 @@ const Main = () => {
                 </div>
               </>
             )}
-          </div>
-        </div>
+          
+        
       </div>
 
 
@@ -231,6 +232,9 @@ const Main = () => {
           </div>
         </div>
 
+      </div>
+      </div>
+      </div>
       </div>
     </div>
   );
