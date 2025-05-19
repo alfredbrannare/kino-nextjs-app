@@ -4,6 +4,7 @@ import MovieCardSkeleton from "src/components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import Login from '../components/Login'
+import TrailerCarousel from "src/components/TrailerCarousel/TrailerCarousel";
 import { useAuth } from "src/components/user/AuthData";
 
 const Main = () => {
@@ -41,24 +42,9 @@ const Main = () => {
   return (
     <div>
       <div className="w-full">
-        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0">
+        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
           <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
-            {trailerMovies.length > 0 && (
-              <div className="w-full h-[400px] flex items-center justify-center bg-black relative">
-                <iframe
-                  key={trailerMovies[currentSlide]._id}
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${trailerMovies[currentSlide].trailerKey}?controls=0&rel=0&modestbranding=1&showinfo=0`}
-                  title={trailerMovies[currentSlide].title}
-                  allowFullScreen
-                />
-                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10 pointer-events-none">
-                  <button onClick={prevSlide} className="btn btn-circle pointer-events-auto">❮</button>
-                  <button onClick={nextSlide} className="btn btn-circle pointer-events-auto">❯</button>
-                </div>
-              </div>
-            )}
-
+            <TrailerCarousel trailerMovies={trailerMovies} />
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
 
