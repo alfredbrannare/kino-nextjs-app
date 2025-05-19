@@ -4,11 +4,13 @@ import MovieCardSkeleton from "src/components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import Login from '../components/Login'
+import { useAuth } from "src/components/user/AuthData";
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { isLoggedIn, isLoading } = useAuth();
 
   useEffect(() => {
     const fetchUpcomingMovies = async () => {
@@ -103,7 +105,9 @@ const Main = () => {
                 <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
-                <Login />
+                {isLoading ? null : !isLoggedIn ? (
+                  <Login />
+                ) : null}
               </div>
 
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
