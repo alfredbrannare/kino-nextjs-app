@@ -4,7 +4,7 @@ import MovieCardSkeleton from "src/components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import Login from '../components/Login'
-import { VideoOff } from "lucide-react";
+import TrailerCarousel from "src/components/TrailerCarousel/TrailerCarousel";
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
@@ -41,200 +41,157 @@ const Main = () => {
     <div>
       <div className="w-full">
         <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
-          <div className= "relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
-          <div className="relative mx-auto w-full">
-            {trailerMovies.length > 0 && (
-              <>
-                <div className="w-full h-[400px] flex items-center justify-center bg-black relative">
-                  {trailerMovies.length > 0 ? (
-                    <iframe
-                      key={trailerMovies[currentSlide]._id}
-                      className="w-full h-full"
-                      src={`https://www.youtube.com/embed/${trailerMovies[currentSlide].trailerKey}?controls=0&rel=0&modestbranding=1&showinfo=0`}
-                      title={trailerMovies[currentSlide].title}
-                      allowFullScreen
-                    />
-                  ) : (
-                    <div className="w-full h-[400px] flex items-center justify-center bg-black relative text-yellow-400">
-                      <div className="flex flex-col items-center gap-2">
-                        <VideoOff size={48} />
-                        <p className="text-lg font-semibold">Trailer kunde inte laddas</p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10 pointer-events-none">
-                    <button onClick={prevSlide} className="btn btn-circle pointer-events-auto">❮</button>
-                    <button onClick={nextSlide} className="btn btn-circle pointer-events-auto">❯</button>
+          <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+            <TrailerCarousel trailerMovies={trailerMovies} />
+            <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
+              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
+
+              {error && (
+                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
+                  <div className="text-center text-black flex flex-col items-center">
+                    <Info />
+                    <span className="font-bold text-xl">Fel</span>
+                    <strong className="text-sm text-black font-bold text-xl">{error}</strong>
                   </div>
                 </div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-                  {trailerMovies.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`transition-all duration-300 rounded-full hover:cursor-pointer ${index === currentSlide
-                        ? 'w-4 h-4 bg-yellow-400'
-                        : 'w-3 h-3 bg-[#CDCDCD]'
-                        }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          
-        
-      </div>
-
-
-      <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-        <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
-
-        {error && (
-          <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
-            <div className="text-center text-black flex flex-col items-center">
-              <Info />
-              <span className="font-bold text-xl">Fel</span>
-              <strong className="text-sm text-black font-bold text-xl">{error}</strong>
-            </div>
-          </div>
-        )}
-
-        {/* Grid for the cards */}
-        <div className="flex flex-row overflow-auto px-2 py-8 w-full">
-          {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
-            <div key={movie?._id || i} className="flex justify-start">
-              {loading ? (
-                <MovieCardSkeleton />
-              ) : (
-                <MovieCard movie={movie} />
               )}
+
+              {/* Grid for the cards */}
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full">
+                {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
+                  <div key={movie?._id || i} className="flex justify-start">
+                    {loading ? (
+                      <MovieCardSkeleton />
+                    ) : (
+                      <MovieCard movie={movie} />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
-          <a href="/movies" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-            SE ALLA FILMER
-          </a>
-        </div>
+            <div>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
+                <a href="/movies" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                  SE ALLA FILMER
+                </a>
+              </div>
 
-        <div className="w-full my-6">
-          <div className="justify-center align-center my-6">
-            <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
-          </div>
-        </div>
+              <div className="w-full my-6">
+                <div className="justify-center align-center my-6">
+                  <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                </div>
+              </div>
 
-        <div className="bg-[#CDCDCD] py-16 px-4 text-center">
-          <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
-            KINO - EN ALLDELES SPECIELL BIOUPPLEVELSE
-          </h2>
-          <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
-            AV FILMÄLSKARE - FÖR FILMÄLSKARE
-          </h3>
-          <Login />
-        </div>
+              <div className="bg-[#CDCDCD] py-16 px-4 text-center">
+                <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
+                  KINO - EN ALLDELES SPECIELL BIOUPPLEVELSE
+                </h2>
+                <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
+                  AV FILMÄLSKARE - FÖR FILMÄLSKARE
+                </h3>
+                <Login />
+              </div>
 
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
-          <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-              <img
-                src="/KinoEntrance.png"
-                className="w-full max-w-sm h-auto"
-                alt="Kino Entrance"
-              />
-              <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
-                <h1 className="text-3xl font-bold text-[#CDCDCD]">DIN LOKALA BIOGRAF</h1>
-                <p className="py-6 text-[#CDCDCD]">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                <div className="flex justify-center lg:justify-start mt-6">
-                  <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-                    LÄS MER
+              <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
+                <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                  <div className="hero-content flex-col lg:flex-row-reverse">
+                    <img
+                      src="/KinoEntrance.png"
+                      className="w-full max-w-sm h-auto"
+                      alt="Kino Entrance"
+                    />
+                    <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                      <h1 className="text-3xl font-bold text-[#CDCDCD]">DIN LOKALA BIOGRAF</h1>
+                      <p className="py-6 text-[#CDCDCD]">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      </p>
+                      <div className="flex justify-center lg:justify-start mt-6">
+                        <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                          LÄS MER
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
+                <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                  <div className="hero bg-[#2B0404] py-0 px-4">
+                    <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+                      <img
+                        src="/KinoDoors.png"
+                        className="w-full max-w-sm h-auto"
+                        alt="Kino Entrance"
+                      />
+                      <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                        <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
+                        <p className="py-6 text-[#CDCDCD]">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                        <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                          LÄS MER
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#CDCDCD] py-16 px-4 text-center">
+                <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
+                  SÄKRA DIN BILJETT TILL KOMMANDE EVENEMANG
+                </h2>
+                <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
+                  <a href="/events" className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
+                    SE EVENEMANG
                   </a>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
-          <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-            <div className="hero bg-[#2B0404] py-0 px-4">
-              <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
-                <img
-                  src="/KinoDoors.png"
-                  className="w-full max-w-sm h-auto"
-                  alt="Kino Entrance"
-                />
-                <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
-                  <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
-                  <p className="py-6 text-[#CDCDCD]">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
-                  <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-                    LÄS MER
-                  </a>
+
+              <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
+                <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                  <div className="hero bg-[#2B0404] py-0 px-4">
+                    <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
+                      <img
+                        src="/KinoScreen.png"
+                        className="w-full max-w-sm h-auto"
+                        alt="Kino Entrance"
+                      />
+                      <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                        <h1 className="text-3xl font-bold text-[#CDCDCD]">BÄTTRE LJUD OCH BILD ÄN HEMMA</h1>
+                        <p className="py-6 text-[#CDCDCD] ">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-[#CDCDCD] py-16 px-4 text-center">
-          <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
-            SÄKRA DIN BILJETT TILL KOMMANDE EVENEMANG
-          </h2>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
-            <a href="/events" className="bg-transparent hover:bg-[#2B0404] text-[#2B0404] font-semibold hover:text-[#CDCDCD] py-2 px-4 rounded transition-all duration-300 ease-in-out border-2 border-[#2B0404] hover:shadow-md hover:scale-105 hover:cursor-pointer">
-              SE EVENEMANG
-            </a>
-          </div>
-        </div>
-
-
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
-          <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-            <div className="hero bg-[#2B0404] py-0 px-4">
-              <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
-                <img
-                  src="/KinoScreen.png"
-                  className="w-full max-w-sm h-auto"
-                  alt="Kino Entrance"
-                />
-                <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
-                  <h1 className="text-3xl font-bold text-[#CDCDCD]">BÄTTRE LJUD OCH BILD ÄN HEMMA</h1>
-                  <p className="py-6 text-[#CDCDCD] ">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
+              <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
+                <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                  <div className="hero bg-[#2B0404] py-0 px-4">
+                    <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+                      <img
+                        src="/KinoSeats.png"
+                        className="w-full max-w-sm h-auto"
+                        alt="Kino Entrance"
+                      />
+                      <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                        <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
+                        <p className="py-6 text-[#CDCDCD]">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
-          <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-            <div className="hero bg-[#2B0404] py-0 px-4">
-              <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
-                <img
-                  src="/KinoSeats.png"
-                  className="w-full max-w-sm h-auto"
-                  alt="Kino Entrance"
-                />
-                <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
-                  <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
-                  <p className="py-6 text-[#CDCDCD]">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-      </div>
-      </div>
-      </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
