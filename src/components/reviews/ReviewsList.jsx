@@ -7,10 +7,12 @@ export default function ReviewsList({ reviews }) {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
-	const paginatedReviews = reviews.slice(
-		(currentPage - 1) * REVIEWS_PER_PAGE,
-		currentPage * REVIEWS_PER_PAGE
-	);
+	const paginatedReviews = [...reviews]
+		.reverse()
+		.slice(
+			(currentPage - 1) * REVIEWS_PER_PAGE,
+			currentPage * REVIEWS_PER_PAGE
+		);
 
 	return (
 		<div className="space-y-2">
