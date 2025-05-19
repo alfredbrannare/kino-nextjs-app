@@ -78,8 +78,8 @@ const Main = () => {
               </div>
             )}
 
-            <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">JUST NU</h1>
+            <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
+              <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">JUST NU</h2>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
@@ -103,9 +103,9 @@ const Main = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">KOMMANDE FILMER</h1>
+            </section>
+            <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
+              <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">KOMMANDE FILMER</h2>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
@@ -117,7 +117,6 @@ const Main = () => {
                 </div>
               )}
 
-              {/* Grid for the cards */}
               <div className="flex flex-row overflow-auto px-2 py-8 w-full">
                 {(loading ? Array.from({ length: 5 }) : upcomingMovies).map((movie, i) => (
                   <div key={movie?._id || i} className="flex justify-start">
@@ -129,7 +128,7 @@ const Main = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
             <div>
               <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-20">
                 <a href="/movies" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
