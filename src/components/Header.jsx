@@ -5,8 +5,10 @@ import Image from 'next/image';
 import Login from './Login';
 import { useAuth } from './user/AuthData';
 import { UserRound } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+  const pathname = usePathname() || '';
   const { isLoggedIn, isLoading, userData } = useAuth();
   return (
     <header>
@@ -22,10 +24,35 @@ const Header = () => {
               <ul
                 tabIndex="0"
                 className="menu menu-sm dropdown-content bg-[#2B0404] text-[#CDCDCD] rounded-box z-10 mt-3 w-52 p-2 shadow">
-                <li><Link href="/tickets" className="text-lg font-bold">BILJETTER</Link></li>
-                <li><Link href="/events" className="text-lg font-bold">EVENEMANG</Link></li>
-                <li><Link href="/movies" className="text-lg font-bold">FILMER</Link></li>
-                <li><Link href="/about" className="text-lg font-bold">OM OSS</Link></li>
+                <li><Link
+                  href="/tickets"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/tickets' ? 'text-yellow-400' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  BILJETTER
+                </Link></li>
+
+                <li><Link
+                  href="/events"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/events' ? 'text-yellow-400' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  EVENEMANG
+                </Link></li>
+                <li><Link
+                  href="/movies"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/movies' ? 'text-yellow-400' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  FILMER
+                </Link></li>
+                <li><Link
+                  href="/about"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/about' ? 'text-yellow-400' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  OM OSS
+                </Link></li>
               </ul>
             </div>
 
@@ -41,10 +68,42 @@ const Header = () => {
 
           <div className="navbar-center hidden custom-sm:flex justify-center text-[#CDCDCD]">
             <ul className="flex gap-8">
-              <li><Link href="/tickets" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">BILJETTER</Link></li>
-              <li><Link href="/events" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">EVENEMANG</Link></li>
-              <li><Link href="/movies" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">FILMER</Link></li>
-              <li><Link href="/about" className="text-lg font-bold hover:scale-110 hover:text-white px-1 rounded-sm transition-transform duration-200 ease-in-out text-[#CDCDCD]">OM OSS</Link></li>
+              <li>
+                <Link
+                  href="/tickets"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/tickets' ? 'text-yellow-400 scale-110' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  BILJETTER
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/events"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/events' ? 'text-yellow-400 scale-110' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  EVENEMANG
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/movies"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/movies' ? 'text-yellow-400 scale-110' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  FILMER
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className={`text-lg font-bold hover:scale-110 px-1 rounded-sm transition-transform duration-200 ease-in-out ${pathname === '/about' ? 'text-yellow-400 scale-110' : 'text-[#CDCDCD]'
+                    }`}
+                >
+                  OM OSS
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="navbar-end mr-6">
