@@ -41,7 +41,7 @@ const Main = () => {
     <div>
       <div className="w-full">
         <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
-          <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+          <div className="relative mx-auto w-full border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <TrailerCarousel trailerMovies={trailerMovies} />
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
