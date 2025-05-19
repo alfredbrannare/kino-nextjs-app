@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
 import Link from "next/link";
-import { Armchair, MapPin, Banknote  } from 'lucide-react';
+import { Armchair, MapPin, Banknote } from 'lucide-react';
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin } = useAuth();
@@ -33,6 +33,13 @@ export default function MembershipPage() {
     }
     getBookings();
   }, []);
+
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
 
   if (isLoading || loading) return <p>Loading page data...</p>;
   if (!isLoggedIn) return <p>Access Denied. You are not authorized to view this page.</p>;
@@ -81,8 +88,8 @@ export default function MembershipPage() {
                 {booking?.map((booking) => (
                   <li key={booking._id} className="text-gray-700 border-b pb-2">
                     <div className="font-semibold">
-                      {booking.movieId?.title || "Okänd film"}{" "}
-                      {new Date(booking.screeningTime).toLocaleString()}
+                      {booking.movieId?.title || "Okänd film"}{<br/>}
+                      {new Date(booking.screeningTime).toLocaleString('sv-SE', options)}
                     </div>
                     <div className="mt-2 text-sm text-gray-600">
                       <MapPin /> Salong: <span className="font-medium">{booking.auditorium}</span>
