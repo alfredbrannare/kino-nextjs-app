@@ -9,13 +9,34 @@ const Main = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [upcomingMovies, setUpcomigMovies] = useState([]);
+
+  useEffect(() => {
+    const fetchCurrentMovies = async () => {
+      try {
+        const res = await fetch('/api/screenings/currently-showing');
+        const data = await res.json();
+        console.log(data);
+
+        setMovies(data);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+        setError('Vi har för tillfället problem med att hämta filmer.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCurrentMovies();
+  }, []);
 
   useEffect(() => {
     const fetchUpcomingMovies = async () => {
       try {
-        const res = await fetch('/api/screenings/next');
+        const res = await fetch('/api/screenings/upcoming-movies');
         const data = await res.json();
-        setMovies(data);
+        console.log(data);
+
+        setUpcomigMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
         setError('Vi har för tillfället problem med att hämta filmer.');
@@ -58,7 +79,7 @@ const Main = () => {
             )}
 
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
+              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">JUST NU</h1>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
@@ -73,6 +94,32 @@ const Main = () => {
               {/* Grid for the cards */}
               <div className="flex flex-row overflow-auto px-2 py-8 w-full">
                 {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
+                  <div key={movie?._id || i} className="flex justify-start">
+                    {loading ? (
+                      <MovieCardSkeleton />
+                    ) : (
+                      <MovieCard movie={movie} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
+              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">KOMMANDE FILMER</h1>
+
+              {error && (
+                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
+                  <div className="text-center text-black flex flex-col items-center">
+                    <Info />
+                    <span className="font-bold text-xl">Fel</span>
+                    <strong className="text-sm text-black font-bold text-xl">{error}</strong>
+                  </div>
+                </div>
+              )}
+
+              {/* Grid for the cards */}
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full">
+                {(loading ? Array.from({ length: 5 }) : upcomingMovies).map((movie, i) => (
                   <div key={movie?._id || i} className="flex justify-start">
                     {loading ? (
                       <MovieCardSkeleton />
