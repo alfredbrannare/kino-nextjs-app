@@ -62,8 +62,18 @@ const MovieCard = ({ movie }) => {
 				<div className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.86)] text-white p-2 opacity-100 sm:opacity-100 xl:opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-300">
 					<h2 className="text-lg font-semibold truncate">{movie.title}</h2>
 					<p className="text-sm">{roundedRating}⭐</p>
-					<p>{formattedDate}</p>
-					<p>{formattedTime}</p>
+					{formattedDate && formattedTime ? (
+						<>
+							<p>{formattedDate}</p>
+							<p>{formattedTime}</p>
+						</>
+					) : (
+						<>
+							<p>Premiär</p>
+							<p>{movie.year}</p>
+						</>
+					)}
+
 				</div>
 			</Link>
 		</div>
