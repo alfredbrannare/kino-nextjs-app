@@ -53,16 +53,6 @@ export const GET = async () => {
                 $unwind: "$movie"
             },
             {
-                $match: {
-                    $expr: {
-                        $lte: [
-                            { $dateFromString: { dateString: "$movie.year" } },
-                            new Date()
-                        ]
-                    }
-                }
-            },
-            {
                 $replaceRoot: {
                     newRoot: {
                         $mergeObjects: ["$movie", "$$ROOT"]
