@@ -8,7 +8,7 @@ MONGO_URI=mongodb://localhost:27017
 
 ### GET the 5 Nearest Upcoming Screenings
 
-- **URL**: `/api/screenings/next`
+- **URL**: `/api/screenings/currently-showing`
 - **Method**: `GET`
 - **Description**: Returns the 5 upcoming screenings starting from the current time, sorted chronologically. Each screening is unique per movie and only includes films currently shown in cinemas.
 - **Response**: JSON array of screening objects with embedded movie data.
@@ -40,6 +40,30 @@ MONGO_URI=mongodb://localhost:27017
     "auditoriumId": "68164b2ef469735514b5f89a",
     "startTime": "2025-05-08T00:00:00.000Z"
   }
+  ]
+  ```
+
+  ### GET the 5 Nearest Upcoming Screenings
+
+- **URL**: `/api/screenings/upcoming-movies`
+- **Method**: `GET`
+- **Description**: Returns the 5 upcoming movies starting from the current date, sorted by release date. Each movie is unique and only includes movies that has not been released yet.
+- **Response**: JSON array of screening objects with embedded movie data.
+- **Example Response**:
+
+  ```
+  [
+  {
+  description: "The wildly funny and touching story of a lonely Hawaiian girl and the fugitive alien who helps to mend her broken family."
+  image: "https://image.tmdb.org/t/p/original//3bN675X0K2E5QiAZVChzB5wq90B.jpg"
+  inCinemas: true
+  rating: "0"
+  title: "Lilo & Stitch"
+  trailerKey: "VWqJifMMgZE"
+  year: "2025-05-21"
+  __v: 0
+  _id: "681f096a03071d53657a5f47"
+  },
   ]
   ```
 
