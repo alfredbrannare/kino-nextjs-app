@@ -92,9 +92,9 @@ const Main = () => {
               )}
 
               {/* Grid for the cards */}
-              <div className="flex flex-row overflow-auto px-2 py-8 w-full">
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full lg:justify-center">
                 {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
-                  <div key={movie?._id || i} className="flex justify-start">
+                  <div key={movie?._id || i} className="flex justify-center">
                     {loading ? (
                       <MovieCardSkeleton />
                     ) : (
@@ -117,7 +117,7 @@ const Main = () => {
                 </div>
               )}
 
-              <div className="flex flex-row overflow-auto px-2 py-8 w-full">
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full lg:justify-center">
                 {(loading ? Array.from({ length: 5 }) : upcomingMovies).map((movie, i) => (
                   <div key={movie?._id || i} className="flex justify-start">
                     {loading ? (
