@@ -20,7 +20,11 @@ const userSchema = new mongoose.Schema({
   benefits: {
     type: [String],
     default: ["2 små läsk för priset av en!"]
-  }
+  },
+  profilePicture: {
+  type: String,
+  default: '',
+},
 });
 
 const User = mongoose.models.Users || mongoose.model("Users", userSchema);
