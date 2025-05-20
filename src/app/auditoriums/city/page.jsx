@@ -30,25 +30,28 @@ const cityPage = () => {
     }
 
     return (
-        <main className="p-6 text-center">
-            <h1 className="text-xl font-bold m-4">Salong: "Uppsala City"</h1>
-            <h3 className="text-l mt-10 mb-10">Välj biljetter</h3>
-            <TicketSelector
-                isLoggedIn={isLoggedIn}
-                onChange={(total, details) => setTicketInfo({ total, details, totalPrice: details.totalPrice })}
-            />
-            <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>
-
-            <SeatSelector
-                movieId={movieId}
-                screeningTime={screeningTime}
-                auditorium={auditorium}
-                userId={userId}
-                maxSeats={ticketInfo.total}
-                ticketInfo={ticketInfo.details}
-                seatsFromDB={seatsFromDB}
-            />
-        </main>
+        <main className="container mx-3xl px-4 py-8">
+            <h1 className="text-2xl font-bold text-center mb-8">Salong: "Uppsala City"</h1>
+            <section className="mb-12">
+                <h3 className="text-lg font-semibold mb-4 text-center">Välj biljetter</h3>
+                <TicketSelector
+                    isLoggedIn={isLoggedIn}
+                    onChange={(total, details) => setTicketInfo({ total, details, totalPrice: details.totalPrice })}
+                />
+            </section>
+            <section>
+                <h3 className="text-lg font-semibold mb-4 text-center">Klicka på stolarna för att välja platser</h3>
+                <SeatSelector
+                    movieId={movieId}
+                    screeningTime={screeningTime}
+                    auditorium={auditorium}
+                    userId={userId}
+                    maxSeats={ticketInfo.total}
+                    ticketInfo={ticketInfo.details}
+                    seatsFromDB={seatsFromDB}
+                />
+            </section>
+        </main >
     );
 };
 
