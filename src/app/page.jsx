@@ -17,8 +17,6 @@ const Main = () => {
       try {
         const res = await fetch('/api/screenings/currently-showing');
         const data = await res.json();
-        console.log(data);
-
         setMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
@@ -64,8 +62,8 @@ const Main = () => {
         <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
           <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <TrailerCarousel trailerMovies={trailerMovies} />
-            <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
+            <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
+              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">JUST NU</h1>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
