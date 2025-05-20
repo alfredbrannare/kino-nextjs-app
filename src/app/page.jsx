@@ -63,7 +63,7 @@ const Main = () => {
           <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <TrailerCarousel trailerMovies={trailerMovies} />
             <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
-              <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">JUST NU</h1>
+              <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">VISAS JUST NU</h2>
 
               {error && (
                 <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
@@ -76,7 +76,7 @@ const Main = () => {
               )}
 
               {/* Grid for the cards */}
-              <div className="flex flex-row overflow-auto px-2 py-8 w-full lg:justify-center">
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
                 {(loading ? Array.from({ length: 5 }) : movies).map((movie, i) => (
                   <div key={movie?._id || i} className="flex justify-center">
                     {loading ? (
@@ -101,7 +101,7 @@ const Main = () => {
                 </div>
               )}
 
-              <div className="flex flex-row overflow-auto px-2 py-8 w-full lg:justify-center">
+              <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
                 {(loading ? Array.from({ length: 5 }) : upcomingMovies).map((movie, i) => (
                   <div key={movie?._id || i} className="flex justify-start">
                     {loading ? (
