@@ -33,8 +33,6 @@ const Main = () => {
       try {
         const res = await fetch('/api/screenings/upcoming-movies');
         const data = await res.json();
-        console.log(data);
-
         setUpcomigMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
