@@ -14,6 +14,20 @@ export default function MembershipPage() {
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
   const adminMenuRef = useRef(null);
   const router = useRouter();
+  const [offers, setOffers] = useState([]);
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        const res = await fetch("/api/offers");
+        const data = await res.json();
+        setOffers(data.offers || []);
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      }
+    };
+    fetchOffers();
+  }, []);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -145,6 +159,7 @@ export default function MembershipPage() {
                     <li><Link href="/admin/movies">🎬 Filmhantering</Link></li>
                     <li><Link href="/admin/screenings">📅 Visningshantering</Link></li>
                     <li><Link href="/admin/reviews">📝 Reviewshantering</Link></li>
+                    <li><Link href="/admin/offers">🎁 Erbjudandehantering</Link></li>
                   </ul>
                 </div>
               )}
@@ -239,12 +254,10 @@ export default function MembershipPage() {
             <Popcorn size={40} /> Veckans erbjudande
           </h3>
           <ul className="space-y-2 list-disc list-inside text-[#CDCDCD]">
-            {userData?.benefits?.length ? (
-              userData.benefits.map((benefit, index) => (
-                <li key={index}>{benefit}</li>
-              ))
+            {offers.length ? (
+              offers.map((offer) => <li key={offer._id}>{offer.text}</li>)
             ) : (
-              <li>Inga aktuella erbjudanden.</li>
+              <p className="text-[#CDCDCD]">Inga aktuella erbjudanden.</p>
             )}
           </ul>
         </div>
