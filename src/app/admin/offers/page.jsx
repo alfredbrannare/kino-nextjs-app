@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "src/components/user/AuthData";
 import { useRouter } from "next/navigation";
+import AdminTabs from "src/components/AdminTabs";
 
 const OffersPage = () => {
   const [offers, setOffers] = useState([]);
@@ -74,33 +75,36 @@ const OffersPage = () => {
   if (!isAdmin) return <p>Tillåtelse nekas</p>;
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Hantera erbjudanden</h1>
-      <div className="mb-4 flex gap-2">
-        <input
-          type="text"
-          value={newOffer}
-          onChange={(e) => setNewOffer(e.target.value)}
-          placeholder="Nytt erbjudande"
-          className="flex-grow input"
-        />
-        <button onClick={addOffer} className="btn btn-primary">Lägg till</button>
-      </div>
+    <div className="p-6">
+      <AdminTabs />
+      <div className="max-w-xl mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Hantera erbjudanden</h1>
+        <div className="mb-4 flex gap-2">
+          <input
+            type="text"
+            value={newOffer}
+            onChange={(e) => setNewOffer(e.target.value)}
+            placeholder="Nytt erbjudande"
+            className="flex-grow input"
+          />
+          <button onClick={addOffer} className="btn btn-primary">Lägg till</button>
+        </div>
 
-      <ul>
-        {offers.length === 0 && <li>Inga erbjudanden tillagda.</li>}
-        {offers.map((offer) => (
-          <li key={offer._id} className="flex justify-between items-center mb-2">
-            <span>{offer.text}</span>
-            <button
-              onClick={() => deleteOffer(offer._id)}
-              className="btn btn-error btn-sm"
-            >
-              Ta bort
-            </button>
-          </li>
-        ))}
-      </ul>
+        <ul>
+          {offers.length === 0 && <li>Inga erbjudanden tillagda.</li>}
+          {offers.map((offer) => (
+            <li key={offer._id} className="flex justify-between items-center mb-2">
+              <span>{offer.text}</span>
+              <button
+                onClick={() => deleteOffer(offer._id)}
+                className="btn btn-error btn-sm"
+              >
+                Ta bort
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
