@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
 import Link from "next/link";
 import { Armchair, MapPin, Banknote } from 'lucide-react';
+import { Pencil, Trash2 } from "lucide-react"
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, fetchUser } = useAuth();
@@ -97,10 +98,37 @@ export default function MembershipPage() {
     }
   };
 
+  const handleRemoveImage = async () => {
+    const confirmDelete = window.confirm("Är du säker på att du vill ta bort profilbilden?");
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/remove-profile", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Profilbilden har tagits bort.");
+        await fetchUser();
+      } else {
+        alert(`Kunde inte ta bort bilden: ${data.error || 'Okänt fel'}`);
+      }
+    } catch (error) {
+      console.error("Remove image error:", error);
+      alert("Ett fel uppstod när bilden skulle tas bort.");
+    }
+  };
+
   console.log("Profile Picture URL:", userData?.profilePicture);
 
   return (
-    <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col md:flex-row justify-center items-start gap-10 px-4 md:px-12 py-10 bg-[#2B0404]">
+    <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col md:flex-row justify-center md:items-center gap-10 px-4 md:px-12 py-10 bg-[#2B0404]">
       {/* Left Column - User Info */}
       <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-[50%] flex-shrink-0">
         <div className="flex justify-between items-center">
@@ -127,29 +155,38 @@ export default function MembershipPage() {
 
 
         <div className="flex flex-col items-center">
-          <img
-            src={
-              userData?.profilePicture
-                ? `${userData.profilePicture}?t=${Date.now()}`
-                : "https://ui-avatars.com/api/?name=John+Doe"
-            }
-            alt="Avatar"
-            className="w-28 h-28 rounded-full object-cover mb-2"
-          />
-
-          <label className="text-yellow-400 cursor-pointer hover:underline">
-            Byt profilbild
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
+          <div className="relative group w-40 h-40">
+            <img
+              src={
+                userData?.profilePicture
+                  ? `${userData.profilePicture}?t=${Date.now()}`
+                  : "/kino-card.jpg"
+              }
+              alt="Avatar"
+              className="w-full h-full rounded-full object-cover"
             />
-          </label>
+
+            <label className="absolute bottom-2 right-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+              <Pencil size={18} color="#facc15" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+            <button
+              onClick={handleRemoveImage}
+              className="absolute bottom-2 left-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              title="Ta bort profilbild"
+            >
+              <Trash2 size={18} color="#f87171" />
+            </button>
+          </div>
         </div>
-        <h2 className="text-3xl font-bold text-[#CDCDCD] text-center mb-4">{userData?.name}</h2>
-        <p className="text-[#CDCDCD] text-center">{userData?.email}</p>
-        <p className="mt-2 font-medium text-m text-[#CDCDCD] text-center">
+        <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
+        <p className="text-[#CDCDCD] text-sm font-bold text-center">{userData?.email}</p>
+        <p className="mt-2 font-bold text-sm text-[#CDCDCD] text-center">
           {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
         </p>
       </div>
