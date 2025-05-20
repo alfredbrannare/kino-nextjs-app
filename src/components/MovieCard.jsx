@@ -71,11 +71,13 @@ const MovieCard = ({ movie }) => {
 							<p>{formattedDate}</p>
 							<p>{formattedTime}</p>
 						</>
-					) : (
+					) : new Date(movie.year) > new Date() ? (
 						<>
 							<p>Premiär</p>
 							<p>{movie.year}</p>
 						</>
+					) : (
+						''
 					)}
 
 				</div>
