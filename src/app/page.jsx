@@ -43,7 +43,7 @@ const Main = () => {
     <div>
       <div className="w-full">
         <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
-          <div className="relative mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+          <div className="relative mx-auto w-full border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <TrailerCarousel trailerMovies={trailerMovies} />
             <div className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">FILMER PÅ KINO</h1>
@@ -121,21 +121,23 @@ const Main = () => {
 
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-                  <div className="hero bg-[#2B0404] py-0 px-4">
-                    <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+                  <div className="bg-[#2B0404] py-0 px-4">
+                    <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
                       <img
                         src="/KinoDoors.png"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                       />
-                      <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                      <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
                         <p className="py-6 text-[#CDCDCD]">
                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                         </p>
+                        <div className="flex justify-center lg:justify-end mt-6">
                         <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                           LÄS MER
                         </a>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -6,7 +6,7 @@ export default function About() {
         <div>
             <h1 className="ml-2 text-3xl font-bold text-[#CDCDCD] ">OM OSS</h1>
         </div>
-        <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
+        <div className=" border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
       <section className="pl-10 pr-10">
         <h2 className="text-2xl font-bold text-[#CDCDCD] mb-4">Din lokala biograf</h2>
         <p className="text-[#CDCDCD] leading-relaxed">
@@ -19,7 +19,7 @@ export default function About() {
       </section>
       </div>
 
-            <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
+            <div className="border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
             <section className="pl-10 pr-10">
         <h2 className="text-2xl font-bold text-[#CDCDCD] mb-4">Annorlunda och unikt</h2>
         <p className="text-[#CDCDCD] leading-relaxed">
@@ -32,7 +32,7 @@ export default function About() {
       </section>
       </div>
 
-      <section className="flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
+      <section className="border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
         <h3 className="text-2xl font-bold text-[#CDCDCD] mb-2">Kontaktinformation</h3>
         <p className="text-[#CDCDCD]">E-post: kino@uppsala.se</p>
         <p className="text-[#CDCDCD]">Telefon: 070-123 45 67</p>
