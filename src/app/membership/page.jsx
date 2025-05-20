@@ -142,124 +142,133 @@ export default function MembershipPage() {
   console.log("Profile Picture URL:", userData?.profilePicture);
 
   return (
-    <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col md:flex-row justify-center md:items-center gap-10 px-4 md:px-12 py-10 bg-[#2B0404]">
-      {/* Left Column - User Info */}
-      <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-[50%] flex-shrink-0">
-        <div className="flex justify-between items-center">
-          {isAdmin && (
-            <div className="relative" ref={adminMenuRef}>
-              <LockKeyhole
-                size={24}
-                className="cursor-pointer hover:scale-110 transition"
-                onClick={() => setAdminMenuOpen(prev => !prev)}
-              />
-              {adminMenuOpen && (
-                <div className="absolute left-0 mt-2 z-10 w-48 p-3 bg-white text-black rounded shadow-lg">
-                  <ul className="space-y-2 font-medium">
-                    <li><Link href="/admin/movies">🎬 Filmhantering</Link></li>
-                    <li><Link href="/admin/screenings">📅 Visningshantering</Link></li>
-                    <li><Link href="/admin/reviews">📝 Reviewshantering</Link></li>
-                    <li><Link href="/admin/offers">🎁 Erbjudandehantering</Link></li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-          <LogOut size={24} className="cursor-pointer hover:scale-110 transition" onClick={logout} />
-        </div>
-
-
-        <div className="flex flex-col items-center">
-          <div className="relative group w-40 h-40">
-            <img
-              src={
-                userData?.profilePicture
-                  ? `${userData.profilePicture}?t=${Date.now()}`
-                  : "/kino-card.jpg"
-              }
-              alt="Avatar"
-              className="w-full h-full rounded-full object-cover"
-            />
-
-            <label className="absolute bottom-2 right-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-              <Pencil size={18} color="#facc15" />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </label>
-            <button
-              onClick={handleRemoveImage}
-              className="absolute bottom-2 left-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-              title="Ta bort profilbild"
-            >
-              <Trash2 size={18} color="#f87171" />
-            </button>
-          </div>
-        </div>
-        <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
-        <p className="text-[#CDCDCD] text-sm font-bold text-center">{userData?.email}</p>
-        <p className="mt-2 font-bold text-sm text-[#CDCDCD] text-center">
-          {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
-        </p>
-      </div>
-
-
-
-      {/* Right Columns - Tickets and Offers */}
-      <div className="flex flex-col gap-6 w-full md:w-50%]">
-        {/* Tickets */}
-        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full">
-          <h3 className="text-xl font-bold text-[#CDCDCD] border-b pb-3 mb-4 flex items-center gap-2">
-            <Ticket size={40} /> Dina Biljetter
-          </h3>
-          {booking.length === 0 ? (
-            <p className="text-[#CDCDCD]">Inga bokningar hittades.</p>
-          ) : (
-            <ul className="space-y-4">
-              {booking.map((booking) => (
-                <li key={booking._id} className="border-b pb-3">
-                  <div className="font-semibold text-[#CDCDCD]">
-                    🎬 {booking.movieId?.title || "Okänd film"}<br />
-                    📆 {new Date(booking.screeningTime).toLocaleString('sv-SE', options)}
+    <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] px-4 py-10">
+      <div className="items-center max-w-screen-xl mx-auto flex flex-col md:flex-row gap-10 w-full">
+        {/* Left Column - User Info */}
+        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-1/2 min-w-[300px] md:ml-5">
+          <div className="flex justify-between items-center">
+            {isAdmin && (
+              <div className="relative" ref={adminMenuRef}>
+                <LockKeyhole
+                  size={24}
+                  className="cursor-pointer hover:scale-110 transition"
+                  onClick={() => setAdminMenuOpen(prev => !prev)}
+                />
+                {adminMenuOpen && (
+                  <div className="absolute left-0 mt-2 z-10 w-48 p-3 bg-white text-black rounded shadow-lg">
+                    <ul className="space-y-2 font-medium">
+                      <li><Link href="/admin/movies">Filmhantering</Link></li>
+                      <li><Link href="/admin/screenings">Visningshantering</Link></li>
+                      <li><Link href="/admin/reviews">Reviewshantering</Link></li>
+                      <li><Link href="/admin/offers">Erbjudandehantering</Link></li>
+                    </ul>
                   </div>
-                  <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
-                    <MapPin size={16} /> Salong: <span className="ml-1 font-medium">{booking.auditorium}</span>
-                  </div>
-                  <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1 flex-wrap">
-                    <Armchair size={16} /> Platser:
-                    {booking.seats.map((seat, i) => (
-                      <span
-                        key={i}
-                        className="ml-2 px-2 py-1 bg-gray-100 rounded text-black"
-                      >
-                        Rad {seat.row}, Stol {seat.seat}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
-                    <Banknote size={16} /> Totalt: {booking.totalPrice} kr
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Offers */}
-        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full">
-          <h3 className="text-xl font-bold text-yellow-400[#CDCDCD] border-b pb-3 mb-4 flex items-center gap-2">
-            <Popcorn size={40} /> Veckans erbjudande
-          </h3>
-          <ul className="space-y-2 list-disc list-inside text-[#CDCDCD]">
-            {offers.length ? (
-              offers.map((offer) => <li key={offer._id}>{offer.text}</li>)
-            ) : (
-              <p className="text-[#CDCDCD]">Inga aktuella erbjudanden.</p>
+                )}
+              </div>
             )}
-          </ul>
+            <LogOut size={24} className="cursor-pointer hover:scale-110 transition" onClick={logout} />
+          </div>
+
+
+          <div className="flex flex-col items-center">
+            <div className="relative group w-40 h-40">
+              <img
+                src={
+                  userData?.profilePicture
+                    ? `${userData.profilePicture}?t=${Date.now()}`
+                    : "/kino-card.jpg"
+                }
+                alt="Avatar"
+                className="w-full h-full rounded-full object-cover"
+              />
+
+              <label className="absolute bottom-2 right-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                <Pencil size={18} color="#facc15" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+              <button
+                onClick={handleRemoveImage}
+                className="absolute bottom-2 left-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                title="Ta bort profilbild"
+              >
+                <Trash2 size={18} color="#f87171" />
+              </button>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
+          <p className="text-[#CDCDCD] text-sm font-bold text-center">{userData?.email}</p>
+          <p className="mt-2 font-bold text-sm text-[#CDCDCD] text-center">
+            {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
+          </p>
+        </div>
+
+
+
+        {/* Right Columns - Tickets and Offers */}
+        <div className="flex flex-col gap-6 w-full md:w-1/2 min-w-[300px] mr-5 ml-5 md:ml-0">
+          {/* Tickets */}
+          <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full">
+            <h3 className="text-xl font-bold text-[#CDCDCD] border-b pb-3 mb-4 flex items-center gap-2">
+              <Ticket size={40} /> Dina Biljetter
+            </h3>
+            {booking.length === 0 ? (
+              <p className="text-[#CDCDCD]">Inga bokningar hittades.</p>
+            ) : (
+              <ul className="space-y-4">
+                {booking.map((booking) => (
+                  <li key={booking._id} className="border-b pb-3">
+                    <div className="font-semibold text-[#CDCDCD]">
+                      🎬 {booking.movieId?.title || "Okänd film"}<br />
+                      📆 {new Date(booking.screeningTime).toLocaleString('sv-SE', options)}
+                    </div>
+                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
+                      <MapPin size={16} /> Salong: <span className="ml-1 font-medium">{booking.auditorium}</span>
+                    </div>
+                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1 flex-wrap">
+                      <Armchair size={16} /> Platser:
+                      {booking.seats.map((seat, i) => (
+                        <span
+                          key={i}
+                          className="ml-2 px-2 py-1 bg-gray-100 rounded text-black"
+                        >
+                          Rad {seat.row}, Stol {seat.seat}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
+                      <Banknote size={16} /> Totalt: {booking.totalPrice} kr
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Offers */}
+          <div className="border-4 border-yellow-400 rounded-xl p-4 bg-[#2b0404] shadow-lg relative overflow-hidden text-center">
+            <div className="absolute top-0 left-0 w-6 h-6 bg-[#2b0404] rounded-br-full border-t-4 border-l-4 border-yellow-400" />
+            <div className="absolute top-0 right-0 w-6 h-6 bg-[#2b0404] rounded-bl-full border-t-4 border-r-4 border-yellow-400" />
+            <div className="absolute bottom-0 left-0 w-6 h-6 bg-[#2b0404] rounded-tr-full border-b-4 border-l-4 border-yellow-400" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#2b0404] rounded-tl-full border-b-4 border-r-4 border-yellow-400" />
+
+            <h3 className="text-xl font-bold text-yellow-400 mb-3 flex justify-center items-center gap-2">
+              <Popcorn size={40} /> Veckans erbjudande
+            </h3>
+            <ul className="space-y-2 list-disc ml-0 font-bold text-yellow-400 text-lg">
+              {offers.length > 0 ? (
+                offers.map((offer, index) => (
+                  <li key={index}>{offer.text}</li>
+                ))
+              ) : (
+                <li>Inga aktuella erbjudanden.</li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

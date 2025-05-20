@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "src/lib/mongodb";
-import Offer from "src/models/offer";
+import Offer from "src/models/model.offer";
 import { checkAuth } from "src/lib/auth";
 
 export async function DELETE(req, { params }) {
