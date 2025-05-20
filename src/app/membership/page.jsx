@@ -189,7 +189,7 @@ useEffect(() => {
           <div className="flex flex-col items-center">
             <div className="relative group">
               <img
-                src={userData?.profilePicture || "/default-profile.png"}
+                src={userData?.profilePicture || "/kino-card.jpg"}
                 className="rounded-full w-40 h-40 object-cover"
                 alt="Profilbild"
               />
