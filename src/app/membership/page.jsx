@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
 import Link from "next/link";
 import { Armchair, MapPin, Banknote } from 'lucide-react';
-import { Pencil, Trash2 } from "lucide-react"
+import { MoreVertical, Pencil, Trash2 } from "lucide-react"
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, fetchUser } = useAuth();
@@ -15,6 +15,8 @@ export default function MembershipPage() {
   const adminMenuRef = useRef(null);
   const router = useRouter();
   const [offers, setOffers] = useState([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -51,21 +53,35 @@ export default function MembershipPage() {
     getBookings();
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        adminMenuRef.current &&
-        !adminMenuRef.current.contains(event.target)
-      ) {
-        setAdminMenuOpen(false);
-      }
-    }
+  const mobileMenuRef = useRef(null);
 
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
+      setAdminMenuOpen(false);
+    }
+  }
+  if (adminMenuOpen) {
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  }
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [adminMenuOpen]);
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      setShowMobileMenu(false);
+    }
+  }
+  if (showMobileMenu) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [showMobileMenu]);
 
   const options = {
     weekday: "long",
@@ -171,18 +187,15 @@ export default function MembershipPage() {
 
 
           <div className="flex flex-col items-center">
-            <div className="relative group w-40 h-40">
+            <div className="relative group">
               <img
-                src={
-                  userData?.profilePicture
-                    ? `${userData.profilePicture}?t=${Date.now()}`
-                    : "/kino-card.jpg"
-                }
-                alt="Avatar"
-                className="w-full h-full rounded-full object-cover"
+                src={userData?.profilePicture || "/default-profile.png"}
+                className="rounded-full w-40 h-40 object-cover"
+                alt="Profilbild"
               />
 
-              <label className="absolute bottom-2 right-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Desktop */}
+              <label className="absolute bottom-2 right-2 hidden sm:block bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
                 <Pencil size={18} color="#facc15" />
                 <input
                   type="file"
@@ -191,13 +204,46 @@ export default function MembershipPage() {
                   className="hidden"
                 />
               </label>
+
               <button
                 onClick={handleRemoveImage}
-                className="absolute bottom-2 left-2 bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute bottom-2 left-2 hidden sm:block bg-black/60 p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                 title="Ta bort profilbild"
               >
                 <Trash2 size={18} color="#f87171" />
               </button>
+
+              {/* Mobile */}
+              <div className="sm:hidden absolute bottom-2 right-2" ref={mobileMenuRef}>
+                <button
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  className="bg-black/60 p-1 rounded-full"
+                >
+                  <MoreVertical size={18} color="#facc15" />
+                </button>
+
+                {showMobileMenu && (
+                  <div className="absolute top-full right-0 mt-2 bg-[#CDCDCD] rounded-md shadow-lg p-3 space-y-3 z-50 min-w-[160px]">
+                    <label className="flex items-center gap-3 text-[#2b0404] cursor-pointer px-3 py-2 hover:bg-[#2b0404] hover:text-[#CDCDCD] rounded">
+                      <Pencil size={18} />
+                      <span className="whitespace-nowrap">Ändra bild</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+                    <button
+                      onClick={handleRemoveImage}
+                      className="flex items-center gap-3 text-[#2b0404] px-3 py-2 cursor-pointer hover:bg-[#2b0404] hover:text-[#CDCDCD] rounded w-full justify-start"
+                    >
+                      <Trash2 size={18} />
+                      <span className="whitespace-nowrap">Ta bort bild</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
