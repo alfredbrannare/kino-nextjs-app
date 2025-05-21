@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import AdminTabs from "src/components/AdminTabs"
-import EventCreator from "src/components/events/EventCreator"
+import EventCreator from "src/components/EventCreator"
 
 const LiveEventsPage = () => {
     const [liveEvents, setLiveEvents] = useState([])
