@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
+import AdminTabs from "src/components/AdminTabs";
 
 const ReviewsPage = () => {
 	const [reviews, setReviews] = useState([]);
@@ -77,50 +78,54 @@ const ReviewsPage = () => {
 
 	return (
 		<>
-			<select
-				className="select select-bordered input block mx-auto mt-10"
-				value={selectedMovie}
-				onChange={(e) => setSelectedMovie(e.target.value)}
-			>
-				<option value="">
-					-- Välj film --
-				</option>
-				{movies.map((movie) => (
-					<option key={movie._id} value={movie._id}>
-						{movie.title}
+			<div className="p-6">
+				<AdminTabs />
+				<select
+					className="select select-bordered input block mx-auto mt-10"
+					value={selectedMovie}
+					onChange={(e) => setSelectedMovie(e.target.value)}
+				>
+					<option value="">
+						-- Välj film --
 					</option>
-				))}
-			</select>
-			<br />
+					{movies.map((movie) => (
+						<option key={movie._id} value={movie._id}>
+							{movie.title}
+						</option>
+					))}
+				</select>
+				<br />
 
-			<input
-				type="text"
-				className="input block mx-auto mt-10"
-				placeholder="Sök"
-				value={inputSearch}
-				onChange={(e) => setInputSearch(e.target.value)}
-			/>
+				<input
+					type="text"
+					className="input block mx-auto mt-10"
+					placeholder="Sök"
+					value={inputSearch}
+					onChange={(e) => setInputSearch(e.target.value)}
+				/>
 
-			<h1 className="italic font-semibold text-3xl text-center pt-10">
-				Reviews:
-			</h1>
-			<br />
-			{filteredReviews.map((review) => (
-				<div
-					key={review._id}
-					className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-2xl">
-					<h2>{review.text}</h2>
-					<span>{review.userName}</span>
-					<div>
-						<button
-							onClick={() => deleteReview(review._id)}
-							className="btn btn-error">
-							Delete
-						</button>
+				<h1 className="italic font-semibold text-3xl text-center pt-10">
+					Reviews:
+				</h1>
+				<br />
+				{filteredReviews.map((review) => (
+					<div
+						key={review._id}
+						className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-2xl">
+						<h2>{review.text}</h2>
+						<span>{review.userName}</span>
+						<div>
+							<button
+								onClick={() => deleteReview(review._id)}
+								className="btn btn-error">
+								Delete
+							</button>
+						</div>
 					</div>
-				</div>
-			))}
+				))}
+			</div>
 		</>
+
 	)
 }
 
