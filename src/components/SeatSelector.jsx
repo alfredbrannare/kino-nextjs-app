@@ -99,37 +99,41 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     return (
         <div className="p-4 mb-8 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <div className="flex justify-center mb-6">
-                <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6">Bioduk</div>
+                <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6 text-center">Bioduk</div>
             </div>
-            {salong.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex justify-center gap-3">
-                    {row.map((seat, seatIndex) => {
-                        const isBooked = bookedSeats.some(
-                            (b) => b.row === seat.row && b.seat === seat.seat
-                        );
-                        const isSelected = selectedSeats.some(
-                            (s) => s.row === seat.row && s.seat === seat.seat
-                        );
+            <div className="overflow-x-auto w-full px-4">
+                <div className="flex flex-col items-center space-y-2 min-w-[360px]">
+                    {salong.map((row, rowIndex) => (
+                        <div key={rowIndex} className="flex justify-center gap-2 sm:gap-3 min-w-[360px] ">
+                            {row.map((seat, seatIndex) => {
+                                const isBooked = bookedSeats.some(
+                                    (b) => b.row === seat.row && b.seat === seat.seat
+                                );
+                                const isSelected = selectedSeats.some(
+                                    (s) => s.row === seat.row && s.seat === seat.seat
+                                );
 
-                        return (
-                            <button
-                                key={seatIndex}
-                                onClick={() => toggleSeat(seat)}
-                                disabled={isBooked}
-                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded text-white ${isBooked
-                                    ? 'bg-red-500 cursor-not-allowed'
-                                    : isSelected ? 'bg-green-800 border-3 border-white cursor-pointer'
-                                        : seat.isWheelchair
-                                            ? 'bg-blue-500 cursor-pointer'
-                                            : 'bg-gray-500 cursor-pointer'
-                                    }
+                                return (
+                                    <button
+                                        key={seatIndex}
+                                        onClick={() => toggleSeat(seat)}
+                                        disabled={isBooked}
+                                        className={`w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded text-white ${isBooked
+                                            ? 'bg-red-500 cursor-not-allowed'
+                                            : isSelected ? 'bg-green-800 border-3 border-white cursor-pointer'
+                                                : seat.isWheelchair
+                                                    ? 'bg-blue-500 cursor-pointer'
+                                                    : 'bg-gray-500 cursor-pointer'
+                                            }
                                     hover:border-3 hover:border-white hover:scale-110 transition`}
-                            >
-                            </button>
-                        );
-                    })}
+                                    >
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    ))}
                 </div>
-            ))}
+            </div>
             {showSeatWarning && (
                 <p className="text-center text-sm text-red-500">
                     Du kan inte välja fler platser än antal biljetter
@@ -139,7 +143,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             {bookingSuccess && (
                 <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>
             )}
-            <div className="mt-6 space-y-2">
+            <div className="mt-6 space-y-2 text-center">
                 <p className="text-sm font-medium">Stolguide:</p>
                 <div className="flex gap-6 flex-wrap text-sm sm:text-base justify-center">
                     <Legend color="bg-gray-500" label="Valbar plats" />
@@ -148,20 +152,22 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                     <Legend color="bg-red-500" label="Ej valbar (bokad)" />
                 </div>
             </div>
-            <button
-                title={selectedSeats.length === 0 ? 'Välj platser först' : ''}
-                disabled={
-                    isBooking ||
-                    selectedSeats.length !== maxSeats ||
-                    selectedSeats.length === 0
-                }
-                onClick={handleBooking}
-                className={`mt-6 px-4 py-2 rounded text-black transition ${selectedSeats.length !== maxSeats || isBooking
+            <div className="flex justify-center mt-6">
+                <button
+                    title={selectedSeats.length === 0 ? 'Välj platser först' : ''}
+                    disabled={
+                        isBooking ||
+                        selectedSeats.length !== maxSeats ||
+                        selectedSeats.length === 0
+                    }
+                    onClick={handleBooking}
+                    className={`mt-6 px-6 py-3 w-full sm:w-auto rounded text-black font-semibold transition ${selectedSeats.length !== maxSeats || isBooking
                         ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-400 cursor-pointer'
-                    }`}
-            >
-                {isBooking ? 'Bokar valda platser...' : 'Boka platser'}
-            </button>
+                        }`}
+                >
+                    {isBooking ? 'Bokar valda platser...' : 'Boka platser'}
+                </button>
+            </div>
             <WheelchairModal
                 seat={pendingWheelchairSeat}
                 onConfirm={() => {
