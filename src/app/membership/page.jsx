@@ -278,8 +278,8 @@ export default function MembershipPage() {
                       key={b._id}
                       className="border-t border-dashed border-yellow-400 my-4 border border-yellow-400 rounded-xl p-4 bg-[#3B0C0C] shadow-md"
                     >
-                      <div className="font-semibold text-yellow-400 text-lg">
-                        🎬{b.movieId?.title || "Okänd film"}
+                      <div className="font-semibold mb-1 text-yellow-400 text-lg">
+                        {b.movieId?.title || "Okänd film"}
                       </div>
                       <div className="text-[#CDCDCD] text-sm mb-2">
                         📆 {new Date(b.screeningTime).toLocaleString("sv-SE", options)}
