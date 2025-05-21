@@ -3,10 +3,8 @@
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { LogOut, LockKeyhole, Popcorn, Ticket } from 'lucide-react';
+import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote } from 'lucide-react';
 import Link from "next/link";
-import { Armchair, MapPin, Banknote } from 'lucide-react';
-import { MoreVertical, Pencil, Trash2 } from "lucide-react"
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, fetchUser } = useAuth();
@@ -17,6 +15,16 @@ export default function MembershipPage() {
   const [offers, setOffers] = useState([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const menuRef = useRef(null);
+  const [expandedTickets, setExpandedTickets] = useState({});
+  const [showAllTickets, setShowAllTickets] = useState(false);
+  const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));
+
+  const toggleExpand = (id) => {
+    setExpandedTickets((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -55,33 +63,33 @@ export default function MembershipPage() {
 
   const mobileMenuRef = useRef(null);
 
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
-      setAdminMenuOpen(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
+        setAdminMenuOpen(false);
+      }
     }
-  }
-  if (adminMenuOpen) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [adminMenuOpen]);
+    if (adminMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [adminMenuOpen]);
 
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-      setShowMobileMenu(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setShowMobileMenu(false);
+      }
     }
-  }
-  if (showMobileMenu) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [showMobileMenu]);
+    if (showMobileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMobileMenu]);
 
   const options = {
     weekday: "long",
@@ -155,13 +163,11 @@ useEffect(() => {
     }
   };
 
-  console.log("Profile Picture URL:", userData?.profilePicture);
-
   return (
     <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] px-4 py-10">
-      <div className="items-center max-w-screen-xl mx-auto flex flex-col md:flex-row gap-10 w-full">
+      <div className="items-stretch max-w-screen-xl mx-auto flex flex-col md:flex-row gap-10 w-full">
         {/* Left Column - User Info */}
-        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-1/2 min-w-[300px] md:ml-5">
+        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-1/2 min-w-[300px] md:ml-5 flex flex-col  md:ml-5 flex-grow ">
           <div className="flex justify-between items-center">
             {isAdmin && (
               <div className="relative" ref={adminMenuRef}>
@@ -185,12 +191,11 @@ useEffect(() => {
             <LogOut size={24} className="cursor-pointer hover:scale-110 transition" onClick={logout} />
           </div>
 
-
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center justify-center flex-grow">
             <div className="relative group">
               <img
                 src={userData?.profilePicture || "/kino-card.jpg"}
-                className="rounded-full w-40 h-40 object-cover"
+                className="rounded-full w-50 h-50 object-cover"
                 alt="Profilbild"
               />
 
@@ -245,53 +250,87 @@ useEffect(() => {
                 )}
               </div>
             </div>
+            <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
+            <p className="text-[#CDCDCD] text-m font-bold text-center">{userData?.email}</p>
+            <p className="mt-2 font-bold text-m text-[#CDCDCD] text-center">
+              {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
-          <p className="text-[#CDCDCD] text-sm font-bold text-center">{userData?.email}</p>
-          <p className="mt-2 font-bold text-sm text-[#CDCDCD] text-center">
-            {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
-          </p>
         </div>
 
 
 
         {/* Right Columns - Tickets and Offers */}
-        <div className="flex flex-col gap-6 w-full md:w-1/2 min-w-[300px] mr-5 ml-5 md:ml-0">
+        <div className="items-center flex flex-col gap-6 w-full md:w-1/2 min-w-[300px] mr-5 ml-0 md:ml-0 h-full">
           {/* Tickets */}
-          <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full">
-            <h3 className="text-xl font-bold text-[#CDCDCD] border-b pb-3 mb-4 flex items-center gap-2">
+          <div className="bg-[#2B0404] rounded-2xl border- border-yellow-400 shadow-xl p-6 w-full">
+            <h3 className="text-xl font-bold text-[#CDCDCD]  pb-1 mb-4 flex justify-center items-center gap-2">
               <Ticket size={40} /> Dina Biljetter
             </h3>
             {booking.length === 0 ? (
               <p className="text-[#CDCDCD]">Inga bokningar hittades.</p>
             ) : (
               <ul className="space-y-4">
-                {booking.map((booking) => (
-                  <li key={booking._id} className="border-b pb-3">
-                    <div className="font-semibold text-[#CDCDCD]">
-                      🎬 {booking.movieId?.title || "Okänd film"}<br />
-                      📆 {new Date(booking.screeningTime).toLocaleString('sv-SE', options)}
-                    </div>
-                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
-                      <MapPin size={16} /> Salong: <span className="ml-1 font-medium">{booking.auditorium}</span>
-                    </div>
-                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1 flex-wrap">
-                      <Armchair size={16} /> Platser:
-                      {booking.seats.map((seat, i) => (
-                        <span
-                          key={i}
-                          className="ml-2 px-2 py-1 bg-gray-100 rounded text-black"
-                        >
-                          Rad {seat.row}, Stol {seat.seat}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
-                      <Banknote size={16} /> Totalt: {booking.totalPrice} kr
-                    </div>
-                  </li>
-                ))}
+                {(showAllTickets ? sortedBookings : sortedBookings.slice(0, 2)).map((b) => {
+                  const isExpanded = expandedTickets[b._id];
+                  return (
+                    <li
+                      key={b._id}
+                      className="border-t border-dashed border-yellow-400 my-4 border border-yellow-400 rounded-xl p-4 bg-[#3B0C0C] shadow-md"
+                    >
+                      <div className="font-semibold text-yellow-400 text-lg">
+                        🎬 {b.movieId?.title || "Okänd film"}
+                      </div>
+                      <div className="text-[#CDCDCD] text-sm mb-2">
+                        📆 {new Date(b.screeningTime).toLocaleString("sv-SE", options)}
+                      </div>
+
+                      {isExpanded && (
+                        <>
+                          <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
+                            <MapPin size={16} /> Salong:{" "}
+                            <span className="ml-1 font-medium">{b.auditorium}</span>
+                          </div>
+                          <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1 flex-wrap">
+                            <Armchair size={16} /> Platser:
+                            {b.seats.map((seat, i) => (
+                              <span
+                                key={i}
+                                className="ml-2 px-2 py-1 bg-yellow-100 rounded text-black"
+                              >
+                                Rad {seat.row}, Stol {seat.seat}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="mt-2 text-sm text-[#CDCDCD] flex items-center gap-1">
+                            <Banknote size={16} /> Totalt: {b.totalPrice} kr
+                          </div>
+                        </>
+                      )}
+
+                      <button
+                        onClick={() => toggleExpand(b._id)}
+                        className="mt-0 hover:cursor-pointer text-sm font-medium text-yellow-400 hover:underline"
+                      >
+                        {isExpanded ? "Visa mindre" : "Se mer"}
+                      </button>
+                    </li>
+
+                  );
+
+                })}
               </ul>
+
+            )}
+            {booking.length > 2 && (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setShowAllTickets(!showAllTickets)}
+                  className="text-sm hover:cursor-pointer font-semibold text-yellow-400 hover:underline"
+                >
+                  {showAllTickets ? "Visa färre biljetter" : "Se fler biljetter"}
+                </button>
+              </div>
             )}
           </div>
 
@@ -302,7 +341,7 @@ useEffect(() => {
             <div className="absolute bottom-0 left-0 w-6 h-6 bg-[#2b0404] rounded-tr-full border-b-4 border-l-4 border-yellow-400" />
             <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#2b0404] rounded-tl-full border-b-4 border-r-4 border-yellow-400" />
 
-            <h3 className="text-xl font-bold text-yellow-400 mb-3 flex justify-center items-center gap-2">
+            <h3 className="text-xl font-bold text-[#CDCDCD] mb-3 flex justify-center items-center gap-2">
               <Popcorn size={40} /> Veckans erbjudande
             </h3>
             <ul className="space-y-2 list-none ml-0 font-bold text-yellow-400 text-lg">
