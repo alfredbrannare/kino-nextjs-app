@@ -39,7 +39,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
     }, [ordinary, child, retired, student, member]);
 
     return (
-        <div className="p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="m-auto p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] max-w-[720px]">
             <div className="bg-gray-800 p-3 rounded">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="text-center sm:text-left">
