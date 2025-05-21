@@ -195,7 +195,7 @@ export default function MembershipPage() {
             <div className="relative group">
               <img
                 src={userData?.profilePicture || "/kino-card.jpg"}
-                className="rounded-full w-50 h-50 object-cover"
+                className="border-2 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-full w-50 h-50 object-cover"
                 alt="Profilbild"
               />
 
@@ -279,7 +279,7 @@ export default function MembershipPage() {
                       className="border-t border-dashed border-yellow-400 my-4 border border-yellow-400 rounded-xl p-4 bg-[#3B0C0C] shadow-md"
                     >
                       <div className="font-semibold text-yellow-400 text-lg">
-                        🎬 {b.movieId?.title || "Okänd film"}
+                        🎬{b.movieId?.title || "Okänd film"}
                       </div>
                       <div className="text-[#CDCDCD] text-sm mb-2">
                         📆 {new Date(b.screeningTime).toLocaleString("sv-SE", options)}
@@ -296,7 +296,7 @@ export default function MembershipPage() {
                             {b.seats.map((seat, i) => (
                               <span
                                 key={i}
-                                className="ml-2 px-2 py-1 bg-yellow-100 rounded text-black"
+                                className="ml-2 px-2 py-1 bg-[#2b0404] rounded text-[#CDCDCD]"
                               >
                                 Rad {seat.row}, Stol {seat.seat}
                               </span>
