@@ -12,6 +12,7 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [events, setEvents] = useState([]);
+  const [liveEvents, setLiveEvents] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -19,7 +20,25 @@ const Main = () => {
         const res = await fetch('/api/events/live');
         const data = await res.json();
         console.log(data);
-        const limitedData = data.slice(0, 2);
+        const limitedData = data.slice(0, 1);
+        setLiveEvents(limitedData);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        setError('Vi har för tillfället problem med att hämta evenemang');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/events');
+        const data = await res.json();
+        console.log(data);
+        const limitedData = data.slice(0, 1);
         setEvents(limitedData);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -97,6 +116,40 @@ const Main = () => {
               </div>
               <section className="my-12 text-center">
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                {liveEvents.map((event) => (
+                  <div className="w-full my-6">
+                    <div className="justify-center align-center my-6">
+                      <div className="flex flex-col gap-6 px-4 py-8">
+                        <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                          <div className="hero-content flex-col lg:flex-row-reverse">
+                            <img
+                              src={event.image}
+                              className="w-[384px] h-[256px] object-cover"
+                              alt={`Image for ${event.title}`}
+                            />
+                            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                              <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
+                              <p className="py-6 text-[#CDCDCD]">
+                                {event.description}
+                              </p>
+                              <div className="flex justify-center lg:justify-start mt-6">
+                                <a href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                  LÄS MER
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <Link href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                  SE ALLA LIVE EVENEMANG
+                </Link>
+              </section>
+              <section className="my-12 text-center">
+                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
                 {events.map((event) => (
                   <div className="w-full my-6">
                     <div className="justify-center align-center my-6">
@@ -114,7 +167,7 @@ const Main = () => {
                                 {event.description}
                               </p>
                               <div className="flex justify-center lg:justify-start mt-6">
-                                <a href="/events" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                <a href="/events?tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                                   LÄS MER
                                 </a>
                               </div>
@@ -125,8 +178,8 @@ const Main = () => {
                     </div>
                   </div>
                 ))}
-                <Link href="/events" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-                  Se alla evenemang
+                <Link href="/events=tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                  SE ALLA EVENEMANG
                 </Link>
               </section>
               <div className="bg-[#CDCDCD] py-16 px-4 text-center">

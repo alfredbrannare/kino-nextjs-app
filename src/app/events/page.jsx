@@ -1,12 +1,16 @@
 'use client';
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EventsTabs from "src/components/events/EventsTabs";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
   const [liveEvents, setLiveEvents] = useState([]);
-  const [activeTab, setActiveTab] = useState("tab1");
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'tab1';
+  const [activeTab, setActiveTab] = useState(initialTab);
+
   const tabs = [
     { id: "tab1", label: "Live på Kino" },
     { id: "tab2", label: "Evenemang" },
