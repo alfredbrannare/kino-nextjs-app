@@ -305,7 +305,7 @@ useEffect(() => {
             <h3 className="text-xl font-bold text-yellow-400 mb-3 flex justify-center items-center gap-2">
               <Popcorn size={40} /> Veckans erbjudande
             </h3>
-            <ul className="space-y-2 list-disc ml-0 font-bold text-yellow-400 text-lg">
+            <ul className="space-y-2 list-none ml-0 font-bold text-yellow-400 text-lg">
               {offers.length > 0 ? (
                 offers.map((offer, index) => (
                   <li key={index}>{offer.text}</li>
