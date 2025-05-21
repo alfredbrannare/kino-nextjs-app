@@ -68,7 +68,7 @@ export async function  POST(request) {
             }
         }
 
-        const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId, auditorium, totalPrice });
+        const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId:'6820d93969eddb5ac9ed9f95', auditorium, totalPrice });
         return Response.json(booking, { status: 201 });
     } catch (err) {
         console.error('Booking error', err);
