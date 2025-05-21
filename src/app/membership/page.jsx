@@ -167,7 +167,7 @@ export default function MembershipPage() {
     <div className="bg-[#250303] border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] px-4 py-10">
       <div className="items-stretch max-w-screen-xl mx-auto flex flex-col md:flex-row gap-10 w-full">
         {/* Left Column - User Info */}
-        <div className="bg-[#2B0404] rounded-2xl shadow-xl p-6 w-full md:w-1/2 min-w-[300px] md:ml-5 flex flex-col  md:ml-5 flex-grow ">
+        <div className="bg-[#2B0404]  border-1 border-yellow-400 rounded-2xl shadow-xl p-6 w-full md:w-1/2 min-w-[300px] md:ml-5 flex flex-col  md:ml-5 flex-grow ">
           <div className="flex justify-between items-center">
             {isAdmin && (
               <div className="relative" ref={adminMenuRef}>
@@ -263,7 +263,7 @@ export default function MembershipPage() {
         {/* Right Columns - Tickets and Offers */}
         <div className="items-center flex flex-col gap-6 w-full md:w-1/2 min-w-[300px] mr-5 ml-0 md:ml-0 h-full">
           {/* Tickets */}
-          <div className="bg-[#2B0404] rounded-2xl border- border-yellow-400 shadow-xl p-6 w-full">
+          <div className="bg-[#2B0404] rounded-2xl border-1 border-yellow-400 shadow-xl p-6 w-full">
             <h3 className="text-xl font-bold text-[#CDCDCD]  pb-1 mb-4 flex justify-center items-center gap-2">
               <Ticket size={40} /> Dina Biljetter
             </h3>
