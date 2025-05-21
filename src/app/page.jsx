@@ -177,9 +177,9 @@ const Main = () => {
                                 {event.description}
                               </p>
                               <div className="flex justify-center lg:justify-start mt-6">
-                                <a href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                <Link href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                                   LÄS MER
-                                </a>
+                                </Link>
                               </div>
                             </div>
                           </div>
@@ -192,29 +192,27 @@ const Main = () => {
                   SE ALLA LIVE EVENEMANG
                 </Link>
               </section>
-              <section className="my-12 text-center">
-                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
+              <section>
+                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
                 {events.map((event) => (
-                  <div className="w-full my-6" key={event._id}>
-                    <div className="justify-center align-center my-6">
-                      <div className="flex flex-col gap-6 px-4 py-8">
-                        <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
-                          <div className="hero-content flex-col lg:flex-row-reverse">
-                            <img
-                              src={event.image}
-                              className="w-[384px] h-[256px] object-cover"
-                              alt={`Image for ${event.title}`}
-                            />
-                            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
-                              <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
-                              <p className="py-6 text-[#CDCDCD]">
-                                {event.description}
-                              </p>
-                              <div className="flex justify-center lg:justify-start mt-6">
-                                <a href="/events?tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-                                  LÄS MER
-                                </a>
-                              </div>
+                  <div className="flex flex-col gap-6 px-4 py-8" key={event._id}>
+                    <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                      <div className="bg-[#2B0404] py-0 px-4">
+                        <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
+                          <img
+                            src={event.image}
+                            className="w-full max-w-sm h-auto"
+                            alt={`Image for ${event.title}`}
+                          />
+                          <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
+                            <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
+                            <p className="py-6 text-[#CDCDCD]">
+                              {event.description}
+                            </p>
+                            <div className="flex justify-center lg:justify-end mt-6">
+                              <Link href="/events?tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                LÄS MER
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -222,9 +220,6 @@ const Main = () => {
                     </div>
                   </div>
                 ))}
-                <Link href="/events=tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
-                  SE ALLA EVENEMANG
-                </Link>
               </section>
               <div className="bg-[#CDCDCD] py-16 px-4 text-center">
                 <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
