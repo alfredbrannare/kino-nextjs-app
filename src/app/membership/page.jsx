@@ -275,6 +275,8 @@ export default function MembershipPage() {
               <ul className="space-y-4">
                 {(showAllTickets ? sortedBookings : sortedBookings.slice(0, 2)).map((b) => {
                   const isExpanded = expandedTickets[b._id];
+                  const formattedDate = new Date(b.screeningTime).toLocaleString("sv-SE", options);
+                  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
                   return (
                     <li
                       key={b._id}
@@ -285,7 +287,9 @@ export default function MembershipPage() {
                       </div>
                       <div className="flex items-center text-[#CDCDCD] text-sm mb-2">
                         <Calendar size={16} />
-                        <span className="ml-1 font-medium"></span>{new Date(b.screeningTime).toLocaleString("sv-SE", options)}
+                        <span className="ml-1 font-medium">
+                          <span className="ml-1 font-medium">{capitalizedDate}</span>
+                        </span>
                       </div>
 
                       {isExpanded && (
