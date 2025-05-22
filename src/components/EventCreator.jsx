@@ -35,14 +35,14 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
 
         const eventData = {
             title,
-            time,
             date,
+            time,
             image,
             description,
         }
 
         const method = isEditing ? 'PUT' : 'POST';
-        const url = isEditing ? `/api/events/live/${eventId}` : '/api/events/live';
+        const url = isEditing ? `/api/events/${eventId}` : '/api/events';
 
         try {
             const token = localStorage.getItem('token');
@@ -60,13 +60,13 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                 setIsEditing(false);
                 clearEventToEdit();
                 setUpdate(true);
-                alert(`${isEditing ? 'Live event updated' : 'Live event added'} successfully!`);
+                alert(`${isEditing ? 'Event updated' : 'Event added'} successfully!`);
             } else {
                 alert(`Error: ${body.message || response.statusText}`);
             }
         } catch (error) {
-            console.error(`Error ${isEditing ? 'updating' : 'adding'} live event:`, error);
-            alert(`Error ${isEditing ? 'updating' : 'adding'} live event. Please try again.`);
+            console.error(`Error ${isEditing ? 'updating' : 'adding'} event:`, error);
+            alert(`Error ${isEditing ? 'updating' : 'adding'} event. Please try again.`);
         } finally {
             setLoading(false);
         }
