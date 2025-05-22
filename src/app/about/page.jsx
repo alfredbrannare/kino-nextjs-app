@@ -4,7 +4,7 @@ export default function About() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 space-y-16 text-center">
         <div>
-            <h1 className="ml-2 text-3xl font-bold text-[#CDCDCD] ">OM OSS</h1>
+            <h1 className="ml-2 text-3xl font-bold text-[#CDCDCD] ">Om oss</h1>
         </div>
         <div className=" border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] flex flex-col gap-6 px-4 py-8 bg-[#250303] p-6 rounded-2xl">
       <section className="pl-10 pr-10">
