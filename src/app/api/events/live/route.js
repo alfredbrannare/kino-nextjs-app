@@ -7,7 +7,6 @@ export const GET = async () => {
     try {
         await connectDB();
         const events = await LiveEvents.find();
-        console.log(events)
         return NextResponse.json(events, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: 'Database error' }, { status: 500 });

@@ -57,7 +57,6 @@ const EventsPage = () => {
     const handleEditClick = (event) => {
         setIsEditing(true);
         setEventToEdit(event);
-        console.log(event)
     }
 
     if (isAuthLoading || loading) return <p>Loading page data...</p>;

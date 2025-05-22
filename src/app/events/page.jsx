@@ -53,6 +53,9 @@ export default function Events() {
                 className="w-full h-60 object-cover rounded-lg"
               />
               <h2 className="text-2xl pt-4 font-semibold text-[#CDCDCD]">{event.title}</h2>
+              {event.runtime ? <p className="text-md font-semibold text-[#CDCDCD]">
+                {Math.floor(event.runtime / 60)} timmar och {event.runtime % 60} minuter
+              </p> : <p></p>}
               <p className="text-[#CDCDCD] mt-2 mb-2">{event.date} kl {event.time}</p>
               <p className="text-[#CDCDCD] mb-4 text-l">{event.description}</p>
             </div>

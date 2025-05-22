@@ -173,6 +173,9 @@ const Main = () => {
                             />
                             <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                               <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
+                              <p className="mt-3">
+                                {Math.floor(event.runtime / 60)} timmar och {event.runtime % 60} minuter
+                              </p>
                               <p className="py-6 text-[#CDCDCD]">
                                 {event.description}
                               </p>
@@ -193,7 +196,7 @@ const Main = () => {
                 </Link>
               </section>
               <section>
-                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
                 {events.map((event) => (
                   <div className="flex flex-col gap-6 px-4 py-8" key={event._id}>
                     <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
