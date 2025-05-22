@@ -1,16 +1,17 @@
-"use client"
+'use client';
 export default function Views({ views }) {
-	const { emptySeats, maxSeats } = views
-	const emptyPercentage = (emptySeats / maxSeats) * 100
+	const { bookedCount, maxSeats } = views;
+	const emptyPercentage = (bookedCount / maxSeats) * 100;
+	console.log('booked', bookedCount);
+	console.log('max', maxSeats);
+	let color = '';
 
-	let color = ""
-
-	if (emptyPercentage >= 90) {
-		color = "#FB3C3C"
-	} else if (emptyPercentage >= 51) {
-		color = "#FFD2D2"
+	if (emptyPercentage >= 80) {
+		color = '#FB3C3C';
+	} else if (emptyPercentage >= 45) {
+		color = '#FFD2D2';
 	} else {
-		color = "#15FB14"
+		color = '#15FB14';
 	}
 
 	return (
@@ -20,5 +21,5 @@ export default function Views({ views }) {
 			<p className="ml-2 my-1">Tid: {views.tid}</p>
 			<p className="ml-2 my-1">Sal: {views.sal}</p>
 		</div>
-	)
+	);
 }

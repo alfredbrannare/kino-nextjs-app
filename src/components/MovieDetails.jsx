@@ -51,17 +51,16 @@ const MovieDetails = ({ movie }) => {
 							hour: '2-digit',
 							minute: '2-digit',
 						}),
-						sal: screening.auditoriumId?.name || "Okänd salong",
+						sal: screening.auditoriumId?.name || 'Okänd salong',
 					};
 				});
 
 				setScreenings(enriched);
-				console.log("Screenings för filmen:", enriched);
+				console.log('Screenings för filmen:', enriched);
 			} catch (error) {
-				console.error("Error fetching screenings", error);
+				console.error('Error fetching screenings', error);
 			}
 		};
-
 
 		if (movie._id) {
 			fetchReviews();
@@ -163,7 +162,6 @@ const MovieDetails = ({ movie }) => {
 											),
 											sal: screening.auditoriumId.name,
 											maxSeats: screening.auditoriumId.capacity ?? 100,
-											emptySeats: 100,
 											bookedCount: screening.bookedCount,
 										}}
 									/>
