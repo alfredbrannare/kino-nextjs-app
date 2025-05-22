@@ -3,6 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EventsTabs from "src/components/events/EventsTabs";
+import EventCardSkeleton from "src/components/events/MovieCardSkeleton";
+import LoadingSpinner from "src/components/LoadingSpinner";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -10,6 +12,7 @@ export default function Events() {
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') || 'tab1';
   const [activeTab, setActiveTab] = useState(initialTab);
+  const [loading, setLoading] = useState(true);
 
   const tabs = [
     { id: "tab1", label: "Live på Kino" },
@@ -20,12 +23,14 @@ export default function Events() {
     fetch("/api/events")
       .then((res) => res.json())
       .then((data) => setEvents(data));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     fetch("/api/events/live")
       .then((res) => res.json())
       .then((data) => setLiveEvents(data));
+    setLoading(false);
   }, []);
 
   const currentEvents = activeTab === "tab1" ? liveEvents : events;
@@ -45,7 +50,9 @@ export default function Events() {
         <h1 className="text-4xl font-bold text-[#CDCDCD] mb-8 text-center">{currentTitle}</h1>
 
         <div className="space-y-10">
-          {currentEvents.map((event, index) => (
+          {loading ? (
+            <LoadingSpinner></LoadingSpinner>
+          ) : currentEvents.map((event, index) => (
             <div key={index} className="p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] hover:shadow-[inset_0_0_12px_#fde047,0_0_25px_#fde047] hover:scale-[1.01] transition transform duration-200">
               <img
                 src={event.image}

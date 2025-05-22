@@ -7,6 +7,7 @@ import Login from '../components/Login'
 import TrailerCarousel from "src/components/TrailerCarousel/TrailerCarousel";
 import Link from "next/link";
 import { useAuth } from "src/components/user/AuthData";
+import EventCardSkeleton from "src/components/events/MovieCardSkeleton";
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
@@ -160,7 +161,9 @@ const Main = () => {
               </div>
               <section className="my-12 text-center">
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
-                {liveEvents.map((event) => (
+                {loading ? (
+                  <EventCardSkeleton></EventCardSkeleton>
+                ) : liveEvents.map((event) => (
                   <div className="w-full my-6" key={event._id}>
                     <div className="justify-center align-center my-6">
                       <div className="flex flex-col gap-6 px-4 py-8">
@@ -197,7 +200,9 @@ const Main = () => {
               </section>
               <section>
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
-                {events.map((event) => (
+                {loading ? (
+                  <EventCardSkeleton></EventCardSkeleton>
+                ) : events.map((event) => (
                   <div className="flex flex-col gap-6 px-4 py-8" key={event._id}>
                     <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                       <div className="bg-[#2B0404] py-0 px-4">
