@@ -1,44 +1,84 @@
-import { useState, } from "react";
+import { useState, useEffect } from "react";
 
-const EventCreator = ({ setUpdate }) => {
+const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEventToEdit }) => {
     const [id, setId] = useState('');
+    const [eventId, setEventId] = useState('');
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
-    const [genre, setGenre] = useState('');
-    const [length, setLength] = useState('');
+    const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
 
-    const addFilm = async () => {
+    useEffect(() => {
+        if (isEditing && eventToEdit) {
+            setEventId(eventToEdit._id);
+            setTitle(eventToEdit.title || '');
+            setTime(eventToEdit.time || '');
+            setDate(eventToEdit.date ? eventToEdit.date.split('T')[0] : '');
+            setImage(eventToEdit.image || '');
+
+            setDescription(eventToEdit.description || '');
+        } else {
+            setEventId('');
+            setTitle('');
+            setTime('');
+            setDate('');
+            setImage('');
+            setDescription('');
+        }
+    }, [isEditing, eventToEdit]);
+
+    const handleSubmitEvent = async (e) => {
+        e.preventDefault();
         setLoading(true);
+
+        const eventData = {
+            title,
+            time,
+            date,
+            image,
+            description,
+        }
+
+        const method = isEditing ? 'PUT' : 'POST';
+        const url = isEditing ? `/api/events/live/${eventId}` : '/api/events/live';
+
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/events/live', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ id: id || '' }),
+                body: JSON.stringify(eventData),
             });
+
             const body = await response.json();
             if (response.ok) {
-                setId('');
-                alert(`Live event is added successfully !br / ${JSON.stringify(body.event)}}`)
+                setIsEditing(false);
+                clearEventToEdit();
                 setUpdate(true);
+                alert(`${isEditing ? 'Live event updated' : 'Live event added'} successfully!`);
             } else {
-                alert(`${body.status}`);
+                alert(`Error: ${body.message || response.statusText}`);
             }
-        } catch (err) {
-            console.log('Live event is not found', err);
+        } catch (error) {
+            console.error(`Error ${isEditing ? 'updating' : 'adding'} live event:`, error);
+            alert(`Error ${isEditing ? 'updating' : 'adding'} live event. Please try again.`);
         } finally {
             setLoading(false);
         }
     };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        clearEventToEdit();
+    };
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+        <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4" onSubmit={handleSubmitEvent}>
             <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-2">
                 <input
                     className="input w-full p-2"
@@ -46,51 +86,37 @@ const EventCreator = ({ setUpdate }) => {
                     placeholder="Titel"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    required
                 />
             </div>
             <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
                 <input
                     className="input w-full p-2"
                     type="time"
-                    placeholder="Beskrivning"
+                    placeholder="Tid"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
+                    required
                 />
             </div>
             <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
                 <input
                     className="input w-full p-2"
                     type="date"
-                    placeholder="Beskrivning"
+                    placeholder="Datum"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
+                    required
                 />
             </div>
-            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-2">
+            <div className="col-span-full md:col-span-1 lg:col-span-3 xl:col-span-4">
                 <input
                     className="input w-full p-2"
                     type="text"
                     placeholder="Bild länk"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                />
-            </div>
-            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
-                <input
-                    className="input w-full p-2"
-                    type="text"
-                    placeholder="Genre"
-                    value={genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                />
-            </div>
-            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
-                <input
-                    className="input w-full p-2"
-                    type="number"
-                    placeholder="Längd (minuter)"
-                    value={length}
-                    onChange={(e) => setLength(e.target.value)}
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    required
                 />
             </div>
             <div className="col-span-full md:col-span-2 lg:col-span-3 xl:col-span-4">
@@ -99,14 +125,31 @@ const EventCreator = ({ setUpdate }) => {
                     placeholder="Beskrivning"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
             </div>
             <div className="col-span-full flex justify-center mt-4">
-                <button className="btn" onClick={addFilm} disabled={loading}>
-                    {loading ? 'Lägg till event...' : 'Lägg till event'}
-                </button>
+                {isEditing ? (
+                    <div>
+                        <button
+                            type="button"
+                            className="btn btn-warning mx-2"
+                            disabled={loading}
+                            onClick={handleCancelEdit}
+                        >
+                            {loading ? 'Avbryter...' : 'Avbryt'}
+                        </button>
+                        <button type="submit" className="btn btn-success mx-2" disabled={loading}>
+                            {loading ? 'Uppdaterar...' : 'Uppdatera'}
+                        </button>
+                    </div>
+                ) : (
+                    <button type="submit" className="btn" disabled={loading}>
+                        {loading ? 'Lägg till event...' : 'Lägg till event'}
+                    </button>
+                )}
             </div>
-        </div>
+        </form>
     );
 };
 
