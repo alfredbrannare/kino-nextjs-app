@@ -97,12 +97,12 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     }
 
     return (
-        <div className="p-4 mb-8 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="m-auto max-w-[720px] p-4 mb-8 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
             <div className="flex justify-center mb-6">
                 <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6 text-center">Bioduk</div>
             </div>
             <div className="overflow-x-auto w-full px-4">
-                <div className="flex flex-col items-center space-y-2 min-w-[360px]">
+                <div className="flex flex-col items-center space-y-2 min-w-[360px] p-4">
                     {salong.map((row, rowIndex) => (
                         <div key={rowIndex} className="flex justify-center gap-2 sm:gap-3 min-w-[360px] ">
                             {row.map((seat, seatIndex) => {
