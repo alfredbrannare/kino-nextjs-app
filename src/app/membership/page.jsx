@@ -3,7 +3,7 @@
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote } from 'lucide-react';
+import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar } from 'lucide-react';
 import Link from "next/link";
 
 export default function MembershipPage() {
@@ -96,6 +96,8 @@ export default function MembershipPage() {
     year: "numeric",
     month: "long",
     day: "numeric",
+    hour: '2-digit',
+    minute: '2-digit'
   };
 
   if (isLoading || loading) return <p>Loading page data...</p>;
@@ -281,8 +283,9 @@ export default function MembershipPage() {
                       <div className="font-semibold mb-1 text-yellow-400 text-lg">
                         {b.movieId?.title || "Okänd film"}
                       </div>
-                      <div className="text-[#CDCDCD] text-sm mb-2">
-                        📆 {new Date(b.screeningTime).toLocaleString("sv-SE", options)}
+                      <div className="flex items-center text-[#CDCDCD] text-sm mb-2">
+                        <Calendar size={16} />
+                        <span className="ml-1 font-medium"></span>{new Date(b.screeningTime).toLocaleString("sv-SE", options)}
                       </div>
 
                       {isExpanded && (
