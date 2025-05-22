@@ -55,33 +55,33 @@ export default function MembershipPage() {
 
   const mobileMenuRef = useRef(null);
 
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
-      setAdminMenuOpen(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
+        setAdminMenuOpen(false);
+      }
     }
-  }
-  if (adminMenuOpen) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [adminMenuOpen]);
+    if (adminMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [adminMenuOpen]);
 
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-      setShowMobileMenu(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setShowMobileMenu(false);
+      }
     }
-  }
-  if (showMobileMenu) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [showMobileMenu]);
+    if (showMobileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMobileMenu]);
 
   const options = {
     weekday: "long",
@@ -177,6 +177,9 @@ useEffect(() => {
                       <li><Link href="/admin/screenings">Visningshantering</Link></li>
                       <li><Link href="/admin/reviews">Reviewshantering</Link></li>
                       <li><Link href="/admin/offers">Erbjudandehantering</Link></li>
+                      <li><Link href="/admin/live-events">Liveevenemanghantering</Link></li>
+                      <li><Link href="/admin/live-events">Evenemanghantering</Link></li>
+
                     </ul>
                   </div>
                 )}
