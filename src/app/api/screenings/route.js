@@ -9,7 +9,13 @@ export const GET = async (req) => {
 		const { searchParams } = new URL(req.url);
 		const movieId = searchParams.get('movieId');
 
-		const query = movieId ? { movieId } : {};
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const query = {
+			...(movieId && { movieId }),
+			startTime: { $gte: today },
+		};
 		const screenings = await Screening.find(query)
 			.populate('movieId', 'title')
 			.populate('auditoriumId', 'name capacity')
