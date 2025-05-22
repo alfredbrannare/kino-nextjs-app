@@ -7,7 +7,7 @@ const LiveEventsSchema = new mongoose.Schema({
     description: { type: String, required: true },
     image: { type: String, required: true },
     genre: { type: String, required: true },
-    inCinemas: { type: Boolean, default: false },
+    runtime: { type: Number, required: true },
 });
 
 const LiveEvents = mongoose.models.LiveEvents || mongoose.model("LiveEvents", LiveEventsSchema);

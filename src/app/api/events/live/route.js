@@ -27,9 +27,9 @@ export const POST = async (req) => {
 
     try {
         const body = await req.json();
-        const { title, date, time, description, image, genre } = body;
+        const { title, date, time, description, image, genre, runtime } = body;
 
-        if (!title || !date || !time || !description || !image || !genre) {
+        if (!title || !date || !time || !description || !image || !genre || !runtime) {
             return NextResponse.json(
                 { message: "Missing required fields" },
                 { status: 400 }
@@ -44,7 +44,7 @@ export const POST = async (req) => {
             );
         }
 
-        const event = new LiveEvents({ title, date, time, description, image, genre });
+        const event = new LiveEvents({ title, date, time, description, image, genre, runtime });
         await event.save();
 
         return NextResponse.json({ event }, { status: 201 });

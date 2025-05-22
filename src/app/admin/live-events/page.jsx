@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import AdminTabs from "src/components/AdminTabs"
-import EventCreator from "src/components/EventCreator"
+import LiveEventCreator from "src/components/LiveEventCreator"
+import { SquarePen } from "lucide-react";
 
 const LiveEventsPage = () => {
     const [liveEvents, setLiveEvents] = useState([])
@@ -12,6 +13,8 @@ const LiveEventsPage = () => {
     const [update, setUpdate] = useState(false)
     const [inputSearch, setInputSearch] = useState('');
     const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+    const [isEditing, setIsEditing] = useState(false);
+    const [eventToEdit, setEventToEdit] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -40,7 +43,7 @@ const LiveEventsPage = () => {
 
     const deleteLiveEvent = async (id) => {
         try {
-            await fetch(`/api/events/live${id}`, {
+            await fetch(`/api/events/live/${id}`, {
                 method: "DELETE",
                 headers: { 'Authorization': `Bearer ${token}` },
             })
@@ -51,17 +54,10 @@ const LiveEventsPage = () => {
         }
     }
 
-    const updateLiveEvent = async (id, inCinemas) => {
-        await fetch(`/api/events/live${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${token}`,
-
-            },
-            body: JSON.stringify({ inCinemas }),
-        })
-        setUpdate(true)
+    const handleEditClick = (event) => {
+        setIsEditing(true);
+        setEventToEdit(event);
+        console.log(event)
     }
 
     if (isAuthLoading || loading) return <p>Loading page data...</p>;
@@ -79,7 +75,13 @@ const LiveEventsPage = () => {
         <>
             <div className="p-6">
                 <AdminTabs />
-                <EventCreator setUpdate={setUpdate} />
+                <LiveEventCreator
+                    setUpdate={setUpdate}
+                    setIsEditing={setIsEditing}
+                    isEditing={isEditing}
+                    eventToEdit={eventToEdit}
+                    clearEventToEdit={() => setEventToEdit(null)}
+                />
 
                 <input
                     type="text"
@@ -99,19 +101,13 @@ const LiveEventsPage = () => {
                         className="block mx-auto p-4 mb-3 bg-base-300 flex justify-between max-w-200 ">
                         <h2 className="">{event.title}</h2>
                         <div>
-                            {event.inCinemas ? (
-                                <span
-                                    className="btn btn-success mr-1"
-                                    onClick={() => updateLiveEvent(event._id, false)}>
-                                    Currently showing
-                                </span>
-                            ) : (
-                                <span
-                                    className="btn btn-warning mr-1"
-                                    onClick={() => updateLiveEvent(event._id, true)}>
-                                    Currently not showing
-                                </span>
-                            )}
+                            <span
+                                className="btn btn-warning mr-1"
+                                onClick={() => handleEditClick(event)}>
+                                Edit
+                                <SquarePen />
+                            </span>
+
                             <button
                                 onClick={() => deleteLiveEvent(event._id)}
                                 className="btn btn-error">
