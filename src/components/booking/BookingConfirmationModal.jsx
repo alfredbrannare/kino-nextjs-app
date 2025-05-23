@@ -3,10 +3,10 @@ import { AlarmClock, Armchair, Check, Clapperboard, Ticket, User, Baby, Graduati
 
 const ticketTypeIcons = {
     ordinary: <Ticket size={20} className="text-yellow-400" />,
-    child: <Baby size={16} className="text-yellow-400" />,
-    retired: <User size={16} className="text-yellow-400" />,
-    student: <GraduationCap size={16} className="text-yellow-400" />,
-    member: <Handshake size={16} className="text-yellow-400" />
+    child: <Baby size={20} className="text-yellow-400" />,
+    retired: <User size={20} className="text-yellow-400" />,
+    student: <GraduationCap size={20} className="text-yellow-400" />,
+    member: <Handshake size={20} className="text-yellow-400" />
 };
 
 const ticketTypeLabels = {
@@ -40,11 +40,11 @@ export default function BookingConfirmationModal({
 
                 <div className="text-sm space-y-2 text-center">
                     <div className="flex items-center gap-2 justify-center text-sm">
-                        <Clapperboard size={16} className="text-yellow-400" />
+                        <Clapperboard size={20} className="text-yellow-400" />
                         <p><strong>Film:</strong> {movieTitle}</p>
                     </div>
                     <div className="flex items-center gap-2 justify-center text-sm">
-                        <AlarmClock size={16} className="text-yellow-400" />
+                        <AlarmClock size={20} className="text-yellow-400" />
                         <p><strong>Visningstid:</strong> {new Date(screeningTime)
                             .toLocaleString("sv-SE", {
                                 dateStyle: "short",
@@ -61,9 +61,9 @@ export default function BookingConfirmationModal({
                             {seats.map((s, i) => (
                                 <div key={i} className="flex items-center gap-2 text-sm">
                                     {s.isWheelchair ? (
-                                        <Accessibility size={18} className="text-blue-400" />
+                                        <Accessibility size={20} className="text-blue-400" />
                                     ) : (
-                                        <Armchair size={18} className="text-yellow-400" />
+                                        <Armchair size={20} className="text-yellow-400" />
                                     )}
                                     <span>Rad {s.row}, Stol {s.seat}</span>
                                 </div>
