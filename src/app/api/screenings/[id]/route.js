@@ -8,7 +8,8 @@ import Auditorium from "src/models/model.auditorium";
 export const GET = async (req, { params }) => {
   const id = await params.id;
   await connectDB();
-  const screenings = await Screening.findById(id).populate("movieId", "title").populate("auditoriumId", "name");
+  const screenings = await Screening.findById(id).populate("movieId", "title")
+  .populate("auditoriumId", "name seats");
 
   return new Response(JSON.stringify(screenings), {
     status: 200,
