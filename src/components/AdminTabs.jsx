@@ -9,6 +9,9 @@ const tabs = [
     { href: "/admin/movies", label: "Filmer" },
     { href: "/admin/offers", label: "Erbjudanden" },
     { href: "/admin/reviews", label: "Recensioner" },
+    { href: "/admin/live-events", label: "Liveevenemang" },
+    { href: "/admin/events", label: "Evenemang" }
+
 ];
 
 export default function AdminTabs() {
