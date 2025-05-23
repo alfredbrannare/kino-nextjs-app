@@ -2,8 +2,7 @@
 export default function Views({ views }) {
 	const { bookedCount, maxSeats } = views;
 	const emptyPercentage = (bookedCount / maxSeats) * 100;
-	console.log('booked', bookedCount);
-	console.log('max', maxSeats);
+
 	let color = '';
 
 	if (emptyPercentage >= 80) {

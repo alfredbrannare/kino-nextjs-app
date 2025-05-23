@@ -7,6 +7,8 @@ import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
 
 import { useAuth } from 'src/components/user/AuthData';
+import InfoCard from './movies/singel/InfoCard';
+import RatingCard from './movies/singel/RatingCard';
 
 // TODO fix check for backend for rating
 
@@ -56,7 +58,7 @@ const MovieDetails = ({ movie }) => {
 				});
 
 				setScreenings(enriched);
-				console.log('Screenings för filmen:', enriched);
+				// console.log('Screenings för filmen:', enriched);
 			} catch (error) {
 				console.error('Error fetching screenings', error);
 			}
@@ -97,8 +99,14 @@ const MovieDetails = ({ movie }) => {
 	return (
 		<>
 			<div className="lg:grid grid-cols-8 gap-4 relative">
-				<div className="col-start-3 col-span-4  text-center pt-10">
-					<h1 className="font-semibold text-3xl">{movie.title}</h1>
+				{/* title och description */}
+				<InfoCard
+					title={movie.title}
+					description={movie.description}
+				/>
+				<div className="col-start-3 col-span-4  text-center pt-10 border">
+					{/* movie image */}
+					{/* <h1 className="font-semibold text-3xl">{movie.title}</h1>
 					<span>{movie.description}</span>
 					<br />
 					<div className="relative mx-auto pt-10">
@@ -112,28 +120,17 @@ const MovieDetails = ({ movie }) => {
 							src={movie.image}
 							alt={movie.title}
 						/>
-					</div>
-					<br />
-					<Link
-						className="btn"
-						href={'/movies'}>
-						Back
-					</Link>
+					</div> */}
 				</div>
 
 				<div className="col-start-7 content-center justify-items-center  col-span-2 ml-5 ">
-					<div className="flex-col justify-items-center mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-lg p-4 mb-10">
-						<h1 className="text-2xl font-semibold text-center mb-2">Rating</h1>
-						<h2 className="text-4xl font-bold text-center">
-							{Number(movie.rating).toFixed(1)}/10
-						</h2>
-					</div>
+					<RatingCard rating={movie.rating} />
 					<div className="flex-col justify-center">
+						{/* this is for screenings */}
 						<h2 className="card-title text-2xl flex justify-center mb-4 mt-4">
 							Filmen går följande tider
 						</h2>
 
-						{/* showings ska vara här, det här kan vara en komponent */}
 						{screenings.length === 0 ? (
 							<p className="text-sm text-gray-400">Inga visningar hittades.</p>
 						) : (
@@ -169,9 +166,11 @@ const MovieDetails = ({ movie }) => {
 							))
 						)}
 					</div>
-					{/* button to get tickets */}
+					{/* button to go to "biljett page" */}
 					<div className="flex justify-center w-full">
-						<button className="btn">Boka biljett</button>
+						<Link href={{ pathname: `/tickets` }}>
+							<button className="btn">Se alla visningar</button>
+						</Link>
 					</div>
 				</div>
 				<div className="col-start-3 col-span-4 flex flex-col mt-5">
