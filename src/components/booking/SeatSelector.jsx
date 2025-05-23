@@ -16,6 +16,8 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     //Booking confirmation modal
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [confirmedSeats, setConfirmedSeats] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [movieTitle, setMovieTitle] = useState("");
 
     useEffect(() => {
         fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
@@ -69,9 +71,13 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             })
         })
             .then(res => res.json())
-            .then(data => {
-                console.log('Bokning klar', data);
+            .then(({ booking, movieTitle }) => {
+                console.log('Bokning klar', booking);
+                console.log('Filmtitel:', movieTitle);
+
                 setConfirmedSeats(selectedSeats);
+                setMovieTitle(movieTitle);
+                setTotalPrice(booking.totalPrice);
                 setShowConfirmationModal(true);
                 setSelectedSeats([]);
 
@@ -186,6 +192,10 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             <BookingConfirmationModal
                 visible={showConfirmationModal}
                 seats={confirmedSeats}
+                movieTitle={movieTitle}
+                screeningTime={screeningTime}
+                ticketInfo={ticketInfo}
+                totalPrice={totalPrice}
                 onClose={() => setShowConfirmationModal(false)}
             />
         </div>

@@ -1,5 +1,6 @@
 import connectDB from "src/lib/mongodb";
 import Booking from "src/models/model.booking.js";
+import Movie from "src/models/model.movies.js";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -19,7 +20,7 @@ export async function GET(request) {
     }
 }
 
-export async function  POST(request) {
+export async function POST(request) {
     const body = await request.json();
     const { movieId, screeningTime, seats, userId, auditorium, ticketInfo } = body;
 
@@ -68,8 +69,21 @@ export async function  POST(request) {
             }
         }
 
-        const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId:'6820d93969eddb5ac9ed9f95', auditorium, totalPrice });
-        return Response.json(booking, { status: 201 });
+        const booking = await Booking.create({
+            movieId,
+            screeningTime,
+            seats: labeledSeats,
+            userId:'6820d93969eddb5ac9ed9f95',
+            auditorium,
+            totalPrice
+        });
+
+        const movie = await Movie.findById(movieId);
+
+        return Response.json({
+            booking,
+            movieTitle: movie?.title || "Okänd titel"
+        }, { status: 201 });
     } catch (err) {
         console.error('Booking error', err);
         return Response.json({ error: 'Något gick fel'}, { status: 500 });
