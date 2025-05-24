@@ -44,13 +44,9 @@ const ScreeningCreator = ({ setUpdate }) => {
     }
 
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/screenings/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
         body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: combinedDateTime }),
       });
       const body = await response.json();

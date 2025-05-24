@@ -12,7 +12,7 @@ const ReviewsPage = () => {
 	const [selectedMovie, setSelectedMovie] = useState("");
 	const [movies, setMovies] = useState([]);
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -58,7 +58,7 @@ const ReviewsPage = () => {
 		try {
 			await fetch(`/api/reviews?movieId=${selectedMovie}&delete=${id}`, {
 				method: "DELETE",
-				headers: { 'Authorization': `Bearer ${token}` },
+				credentials: 'include',
 			})
 		} catch (error) {
 			console.error("Error deleting movie movies:", error)

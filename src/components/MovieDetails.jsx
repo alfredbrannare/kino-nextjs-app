@@ -11,7 +11,7 @@ import { useAuth } from 'src/components/user/AuthData';
 // TODO fix check for backend for rating
 
 const MovieDetails = ({ movie }) => {
-	const { isLoggedIn, userData, token } = useAuth();
+	const { isLoggedIn, userData } = useAuth();
 	const [reviews, setReviews] = useState([]);
 	const [screenings, setScreenings] = useState([]); //- Patrik
 
@@ -76,10 +76,7 @@ const MovieDetails = ({ movie }) => {
 	const handleAddReview = async ({ rating, text, user }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
+			credentials: 'include',
 			body: JSON.stringify({ movieId, rating, text, user }),
 		});
 
