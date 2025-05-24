@@ -8,28 +8,7 @@ import { useParams } from 'next/navigation';
 
 import { useAuth } from 'src/components/user/AuthData';
 
-// TODO fix check for backend for rating and text reviws
-// TODO remove mockView and send Viewdata from db in to <Views />
-const mockView = {
-	view1: {
-		tid: '2025-02-26 17:00',
-		sal: 'Stora Salongen',
-		maxSeats: 100,
-		emptySeats: 16,
-	},
-	view2: {
-		tid: '2025-03-26 13:00',
-		sal: 'Lilla Salongen',
-		maxSeats: 100,
-		emptySeats: 52,
-	},
-	view3: {
-		tid: '2025-03-26 13:00',
-		sal: 'Lilla Salongen',
-		maxSeats: 100,
-		emptySeats: 95,
-	},
-};
+// TODO fix check for backend for rating
 
 const MovieDetails = ({ movie }) => {
 	const { isLoggedIn, userData, token } = useAuth();
@@ -55,13 +34,34 @@ const MovieDetails = ({ movie }) => {
 			try {
 				const res = await fetch(`/api/screenings?movieId=${movie._id}`);
 				const data = await res.json();
-				setScreenings(data.filter(s => s.movieId._id === movie._id));
-				console.log("Screenings för filmen:", data);
 
+				const enriched = data.map((screening) => {
+					const bookedCount = screening.bookedSeats?.reduce(
+						(sum, booking) => sum + (booking.seats?.length || 0),
+						0
+					);
+
+					const totalSeats = screening.auditoriumId?.seats?.length || 0;
+					const availableSeats = totalSeats - bookedCount;
+
+					return {
+						...screening,
+						bookedCount,
+						tid: new Date(screening.startTime).toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit',
+						}),
+						sal: screening.auditoriumId?.name || "Okänd salong",
+					};
+				});
+
+				setScreenings(enriched);
+				console.log("Screenings för filmen:", enriched);
 			} catch (error) {
 				console.error("Error fetching screenings", error);
 			}
 		};
+
 
 		if (movie._id) {
 			fetchReviews();
@@ -93,8 +93,6 @@ const MovieDetails = ({ movie }) => {
 		} else {
 			console.error('Failed to save review');
 		}
-		// setReviews((prevReviews) => [...prevReviews, newReview]);
-		// console.log(reviews);
 	};
 
 	return (
@@ -123,7 +121,14 @@ const MovieDetails = ({ movie }) => {
 						Back
 					</Link>
 				</div>
+
 				<div className="col-start-7 content-center justify-items-center  col-span-2 ml-5 ">
+					<div className="flex-col justify-items-center mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-lg p-4 mb-10">
+						<h1 className="text-2xl font-semibold text-center mb-2">Rating</h1>
+						<h2 className="text-4xl font-bold text-center">
+							{Number(movie.rating).toFixed(1)}/10
+						</h2>
+					</div>
 					<div className="flex-col justify-center">
 						<h2 className="card-title text-2xl flex justify-center mb-4 mt-4">
 							Filmen går följande tider
@@ -141,46 +146,39 @@ const MovieDetails = ({ movie }) => {
 										query: {
 											movieId: screening.movieId._id,
 											screeningTime: screening.startTime,
-											auditorium: "city",
+											auditorium: 'city',
 										},
-									}}
-								>
+									}}>
 									<Views
 										views={{
-											tid: new Date(screening.startTime).toLocaleString("sv-SE", {
-												weekday: "short",
-												day: "numeric",
-												month: "short",
-												hour: "2-digit",
-												minute: "2-digit",
-											}),
+											tid: new Date(screening.startTime).toLocaleString(
+												'sv-SE',
+												{
+													weekday: 'short',
+													day: 'numeric',
+													month: 'short',
+													hour: '2-digit',
+													minute: '2-digit',
+												}
+											),
 											sal: screening.auditoriumId.name,
 											maxSeats: screening.auditoriumId.capacity ?? 100,
 											emptySeats: 100,
+											bookedCount: screening.bookedCount,
 										}}
 									/>
 								</Link>
 							))
 						)}
-						{/* {Object.entries(mockView).map(([key, view]) => (
-							<Views
-								key={key}
-								views={view}
-							/>
-						))} */}
-						{/*  */}
 					</div>
 					{/* button to get tickets */}
 					<div className="flex justify-center w-full">
 						<button className="btn">Boka biljett</button>
 					</div>
-
-					{/*  */}
-					{/* <div className="col-span-3 grid grid-cols-subgrid mt-10 bg-[#2b0404]"></div> */}
 				</div>
-				<div className="col-start-3 col-span-4 flex flex-col  justify-center">
+				<div className="col-start-3 col-span-4 flex flex-col mt-5">
 					{/* reviews ska vara här */}
-					<h2 className="text-2xl  card-title ">Reviews</h2>
+					<h2 className="text-2xl  card-title self-center ">Reviews</h2>
 					<div>
 						{/* TODO: hide if not login */}
 						{!isLoggedIn ? (

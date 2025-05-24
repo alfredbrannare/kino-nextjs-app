@@ -1,5 +1,7 @@
 import connectDB from "src/lib/mongodb";
 import Booking from "src/models/model.booking.js";
+import Auditorium from "src/models/model.auditorium";
+import Screening from "src/models/model.screenings";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -69,9 +71,27 @@ export async function  POST(request) {
         }
 
         const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId:'6820d93969eddb5ac9ed9f95', auditorium, totalPrice });
-        return Response.json(booking, { status: 201 });
-    } catch (err) {
-        console.error('Booking error', err);
-        return Response.json({ error: 'Något gick fel'}, { status: 500 });
+  // 2. Hämta auditoriumId
+  const auditoriumDoc = await Auditorium.findOne({ slug: auditorium });
+  if (!auditoriumDoc) {
+    return Response.json({ error: "Auditorium not found" }, { status: 404 });
+  }
+
+  // 3. Lägg till bokningen i rätt screening
+  await Screening.findOneAndUpdate(
+    {
+      movieId,
+      startTime: new Date(screeningTime), // Säkerställ Date-matchning
+      auditoriumId: auditoriumDoc._id
+    },
+    {
+      $push: { bookedSeats: booking._id }
     }
+  );
+
+  return Response.json(booking, { status: 201 });
+} catch (err) {
+  console.error('Booking error', err);
+  return Response.json({ error: 'Något gick fel' }, { status: 500 });
+}
 }

@@ -80,8 +80,32 @@ export const AuthDataProvider = ({ children }) => {
     setAdmin(false);
   };
 
+  const fetchUser = async () => {
+  const localToken = localStorage.getItem("token");
+  try {
+    const response = await fetch("/api/user/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localToken}`,
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      const user = data.user || data;
+      setUserData(user);
+      setLoggedIn(true);
+      setAdmin(user.role === "admin");
+    } else {
+      console.error("Failed to fetch user:", data.message);
+    }
+  } catch (err) {
+    console.error("Fetch user error:", err);
+  }
+};
+
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin, token }}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin, token, fetchUser }}>
       {children}
     </AuthData.Provider>
   );

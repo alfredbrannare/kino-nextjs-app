@@ -10,7 +10,9 @@ export const GET = async (req) => {
     const movieId = searchParams.get("movieId");
 
     const query = movieId ? { movieId } : {};
-    const screenings = await Screening.find(query).populate("movieId", "title").populate("auditoriumId", "name");
+    const screenings = await Screening.find(query).populate("movieId", "title")
+    .populate("auditoriumId", "name")
+    .populate("bookedSeats", "seats");
 
     return new Response(JSON.stringify(screenings), {
       status: 200,

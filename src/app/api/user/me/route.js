@@ -17,6 +17,7 @@ export const GET = async (req) => {
         email: authenticatedUser.email,
         role: authenticatedUser.role,
         benefits: authenticatedUser.benefits,
+        profilePicture: authenticatedUser.profilePicture || '',
       },
       { status: 200 }
     );
