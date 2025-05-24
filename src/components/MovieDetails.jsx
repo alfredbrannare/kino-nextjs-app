@@ -11,7 +11,8 @@ import InfoCard from './movies/singel/InfoCard';
 import RatingCard from './movies/singel/RatingCard';
 import { MovieHeader } from './movies/singel/MovieHeader';
 import { ImageGrid } from './movies/singel/ImageGrid';
-import { VideoOff } from 'lucide-react';
+import TrailerCard from './movies/singel/TrailerCard';
+import Login from './Login';
 
 // TODO fix check for backend for rating
 
@@ -101,109 +102,103 @@ const MovieDetails = ({ movie }) => {
 
 	return (
 		<>
-			<div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+			<div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
 				{/* Left colum Main info and booking */}
-				<div className="col-span-full md:col-span-2 flex flex-col gap-6 order-1">
+				<div className="flex flex-col justify-center order-1 gap-6 mt-10 col-span-full md:col-span-3">
 					{/* title, metaInfo description */}
 
-					<InfoCard
+					<MovieHeader
+						title={movie.title}
+						description={movie.description}
 						ageRating={movie.ageRating ?? 10}
 						duration={movie.duration ?? '1.40'}
 						genre={movie.genre ?? 'Horror'}
 					/>
-					<MovieHeader
-						title={movie.title}
-						description={movie.description}
-					/>
 				</div>
 
-				<div className="col-span-full md:col-span-1 order-2 mt-10">
-					{/* trailer */}
-					<div className="relative rounded-lg overflow-hidden shadow-lg aspect-video">
-						{movie.trailerKey ? (
-							<iframe
-								key={movie.trailerKey}
-								className="w-full h-full"
-								src={`https://www.youtube.com/embed/${movie.trailerKey}?controls=0&rel=0&modestbranding=1&showinfo=0`}
-								title={movie.title}
-								allowFullScreen
-							/>
-						) : (
-							// if no trailer is available
-							<div className="flex items-center justify-center w-full h-full bg-gray-800">
-								<VideoOff className="w-12 h-12 text-gray-400" />
-								<span className="ml-2 text-gray-400 text-lg">
-									Ingen trailer
-								</span>
-							</div>
-						)}
-					</div>
+				<div className="order-2 mt-10 col-span-full md:col-span-2 ">
+					{/* rating */}
+					<RatingCard rating={movie.rating} />
 				</div>
 				{/* Ticket booking section */}
-				<div className="hero-content md:col-span-1 order-3">
-					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow">
-						<RatingCard rating={movie.rating} />
-						<h2 className="text-xl font-bold mb-4">
-							Filmen går följande tider
-						</h2>
-						{/* date select */}
-						<div className="gap-2 mb-4">
-							{screenings.length === 0 ? (
-								<p className="text-sm text-gray-400">
-									Inga visningar hittades.
-								</p>
-							) : (
-								screenings.map((screening) => (
-									<Link
-										key={screening._id}
-										href={{
-											pathname: `/auditoriums/city`,
-											query: {
-												movieId: screening.movieId._id,
-												screeningTime: screening.startTime,
-												auditorium: 'city',
-											},
-										}}>
-										<Views
-											views={{
-												tid: new Date(screening.startTime).toLocaleString(
-													'sv-SE',
-													{
-														weekday: 'short',
-														day: 'numeric',
-														month: 'short',
-														hour: '2-digit',
-														minute: '2-digit',
-													}
-												),
-												sal: screening.auditoriumId.name,
-												maxSeats: screening.auditoriumId.capacity ?? 100,
-												bookedCount: screening.bookedCount,
-											}}
-										/>
-									</Link>
-								))
-							)}
+				<div className="order-3 md:col-span-3">
+					{/* description */}
+					<div className="pb-5 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
+						<p className="m-4 text-xl">{movie.description}</p>
+					</div>
+					<div className="justify-center">
+						<div className="mx-4 ">
+							<TrailerCard
+								trailerKey={movie.trailerKey}
+								title={movie.title}
+							/>
+						</div>
+						<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
+							<h2 className="mb-4 text-xl font-bold text-center">
+								Filmen går följande tider
+							</h2>
+							{/* date select */}
+							<div className="gap-2 mb-4">
+								{screenings.length === 0 ? (
+									<p className="text-sm text-gray-400">
+										Inga visningar hittades.
+									</p>
+								) : (
+									screenings.map((screening) => (
+										<Link
+											key={screening._id}
+											href={{
+												pathname: `/auditoriums/city`,
+												query: {
+													movieId: screening.movieId._id,
+													screeningTime: screening.startTime,
+													auditorium: 'city',
+												},
+											}}>
+											<Views
+												views={{
+													tid: new Date(screening.startTime).toLocaleString(
+														'sv-SE',
+														{
+															weekday: 'short',
+															day: 'numeric',
+															month: 'short',
+															hour: '2-digit',
+															minute: '2-digit',
+														}
+													),
+													sal: screening.auditoriumId.name,
+													maxSeats: screening.auditoriumId.capacity ?? 100,
+													bookedCount: screening.bookedCount,
+												}}
+											/>
+										</Link>
+									))
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
 
-				{/* <div className="flex flex-col gap-4 col-start-1 row-start-2 col-span-2 order-3 md:order-none"> */}
-				<div className="col-span-full md:col-span-2 order-4 flex justify-center md:justify-end">
+				{/* <div className="flex flex-col order-3 col-span-2 col-start-1 row-start-2 gap-4 md:order-none"> */}
+				<div className="flex justify-center order-4 col-span-full md:col-span-2 ">
 					{/* Poster */}
 					<img
 						src={movie.image}
 						alt={movie.title}
-						className="rounded-lg shadow-lg max-w-md w-full"
+						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
 					/>
 				</div>
-				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center order-5 mx-auto md: justify-center flex flex-col items-center">
-					<h2 className="text-2xl font-bold mb-4">Reviews</h2>
+				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center order-5 mx-auto md: justify-center flex flex-col items-center mt-14">
+					<h2 className="mb-4 text-2xl font-bold">Reviews</h2>
 					<div className="md:w-md">
 						<div>
 							{!isLoggedIn ? (
-								<p className="justify-self-center my-4">
-									Logga in för att lämna en review
+								<p className="my-4 justify-self-center">
+									<span>
+										<Login />
+										Logga in för att lämna en review
+									</span>
 								</p>
 							) : (
 								<ReviewForm
