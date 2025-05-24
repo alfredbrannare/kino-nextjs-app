@@ -121,61 +121,17 @@ const MovieDetails = ({ movie }) => {
 					<RatingCard rating={movie.rating} />
 				</div>
 				{/* Ticket booking section */}
-				<div className="order-3 md:col-span-3">
+				<div className="flex flex-col justify-between order-3 h-full md:col-span-3">
 					{/* description */}
 					<div className="pb-5 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
 						<p className="m-4 text-xl">{movie.description}</p>
 					</div>
 					<div className="justify-center">
-						<div className="mx-4 ">
+						<div className="justify-end mx-4 ">
 							<TrailerCard
 								trailerKey={movie.trailerKey}
 								title={movie.title}
 							/>
-						</div>
-						<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
-							<h2 className="mb-4 text-xl font-bold text-center">
-								Filmen går följande tider
-							</h2>
-							{/* date select */}
-							<div className="gap-2 mb-4">
-								{screenings.length === 0 ? (
-									<p className="text-sm text-gray-400">
-										Inga visningar hittades.
-									</p>
-								) : (
-									screenings.map((screening) => (
-										<Link
-											key={screening._id}
-											href={{
-												pathname: `/auditoriums/city`,
-												query: {
-													movieId: screening.movieId._id,
-													screeningTime: screening.startTime,
-													auditorium: 'city',
-												},
-											}}>
-											<Views
-												views={{
-													tid: new Date(screening.startTime).toLocaleString(
-														'sv-SE',
-														{
-															weekday: 'short',
-															day: 'numeric',
-															month: 'short',
-															hour: '2-digit',
-															minute: '2-digit',
-														}
-													),
-													sal: screening.auditoriumId.name,
-													maxSeats: screening.auditoriumId.capacity ?? 100,
-													bookedCount: screening.bookedCount,
-												}}
-											/>
-										</Link>
-									))
-								)}
-							</div>
 						</div>
 					</div>
 				</div>
@@ -188,6 +144,53 @@ const MovieDetails = ({ movie }) => {
 						alt={movie.title}
 						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
 					/>
+				</div>
+				<div className="row-start-3 col-span-full md:col-span-5">
+					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
+						<h2 className="mb-4 text-3xl font-bold text-center">
+							Filmen går följande tider
+						</h2>
+
+						{/* date select */}
+						<div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+							{screenings.length === 0 ? (
+								<p className="text-sm text-gray-400">
+									Inga visningar hittades.
+								</p>
+							) : (
+								screenings.map((screening) => (
+									<Link
+										key={screening._id}
+										href={{
+											pathname: `/auditoriums/city`,
+											query: {
+												movieId: screening.movieId._id,
+												screeningTime: screening.startTime,
+												auditorium: 'city',
+											},
+										}}>
+										<Views
+											views={{
+												tid: new Date(screening.startTime).toLocaleString(
+													'sv-SE',
+													{
+														weekday: 'short',
+														day: 'numeric',
+														month: 'short',
+														hour: '2-digit',
+														minute: '2-digit',
+													}
+												),
+												sal: screening.auditoriumId.name,
+												maxSeats: screening.auditoriumId.capacity ?? 100,
+												bookedCount: screening.bookedCount,
+											}}
+										/>
+									</Link>
+								))
+							)}
+						</div>
+					</div>
 				</div>
 				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center order-5 mx-auto md: justify-center flex flex-col items-center mt-14">
 					<h2 className="mb-4 text-2xl font-bold">Reviews</h2>
