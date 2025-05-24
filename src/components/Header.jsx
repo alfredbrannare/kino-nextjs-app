@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
+import Chat from './user/Chat';
 import { useAuth } from './user/AuthData';
 import { UserRound } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -104,6 +105,7 @@ const Header = () => {
                   OM OSS
                 </Link>
               </li>
+              <Chat></Chat>
             </ul>
           </div>
           <div className="navbar-end mr-6">

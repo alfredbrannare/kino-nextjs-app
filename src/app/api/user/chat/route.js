@@ -17,7 +17,7 @@ export const POST = async (req) => {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
     contents: [
-      { type: "text", text: userMessage }
+      { type: "text", text: `Imagine you are a movie guru keep it short and funny. My question is: ${userMessage}` }
     ],
   });
 
