@@ -25,7 +25,6 @@ export default function ReviewForm({ handleAddReview, userData }) {
 		handleAddReview({
 			rating: parseInt(rating),
 			text,
-			// user: userData.name,
 		});
 		setRating(0);
 		setText('');
@@ -37,7 +36,7 @@ export default function ReviewForm({ handleAddReview, userData }) {
 			onSubmit={handleSubmit}
 			className="p-4 space-y-4">
 			<div className="form-control">
-				<label className="label block text-white">
+				<label className="block text-white label">
 					<span className="label-text">Your Rating</span>
 				</label>
 				<div className="rating">
@@ -46,7 +45,7 @@ export default function ReviewForm({ handleAddReview, userData }) {
 							key={num}
 							type="radio"
 							name="rating"
-							className="mask mask-star-2 bg-yellow-400"
+							className="bg-yellow-400 mask mask-star-2"
 							value={num}
 							checked={parseInt(rating) === num}
 							onChange={(e) => setRating(e.target.value)}
@@ -56,24 +55,24 @@ export default function ReviewForm({ handleAddReview, userData }) {
 			</div>
 
 			<div className="form-control">
-				<label className="label block">
-					<span className="label-text text-white">Your Review</span>
+				<label className="block label">
+					<span className="text-white label-text">Your Review</span>
 				</label>
 				<textarea
 					maxLength={256}
-					className="textarea textarea-bordered w-full"
+					className="w-full textarea textarea-bordered"
 					placeholder="Write your review here"
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 				/>
-				<div className="text-white text-sm my-3">{text.length}/256 words</div>
+				<div className="my-3 text-sm text-white">{text.length}/256 words</div>
 				{errors.text && (
 					<div
 						role="alert"
 						className="alert alert-error">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 shrink-0 stroke-current"
+							className="w-6 h-6 stroke-current shrink-0"
 							fill="none"
 							viewBox="0 0 24 24">
 							<path
@@ -92,7 +91,7 @@ export default function ReviewForm({ handleAddReview, userData }) {
 						className="alert alert-error">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 shrink-0 stroke-current"
+							className="w-6 h-6 stroke-current shrink-0"
 							fill="none"
 							viewBox="0 0 24 24">
 							<path

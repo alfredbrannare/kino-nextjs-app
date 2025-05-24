@@ -78,14 +78,14 @@ const MovieDetails = ({ movie }) => {
 	const movieId = params.id;
 
 	// to get new review
-	const handleAddReview = async ({ rating, text, user }) => {
+	const handleAddReview = async ({ rating, text }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify({ movieId, rating, text, user }),
+			body: JSON.stringify({ movieId, rating, text }),
 		});
 
 		if (response.ok) {
