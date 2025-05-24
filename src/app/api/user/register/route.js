@@ -66,10 +66,15 @@ export const POST = async (req) => {
       expiresIn: "24h",
     });
 
+    try {
+      await cookieStore.set("token", token);
+    } catch (error) {
+      console.log(`Error setting token: ${error}`);
+    }
+
     return NextResponse.json(
       {
         message: "User register successful",
-        token,
       },
       { status: 200 }
     );
