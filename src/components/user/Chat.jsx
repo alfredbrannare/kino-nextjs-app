@@ -74,7 +74,7 @@ const Chat = () => {
               </div>
               <div className="modal-action">
                 <button type="submit" className={`btn bg-yellow-400 text-black hover:bg-yellow-300 ${loading ? 'loading' : null}`}>
-                  Send
+                  Skicka
                 </button>
               </div>
             </form>
