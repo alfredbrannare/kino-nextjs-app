@@ -19,7 +19,7 @@ export default function ReviewsList({ reviews }) {
 			{paginatedReviews.map((review, index) => (
 				<div
 					key={index}
-					className="border p-2 mx-4 rounded bg-white text-black">
+					className="bg-[#2B0404] shadow-lg rounded-lg p-2 m-5 rounded  text-[#cdcdcd]">
 					<UserReview review={review} />
 				</div>
 			))}
