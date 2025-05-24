@@ -84,6 +84,8 @@ export const POST = async (req) => {
       year: data.release_date,
       image: `https://image.tmdb.org/t/p/original/${data.poster_path}`,
       rating: data.vote_average,
+      runtime: data.runtime,
+      genres: data.genres[0].name,
       trailerKey: trailerKey,
     });
 
@@ -104,7 +106,7 @@ export const POST = async (req) => {
     // Sparar till databasen och returnerar response
     await movie.save();
     return new Response(JSON.stringify({movie, originalData: data}), {
-      status: 200,
+      status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch(error){

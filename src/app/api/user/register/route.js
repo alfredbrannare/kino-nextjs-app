@@ -54,7 +54,8 @@ export const POST = async (req) => {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(body.password, salt);
     const newUser = await User.create({
       name: body.name,
       email: body.email,
@@ -65,10 +66,15 @@ export const POST = async (req) => {
       expiresIn: "24h",
     });
 
+    try {
+      await cookieStore.set("token", token);
+    } catch (error) {
+      console.log(`Error setting token: ${error}`);
+    }
+
     return NextResponse.json(
       {
         message: "User register successful",
-        token,
       },
       { status: 200 }
     );

@@ -9,46 +9,31 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
-  const [token, setToken] = useState('');
 
   useEffect(() => {
-    const checkToken = async () => {
-      const localToken = localStorage.getItem('token');
+    const checkUser = async () => {
       try {
-        if (localToken) {
-          setToken(localToken);
-          const response = await fetch('/api/user/me', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${localToken}`,
-            },
-          });
-          const data = await response.json();
-          if (response.ok) {
-            const user = data.user || data;
-            setUserData(user);
-            setLoggedIn(true);
-            if (user && user.role === 'admin') {
-              setAdmin(true);
-            } else {
-              setAdmin(false);
-            }
-          } else {
-            localStorage.removeItem('token');
-            setToken('');
-            setAdmin(false);
-            setLoggedIn(false);
-            setUserData(null);
-            console.log('Error checking token:', data.message);
-          }
+        const response = await fetch('/api/user/me', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          const user = data.user || data;
+          setUserData(user);
+          setLoggedIn(true);
+          //ADMIN
+          setAdmin(user?.role === 'admin');
+
         } else {
-          setLoggedIn(false);
           setAdmin(false);
+          setLoggedIn(false);
           setUserData(null);
+          console.log('Error checking token:', data.message);
         }
       } catch (error) {
         console.error("Failed to check token:", error);
-        setToken('');
         setLoggedIn(false);
         setAdmin(false);
         setUserData(null);
@@ -57,55 +42,51 @@ export const AuthDataProvider = ({ children }) => {
       }
     };
 
-    checkToken();
+    checkUser();
   }, []);
 
-  const login = (apiToken, userDataFromLogin) => {
-    localStorage.setItem("token", apiToken);
-    setToken(apiToken);
+  const login = (userDataFromLogin) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
-    if (userDataFromLogin && userDataFromLogin.role === 'admin') {
-      setAdmin(true);
-    } else {
-      setAdmin(false);
-    }
+    setAdmin(userDataFromLogin?.role === 'admin');
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken('');
+  const logout = async () => {
+    await fetch('/api/user/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
     setUserData(null);
     setLoggedIn(false);
     setAdmin(false);
   };
 
   const fetchUser = async () => {
-  const localToken = localStorage.getItem("token");
-  try {
-    const response = await fetch("/api/user/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localToken}`,
-      },
-    });
+    const localToken = localStorage.getItem("token");
+    try {
+      const response = await fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      });
 
-    const data = await response.json();
-    if (response.ok) {
-      const user = data.user || data;
-      setUserData(user);
-      setLoggedIn(true);
-      setAdmin(user.role === "admin");
-    } else {
-      console.error("Failed to fetch user:", data.message);
+      const data = await response.json();
+      if (response.ok) {
+        const user = data.user || data;
+        setUserData(user);
+        setLoggedIn(true);
+        setAdmin(user.role === "admin");
+      } else {
+        console.error("Failed to fetch user:", data.message);
+      }
+    } catch (err) {
+      console.error("Fetch user error:", err);
     }
-  } catch (err) {
-    console.error("Fetch user error:", err);
-  }
-};
+  };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin, token, fetchUser }}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin, fetchUser }}>
       {children}
     </AuthData.Provider>
   );

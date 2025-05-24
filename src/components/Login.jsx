@@ -22,6 +22,7 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, password })
             });
         const data = await response.json();
@@ -45,6 +46,7 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, name, password, passwordRepeat })
             });
         const data = await response.json();
