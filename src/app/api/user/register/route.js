@@ -65,15 +65,18 @@ export const POST = async (req) => {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
-
-    try {
-      await cookieStore.set("token", token);
-    } catch (error) {
-      console.log(`Error setting token: ${error}`);
-    }
+    
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, //Otherwise the cookie will disappear after closing the web browser
+    });
 
     return NextResponse.json(
       {
+        status: true,
         message: "User register successful",
       },
       { status: 200 }
