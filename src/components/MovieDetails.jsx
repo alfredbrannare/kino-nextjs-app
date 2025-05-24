@@ -106,14 +106,14 @@ const MovieDetails = ({ movie }) => {
 				<div className="col-span-full md:col-span-2 flex flex-col gap-6 order-1">
 					{/* title, metaInfo description */}
 
-					<MovieHeader
-						title={movie.title}
-						description={movie.description}
-					/>
 					<InfoCard
 						ageRating={movie.ageRating ?? 10}
 						duration={movie.duration ?? '1.40'}
 						genre={movie.genre ?? 'Horror'}
+					/>
+					<MovieHeader
+						title={movie.title}
+						description={movie.description}
 					/>
 				</div>
 
@@ -220,94 +220,6 @@ const MovieDetails = ({ movie }) => {
 				</div>
 			</div>
 		</>
-		// <>
-		// 	<div className="max-w-4xl mx-auto p-6">
-		// 		<ImageGrid
-		// 			imageUrl={movie.image}
-		// 			imageTitle={movie.title}>
-		// 			{/* title och description */}
-		// 			<InfoCard
-		// 				ageRating="7"
-		// 				duration="1 tim 40 min"
-		// 				genre="Adventure action family"
-		// 			/>
-
-		// 			<RatingCard rating={movie.rating} />
-		// 			<div className="mb-6">
-		// 				<div className="mb-6">
-		// 					{/* this is for screenings */}
-		// 					<h2 className="text-2xl font-bold mb-4">
-		// 						Filmen går följande tider
-		// 					</h2>
-
-		// 					{screenings.length === 0 ? (
-		// 						<p className="text-sm text-gray-400">
-		// 							Inga visningar hittades.
-		// 						</p>
-		// 					) : (
-		// 						screenings.map((screening) => (
-		// 							<Link
-		// 								key={screening._id}
-		// 								href={{
-		// 									pathname: `/auditoriums/city`,
-		// 									query: {
-		// 										movieId: screening.movieId._id,
-		// 										screeningTime: screening.startTime,
-		// 										auditorium: 'city',
-		// 									},
-		// 								}}>
-		// 								<Views
-		// 									views={{
-		// 										tid: new Date(screening.startTime).toLocaleString(
-		// 											'sv-SE',
-		// 											{
-		// 												weekday: 'short',
-		// 												day: 'numeric',
-		// 												month: 'short',
-		// 												hour: '2-digit',
-		// 												minute: '2-digit',
-		// 											}
-		// 										),
-		// 										sal: screening.auditoriumId.name,
-		// 										maxSeats: screening.auditoriumId.capacity ?? 100,
-		// 										bookedCount: screening.bookedCount,
-		// 									}}
-		// 								/>
-		// 							</Link>
-		// 						))
-		// 					)}
-		// 				</div>
-		// 				{/* button to go to "biljett page" */}
-		// 				<div className="flex justify-center w-full">
-		// 					<Link href={{ pathname: `/tickets` }}>
-		// 						<button className="btn">Se alla visningar</button>
-		// 					</Link>
-		// 				</div>
-		// 			</div>
-		// 			<div className="col-start-3 col-span-4 flex flex-col mt-5">
-		// 				{/* reviews ska vara här */}
-		// 				<h2 className="text-2xl  card-title self-center ">Reviews</h2>
-		// 				<div>
-		// 					{/* TODO: hide if not login */}
-		// 					{!isLoggedIn ? (
-		// 						<p className="justify-self-center my-4">
-		// 							Logga in för att lämna en review
-		// 						</p>
-		// 					) : (
-		// 						<ReviewForm
-		// 							handleAddReview={handleAddReview}
-		// 							userData={userData}
-		// 						/>
-		// 					)}
-		// 				</div>
-		// 				<div className="mb-5">
-		// 					{/* ReviewsList */}
-		// 					<ReviewsList reviews={reviews} />
-		// 				</div>
-		// 			</div>
-		// 		</ImageGrid>
-		// 	</div>
-		// </>
 	);
 };
 
