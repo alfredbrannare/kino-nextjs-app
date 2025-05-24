@@ -30,7 +30,7 @@ const Chat = () => {
         setQuestion('');
         setLoading(false);
       } else {
-        console.error(data.error);
+        console.log(data.error);
         setErr('Fältet får inte vara tomt!')
       }
     } catch (err) {
