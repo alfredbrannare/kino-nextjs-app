@@ -6,10 +6,12 @@ const moviesSchema = new mongoose.Schema({
   year: String,
   image: String,
   rating: String,
-  inCinemas: {type:Boolean, default:false},
-  trailerKey: {type:String, default: null},
+  runtime: String,
+  genres: String,
+  inCinemas: { type: Boolean, default: false },
+  trailerKey: { type: String, default: null },
 });
 
-const Movie = mongoose.models.Movies || mongoose.model('Movies', moviesSchema);
+const Movie = mongoose.models.Movies || mongoose.model("Movies", moviesSchema);
 
 export default Movie;
