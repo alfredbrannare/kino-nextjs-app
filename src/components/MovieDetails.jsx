@@ -197,11 +197,11 @@ const MovieDetails = ({ movie }) => {
 					<div className="md:w-md">
 						<div>
 							{!isLoggedIn ? (
-								<p className="my-4 justify-self-center">
-									<span>
+								<p className="my-4 text-xl justify-self-center">
+									<span className="inline-block">
 										<Login />
-										Logga in för att lämna en review
-									</span>
+									</span>{' '}
+									för att lämna en review
 								</p>
 							) : (
 								<ReviewForm

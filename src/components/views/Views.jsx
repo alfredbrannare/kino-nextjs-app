@@ -10,7 +10,7 @@ export default function Views({ views }) {
 	} else if (emptyPercentage >= 45) {
 		color = '#FFD2D2';
 	} else {
-		color = '#15FB14';
+		color = '#056905';
 	}
 
 	return (
