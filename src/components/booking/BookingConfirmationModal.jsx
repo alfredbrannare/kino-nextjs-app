@@ -1,5 +1,5 @@
 'use client'
-import { AlarmClock, Armchair, Check, Clapperboard, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
+import { AlarmClock, Armchair, BadgeCheck, Clapperboard, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const ticketTypeIcons = {
@@ -40,9 +40,8 @@ export default function BookingConfirmationModal({
         <div className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-[#2B0404] p-6 rounded-lg max-w-sm w-full text-white space-y-4 text-center border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
 
-                {/* <div className="text-green-500 text-6xl font-bold">✓</div> */}
                 <div className="flex justify-center">
-                    <Check size={96} className="text-green-500" />
+                    <BadgeCheck size={128} className="text-green-600 hover:text-green-500" />
                 </div>
                 <h2 className="text-2xl font-semibold">Bokning bekräftad!</h2>
 
@@ -98,7 +97,7 @@ export default function BookingConfirmationModal({
 
                 <button
                     onClick={handleClose}
-                    className="mt-4 px-6 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-300 font-semibold"
+                    className="mt-4 px-6 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-300 font-semibold cursor-pointer"
                 >
                     Stäng
                 </button>
