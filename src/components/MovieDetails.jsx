@@ -123,6 +123,7 @@ const MovieDetails = ({ movie }) => {
 										pathname: `/auditoriums/city`,
 										query: {
 											movieId: screening.movieId._id,
+											movieTitle: movie.title,
 											screeningTime: screening.startTime,
 											auditorium: 'city',
 										},

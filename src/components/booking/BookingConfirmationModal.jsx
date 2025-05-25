@@ -1,5 +1,5 @@
 'use client'
-import { AlarmClock, Armchair, BadgeCheck, Clapperboard, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
+import { Clock, Armchair, BadgeCheck, Clapperboard, Theater, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const ticketTypeIcons = {
@@ -19,13 +19,13 @@ const ticketTypeLabels = {
 };
 
 export default function BookingConfirmationModal({
+    auditorium,
     visible,
     seats,
     movieTitle,
     screeningTime,
     ticketInfo,
     totalPrice,
-    onClose
 }) {
     const router = useRouter();
 
@@ -51,13 +51,17 @@ export default function BookingConfirmationModal({
                         <p><strong>Film:</strong> {movieTitle}</p>
                     </div>
                     <div className="flex items-center gap-2 justify-center text-sm">
-                        <AlarmClock size={20} className="text-yellow-400" />
+                        <Clock size={20} className="text-yellow-400" />
                         <p><strong>Visningstid:</strong> {new Date(screeningTime)
                             .toLocaleString("sv-SE", {
                                 dateStyle: "short",
                                 timeStyle: "short"
                             })}
                         </p>
+                    </div>
+                    <div className="flex items-center gap-2 justify-center text-sm">
+                        <Theater size={24} className="text-yellow-400" />
+                        <p><strong>Salong:</strong> {auditorium}</p>
                     </div>
                 </div>
 

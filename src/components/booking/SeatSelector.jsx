@@ -190,6 +190,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 }}
             />
             <BookingConfirmationModal
+                auditorium={auditorium.toUpperCase()}
                 visible={showConfirmationModal}
                 seats={confirmedSeats}
                 movieTitle={movieTitle}
