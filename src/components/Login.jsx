@@ -22,11 +22,13 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, password })
             });
         const data = await response.json();
-        if (data.token) {
-            login(data.token, data.user);
+        console.log(data);
+        if (data.status) {
+            login(data.user);
             setOpen(false);
             setEmail('');
             setPassword('');
@@ -45,11 +47,12 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, name, password, passwordRepeat })
             });
         const data = await response.json();
-        if (data.token) {
-            login(data.token, data.user);
+        if (data) {
+            login(data.user);
             setOpen(false);
             setIsLogin(true)
             setEmail('');

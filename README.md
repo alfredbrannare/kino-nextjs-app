@@ -169,7 +169,7 @@ If you want to protect specific pages so that only logged-in users can access th
 
 On the backend, you can check the user's token to validate their authentication. Here's how you might check the token:
 
-    import { useAuth } from "src/components/user/AuthData";
+    import { checkAuth } from "src/lib/auth";
     import { NextResponse } from "next/server"; // Import NextResponse
 
     const authenticatedUser = await checkAuth(req);

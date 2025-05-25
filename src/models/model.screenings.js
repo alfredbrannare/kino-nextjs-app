@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Movie from "src/models/model.movies";
 import Auditorium from "src/models/model.auditorium";
+import Booking from "./model.booking";
 
 const screeningsSchema = new mongoose.Schema({
   movieId: {
@@ -16,7 +17,11 @@ const screeningsSchema = new mongoose.Schema({
   startTime: {
     type: Date,
     required: true,
-  }
+  },
+  bookedSeats: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Booking",
+  }]
 });
 
 const Screening =

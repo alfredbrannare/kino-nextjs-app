@@ -11,7 +11,7 @@ const ScreeningsPage = () => {
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -42,7 +42,7 @@ const ScreeningsPage = () => {
 		try {
 			await fetch(`/api/screenings/${id}`, {
 				method: "DELETE",
-				headers: { 'Authorization': `Bearer ${token}` },
+				credentials: 'include',
 			})
 		} catch (error) {
 			console.error("Error deleting movie movies:", error)

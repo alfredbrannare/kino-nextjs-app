@@ -11,7 +11,7 @@ import { useAuth } from 'src/components/user/AuthData';
 // TODO fix check for backend for rating
 
 const MovieDetails = ({ movie }) => {
-	const { isLoggedIn, userData, token } = useAuth();
+	const { isLoggedIn, userData } = useAuth();
 	const [reviews, setReviews] = useState([]);
 	const [screenings, setScreenings] = useState([]); //- Patrik
 
@@ -34,12 +34,34 @@ const MovieDetails = ({ movie }) => {
 			try {
 				const res = await fetch(`/api/screenings?movieId=${movie._id}`);
 				const data = await res.json();
-				setScreenings(data.filter((s) => s.movieId._id === movie._id));
-				console.log('Screenings för filmen:', data);
+
+				const enriched = data.map((screening) => {
+					const bookedCount = screening.bookedSeats?.reduce(
+						(sum, booking) => sum + (booking.seats?.length || 0),
+						0
+					);
+
+					const totalSeats = screening.auditoriumId?.seats?.length || 0;
+					const availableSeats = totalSeats - bookedCount;
+
+					return {
+						...screening,
+						bookedCount,
+						tid: new Date(screening.startTime).toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit',
+						}),
+						sal: screening.auditoriumId?.name || "Okänd salong",
+					};
+				});
+
+				setScreenings(enriched);
+				console.log("Screenings för filmen:", enriched);
 			} catch (error) {
-				console.error('Error fetching screenings', error);
+				console.error("Error fetching screenings", error);
 			}
 		};
+
 
 		if (movie._id) {
 			fetchReviews();
@@ -54,10 +76,7 @@ const MovieDetails = ({ movie }) => {
 	const handleAddReview = async ({ rating, text, user }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
+			credentials: 'include',
 			body: JSON.stringify({ movieId, rating, text, user }),
 		});
 
@@ -143,6 +162,7 @@ const MovieDetails = ({ movie }) => {
 											sal: screening.auditoriumId.name,
 											maxSeats: screening.auditoriumId.capacity ?? 100,
 											emptySeats: 100,
+											bookedCount: screening.bookedCount,
 										}}
 									/>
 								</Link>

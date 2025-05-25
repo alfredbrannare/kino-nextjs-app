@@ -1,6 +1,8 @@
 import connectDB from "src/lib/mongodb";
 import Booking from "src/models/model.booking.js";
 import Movie from "src/models/model.movies.js";
+import Auditorium from "src/models/model.auditorium";
+import Screening from "src/models/model.screenings";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -69,23 +71,45 @@ export async function POST(request) {
             }
         }
 
+        // Create booking
         const booking = await Booking.create({
             movieId,
             screeningTime,
             seats: labeledSeats,
-            userId:'6820d93969eddb5ac9ed9f95',
+            userId: '6820d93969eddb5ac9ed9f95',
             auditorium,
             totalPrice
         });
 
+        // Get movie title
         const movie = await Movie.findById(movieId);
 
+        // Get auditoriumId
+        const auditoriumDoc = await Auditorium.findOne({ slug: auditorium });
+        if (!auditoriumDoc) {
+            return Response.json({ error: "Auditorium not found" }, { status: 404 });
+        }
+
+        // Add booking to Screening.bookedSeats[]
+        await Screening.findOneAndUpdate(
+            {
+            movieId,
+            startTime: new Date(screeningTime),
+            auditoriumId: auditoriumDoc._id
+            },
+            {
+            $push: { bookedSeats: booking._id }
+            }
+        );
+
+        // Return booking + movie title
         return Response.json({
             booking,
             movieTitle: movie?.title || "Okänd titel"
         }, { status: 201 });
-    } catch (err) {
+
+        } catch (err) {
         console.error('Booking error', err);
-        return Response.json({ error: 'Något gick fel'}, { status: 500 });
+        return Response.json({ error: 'Något gick fel' }, { status: 500 });
     }
 }

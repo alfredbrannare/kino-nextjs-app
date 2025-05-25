@@ -46,13 +46,10 @@ export default function MembershipPage() {
   }, [isLoggedIn, isLoading, router]);
 
   useEffect(() => {
-    const localToken = localStorage.getItem('token');
     const getBookings = async () => {
       const response = await fetch('/api/bookings/user', {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localToken}`,
-        }
+        credentials: 'include',
       });
       const data = await response.json();
 
@@ -112,13 +109,9 @@ export default function MembershipPage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const token = localStorage.getItem('token');
-
       const res = await fetch('/api/upload-profile', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
         body: formData,
       });
 
@@ -143,12 +136,9 @@ export default function MembershipPage() {
     if (!confirmDelete) return;
 
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("/api/remove-profile", {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
       });
 
       const data = await res.json();
