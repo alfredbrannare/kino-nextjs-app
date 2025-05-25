@@ -1,5 +1,6 @@
 'use client'
 import { AlarmClock, Armchair, Check, Clapperboard, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ticketTypeIcons = {
     ordinary: <Ticket size={20} className="text-yellow-400" />,
@@ -26,7 +27,14 @@ export default function BookingConfirmationModal({
     totalPrice,
     onClose
 }) {
+    const router = useRouter();
+
+
     if (!visible) return null;
+
+    const handleClose = () => {
+        router.push("/");
+    };
 
     return (
         <div className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50">
@@ -89,7 +97,7 @@ export default function BookingConfirmationModal({
                 </div>
 
                 <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="mt-4 px-6 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-300 font-semibold"
                 >
                     Stäng
