@@ -22,7 +22,7 @@ export const DELETE = async (req, { params }) => {
     await connectDB();
     const authenticatedUser = await checkAuth(req);
 
-    if (!authenticatedUser || authenticatedUser.role.includes('admin')) {
+    if (!authenticatedUser || !authenticatedUser.role.includes('admin')) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
