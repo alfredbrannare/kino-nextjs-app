@@ -9,46 +9,57 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
+  const [isStudent, setStudent] = useState(false);
+  const [isSenior, setSenior] = useState(false);
+
+  const checkUser = async () => {
+    try {
+      const response = await fetch('/api/user/me', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        const user = data.user || data;
+        setUserData(user);
+        setLoggedIn(true);
+        //Roles
+        setAdmin(user?.role.includes('admin'));
+        setStudent(user?.role.includes('student'));
+        setSenior(user?.role.includes('senior'));
+
+
+      } else {
+        setAdmin(false);
+        setStudent(false);
+        setSenior(false);
+        setLoggedIn(false);
+        setUserData(null);
+        console.log('Error checking token:', data.message);
+      }
+    } catch (error) {
+      console.error("Failed to check token:", error);
+      setLoggedIn(false);
+      setAdmin(false);
+      setStudent(false);
+      setSenior(false);
+      setUserData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const response = await fetch('/api/user/me', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-          const user = data.user || data;
-          setUserData(user);
-          setLoggedIn(true);
-          //ADMIN
-          setAdmin(user?.role === 'admin');
-
-        } else {
-          setAdmin(false);
-          setLoggedIn(false);
-          setUserData(null);
-          console.log('Error checking token:', data.message);
-        }
-      } catch (error) {
-        console.error("Failed to check token:", error);
-        setLoggedIn(false);
-        setAdmin(false);
-        setUserData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     checkUser();
   }, []);
 
   const login = (userDataFromLogin) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
-    setAdmin(userDataFromLogin?.role === 'admin');
+    setAdmin(user?.role.includes('admin'));
+    setStudent(user?.role.includes('student'));
+    setSenior(user?.role.includes('senior'));
   };
 
   const logout = async () => {
@@ -59,10 +70,12 @@ export const AuthDataProvider = ({ children }) => {
     setUserData(null);
     setLoggedIn(false);
     setAdmin(false);
+    setStudent(false);
+    setSenior(false);
   };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin}}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin, isStudent, isSenior }}>
       {children}
     </AuthData.Provider>
   );
