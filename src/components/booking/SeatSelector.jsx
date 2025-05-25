@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import WheelchairModal from "./WheelchairModal";
+import BookingConfirmationModal from "./BookingConfirmationModal";
 
 export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, seatsFromDB, ticketInfo }) {
 
@@ -11,8 +12,12 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
     const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState(null);
     const [showSeatWarning, setShowSeatWarning] = useState(false);
     const salong = groupSeatsByRow(seatsFromDB || []);
-    console.log("Inkommande seatsFromDb:", seatsFromDB);
 
+    //Booking confirmation modal
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [confirmedSeats, setConfirmedSeats] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [movieTitle, setMovieTitle] = useState("");
 
     useEffect(() => {
         fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
@@ -66,8 +71,14 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             })
         })
             .then(res => res.json())
-            .then(data => {
-                console.log('Bokning klar', data);
+            .then(({ booking, movieTitle }) => {
+                console.log('Bokning klar', booking);
+                console.log('Filmtitel:', movieTitle);
+
+                setConfirmedSeats(selectedSeats);
+                setMovieTitle(movieTitle);
+                setTotalPrice(booking.totalPrice);
+                setShowConfirmationModal(true);
                 setSelectedSeats([]);
 
                 fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
@@ -177,6 +188,16 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 onCancel={() => {
                     setPendingWheelchairSeat(null);
                 }}
+            />
+            <BookingConfirmationModal
+                auditorium={auditorium.toUpperCase()}
+                visible={showConfirmationModal}
+                seats={confirmedSeats}
+                movieTitle={movieTitle}
+                screeningTime={screeningTime}
+                ticketInfo={ticketInfo}
+                totalPrice={totalPrice}
+                onClose={() => setShowConfirmationModal(false)}
             />
         </div>
     );

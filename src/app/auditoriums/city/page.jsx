@@ -1,4 +1,4 @@
-import BookingClient from "src/components/BookingClient";
+import BookingClient from "src/components/booking/BookingClient";
 
 export default function BookingPage({ searchParams }) {
     const { movieId, screeningTime } = searchParams;
