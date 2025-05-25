@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import UserReview from './reviews/UserReview';
 import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
@@ -118,6 +118,7 @@ const MovieDetails = ({ movie }) => {
 
 				<div className="order-2 mt-10 col-span-full md:col-span-2 ">
 					{/* rating */}
+
 					<RatingCard rating={movie.rating} />
 				</div>
 				{/* Ticket booking section */}
@@ -212,6 +213,7 @@ const MovieDetails = ({ movie }) => {
 						</div>
 						<div className="mb-5">
 							{/* ReviewsList */}
+
 							<ReviewsList reviews={reviews} />
 						</div>
 					</div>
