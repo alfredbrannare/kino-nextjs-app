@@ -111,8 +111,8 @@ const MovieDetails = ({ movie }) => {
 						title={movie.title}
 						description={movie.description}
 						ageRating={movie.ageRating ?? 10}
-						duration={movie.duration ?? '1.40'}
-						genre={movie.genre ?? 'Horror'}
+						duration={movie.runtime ?? '1.40'}
+						genre={movie.genres ?? 'Horror'}
 					/>
 				</div>
 
@@ -148,7 +148,7 @@ const MovieDetails = ({ movie }) => {
 				<div className="row-start-3 col-span-full md:col-span-5">
 					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
 						<h2 className="mb-4 text-3xl font-bold text-center">
-							Filmen går följande tider
+							Välj visning
 						</h2>
 
 						{/* date select */}
