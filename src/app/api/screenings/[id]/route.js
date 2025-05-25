@@ -22,7 +22,7 @@ export const DELETE = async (req, { params }) => {
     await connectDB();
     const authenticatedUser = await checkAuth(req);
 
-    if (!authenticatedUser || authenticatedUser.role !== "admin") {
+    if (!authenticatedUser || authenticatedUser.role.includes('admin')) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
@@ -49,7 +49,7 @@ export const PUT = async (req, { params }) => {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role === "admin";
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(
