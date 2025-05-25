@@ -108,7 +108,7 @@ export default function ReviewForm({ handleAddReview, userData }) {
 
 			<button
 				type="submit"
-				className="btn btn-primary">
+				className="text-lg text-black bg-yellow-400 text-semibold btn">
 				Submit Review
 			</button>
 		</form>
