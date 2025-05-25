@@ -3,6 +3,7 @@ import Booking from "src/models/model.booking.js";
 import Movie from "src/models/model.movies.js";
 import Auditorium from "src/models/model.auditorium";
 import Screening from "src/models/model.screenings";
+import { checkAuth } from "src/lib/auth";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -23,15 +24,18 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-    const body = await request.json();
-    const { movieId, screeningTime, seats, userId, auditorium, ticketInfo } = body;
-
-    if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
-        return Response.json({ error: "Missing required booking fields" }, { status: 400 });
-    }
-
     try {
         await connectDB();
+
+        const authenticatedUser = await checkAuth();
+        const userId = authenticatedUser?._id || null;
+
+        const body = await request.json();
+        const { movieId, screeningTime, seats, auditorium, ticketInfo } = body;
+
+        if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
+            return Response.json({ error: "Missing required booking fields" }, { status: 400 });
+        }
 
         //Controls that seats aren't booked already
         const existing = await Booking.find({ movieId, screeningTime, auditorium });
@@ -76,7 +80,7 @@ export async function POST(request) {
             movieId,
             screeningTime,
             seats: labeledSeats,
-            userId: '6820d93969eddb5ac9ed9f95',
+            userId,
             auditorium,
             totalPrice
         });

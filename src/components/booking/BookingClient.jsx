@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import SeatSelector from "./SeatSelector";
 import TicketSelector from "./TicketSelector";
 import { Clapperboard, Clock, Theater } from "lucide-react";
+import { useAuth } from "../user/AuthData";
 
 export default function BookingClient({ movieId, screeningTime, auditorium, userId }) {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn } = useAuth();
     const [ticketInfo, setTicketInfo] = useState({ total: 0, details: {}, totalPrice: 0 });
     const [seatsFromDB, setSeatsFromDB] = useState([]);
     const [movieTitle, setMovieTitle] = useState("");
@@ -53,7 +54,7 @@ export default function BookingClient({ movieId, screeningTime, auditorium, user
                 <h3 className="text-l mt-10 mb-10">Välj biljetter</h3>
 
                 <TicketSelector
-                    isLoggedIn={false}
+                    isLoggedIn={isLoggedIn}
                     onChange={(total, details) => setTicketInfo({
                         total,
                         details,
