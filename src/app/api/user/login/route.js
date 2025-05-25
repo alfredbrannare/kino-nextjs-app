@@ -54,7 +54,8 @@ export const POST = async (req) => {
         expiresIn: "24h",
       });
 
-      await cookies().set("token", token, {
+      const cookieStore = await cookies();
+      cookieStore.set("token", token, {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
@@ -63,6 +64,7 @@ export const POST = async (req) => {
 
       return NextResponse.json(
         {
+          status: true,
           message: "User logging successful",
         },
         { status: 200 }
