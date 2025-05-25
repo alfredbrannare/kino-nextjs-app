@@ -11,7 +11,7 @@ const MoviesPage = () => {
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -42,7 +42,7 @@ const MoviesPage = () => {
 		try {
 			await fetch(`/api/movies/${id}`, {
 				method: "DELETE",
-				headers: { 'Authorization': `Bearer ${token}` },
+				credentials: 'include',
 			})
 		} catch (error) {
 			console.error("Error deleting movie movies:", error)
@@ -54,11 +54,7 @@ const MoviesPage = () => {
 	const updateMovie = async (id, inCinemas) => {
 		await fetch(`/api/movies/${id}`, {
 			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-				'Authorization': `Bearer ${token}`,
-
-			},
+			credentials: 'include',
 			body: JSON.stringify({ inCinemas }),
 		})
 		setUpdate(true)
