@@ -80,7 +80,7 @@ const MovieDetails = ({ movie }) => {
 			method: 'POST',
 
 			credentials: 'include',
-			body: JSON.stringify({ movieId, rating, text, user }),
+			body: JSON.stringify({ movieId, rating, text }),
 		});
 
 		if (response.ok) {
