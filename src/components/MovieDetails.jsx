@@ -1,16 +1,13 @@
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
-import { Suspense, useEffect, useState } from 'react';
-import UserReview from './reviews/UserReview';
+import { useEffect, useState } from 'react';
 import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
-
 import { useAuth } from 'src/components/user/AuthData';
-import InfoCard from './movies/singel/InfoCard';
 import RatingCard from './movies/singel/RatingCard';
 import { MovieHeader } from './movies/singel/MovieHeader';
-import { ImageGrid } from './movies/singel/ImageGrid';
+
 import TrailerCard from './movies/singel/TrailerCard';
 import Login from './Login';
 
