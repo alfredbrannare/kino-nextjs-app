@@ -196,12 +196,12 @@ const MovieDetails = ({ movie }) => {
 					<div className="md:w-md">
 						<div>
 							{!isLoggedIn ? (
-								<p className="my-4 text-xl justify-self-center">
+								<div className="flex items-center justify-center gap-2 my-4 text-xl">
 									<span className="inline-block">
 										<Login />
-									</span>{' '}
-									för att lämna en review
-								</p>
+									</span>
+									<span>för att lämna en review</span>
+								</div>
 							) : (
 								<ReviewForm
 									handleAddReview={handleAddReview}
