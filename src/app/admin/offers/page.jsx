@@ -8,7 +8,7 @@ const OffersPage = () => {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newOffer, setNewOffer] = useState("");
-  const { isAdmin, isLoading: isAuthLoading, token } = useAuth();
+  const { isAdmin, isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const OffersPage = () => {
   const fetchOffers = async () => {
     try {
       const res = await fetch("/api/offers", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       });
       const data = await res.json();
       setOffers(data.offers || []);
@@ -42,10 +42,7 @@ const OffersPage = () => {
     try {
       const res = await fetch("/api/offers", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
         body: JSON.stringify({ offer: newOffer }),
       });
       if (res.ok) {
@@ -61,7 +58,7 @@ const OffersPage = () => {
     try {
       const res = await fetch(`/api/offers/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       });
       if (res.ok) {
         fetchOffers();

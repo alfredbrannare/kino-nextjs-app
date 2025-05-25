@@ -7,13 +7,9 @@ const MovieCreator = ({ setUpdate }) => {
   const addFilm = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/movies', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
         body: JSON.stringify({ id: id || '' }),
       });
       const body = await response.json();
