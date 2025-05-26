@@ -178,7 +178,7 @@ On the backend, you can check the user's token to validate their authentication.
        }
 
       // Optionally, check if the user is an admin
-     const isAdmin = authenticatedUser.role === "admin";
+     const isAdmin = authenticatedUser.role.includes('admin');
        if (!isAdmin) {
         return NextResponse.json(
          { message: "You don't have the right to use this feature!" },

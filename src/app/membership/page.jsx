@@ -7,7 +7,7 @@ import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, Map
 import Link from "next/link";
 
 export default function MembershipPage() {
-  const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, fetchUser } = useAuth();
+  const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, checkUser } = useAuth();
   const [booking, setBooking] = useState([]);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
   const adminMenuRef = useRef(null);
@@ -121,7 +121,7 @@ export default function MembershipPage() {
 
       if (res.ok && data.profilePicture) {
         alert('Profilbilden har uppdaterats!');
-        await fetchUser();
+        await checkUser();
       } else {
         alert(`Något gick fel vid uppladdningen: ${data.error || 'Okänt fel'}`);
       }
@@ -145,7 +145,7 @@ export default function MembershipPage() {
 
       if (res.ok) {
         alert("Profilbilden har tagits bort.");
-        await fetchUser();
+        await checkUser();
       } else {
         alert(`Kunde inte ta bort bilden: ${data.error || 'Okänt fel'}`);
       }
