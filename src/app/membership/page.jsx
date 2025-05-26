@@ -3,7 +3,7 @@
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar } from 'lucide-react';
+import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar, Award } from 'lucide-react';
 import Link from "next/link";
 
 export default function MembershipPage() {
@@ -248,7 +248,22 @@ export default function MembershipPage() {
             <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
             <p className="text-[#CDCDCD] text-m font-bold text-center">{userData?.email}</p>
             <p className="mt-2 font-bold text-m text-[#CDCDCD] text-center">
-              {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
+              Medlemsnivå:{' '}
+              {userData?.role.includes('silver') && (
+                <>
+                  silver <Award className="inline-block ml-1 text-silver-500" />{' '}
+                </>
+              )}
+              {userData?.role.includes('guld') && (
+                <>
+                  guld <Award className="inline-block ml-1 text-yellow-500" />{' '}
+                </>
+              )}
+              {userData?.role.includes('kinoguru') && (
+                <>
+                  kinoguru <Award className="inline-block ml-1 text-purple-500" />
+                </>
+              )}
             </p>
           </div>
         </div>

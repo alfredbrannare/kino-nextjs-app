@@ -9,8 +9,7 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
-  const [isStudent, setStudent] = useState(false);
-  const [isSenior, setSenior] = useState(false);
+  const [userLevel, setUserLevel] = useState('silver');
 
   const checkUser = async () => {
     try {
@@ -26,8 +25,6 @@ export const AuthDataProvider = ({ children }) => {
         setLoggedIn(true);
         //Roles
         setAdmin(user?.role.includes('admin'));
-        setStudent(user?.role.includes('student'));
-        setSenior(user?.role.includes('senior'));
 
 
       } else {
@@ -58,8 +55,6 @@ export const AuthDataProvider = ({ children }) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
     setAdmin(user?.role.includes('admin'));
-    setStudent(user?.role.includes('student'));
-    setSenior(user?.role.includes('senior'));
   };
 
   const logout = async () => {
@@ -70,12 +65,10 @@ export const AuthDataProvider = ({ children }) => {
     setUserData(null);
     setLoggedIn(false);
     setAdmin(false);
-    setStudent(false);
-    setSenior(false);
   };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin, isStudent, isSenior }}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin, userLevel }}>
       {children}
     </AuthData.Provider>
   );
