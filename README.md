@@ -130,6 +130,137 @@ MONGO_URI=mongodb://localhost:27017
   ]
 }
 ```
+## Events API
+
+### GET an Event by ID
+
+- **URL**: `/api/events/[id]`
+- **Method**: `GET`
+- **Description**: Retrieves a single event by its ID.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+{ 
+  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  "title": "Movie Premiere Night",
+  "time": "19:00",
+  "date": "2025-06-10",
+  "image": "https://example.com/event-image.jpg",
+  "description": "Join us for the premiere of the latest blockbuster!",
+  "__v": 0
+} 
+
+### DELETE an Event by ID (Admin only)
+
+- **URL**: `/api/events/[id]`
+- **Method**: `DELETE`
+- **Description**:  Deletes an event by its ID. Requires user to be authenticated and have admin role.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+{
+  "message": "Event deleted successfully"
+}
+
+### PUT Update an Event by ID (Admin only)
+
+- **URL**: `/api/events/[id]`
+- **Method**: `PUT`
+- **Description**: Updates an existing event by ID. Requires admin authentication.
+- **Request Body**:
+{
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the event."
+}
+- **Response**:
+{
+  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the event.",
+  "__v": 0
+}
+
+## Offers API
+
+### GET all offers
+
+- **URL**: `/api/offers`
+- **Method**: `GET`
+- **Description**: Retrieves all offers.
+- **Response**: JSON object containing an array of offer objects.
+- **Example Response**: 
+{
+  "offers": [
+    {
+      "_id": "60f6b8a9e47e8c3f8c5a5a8d",
+      "text": "20% off on all tickets this weekend!",
+      "__v": 0
+    },
+    {
+      "_id": "60f6b8bae47e8c3f8c5a5a8e",
+      "text": "Buy one get one free on popcorn.",
+      "__v": 0
+    }
+  ]
+}
+
+### POST Create a New Offer (Admin only)
+
+- **URL**: `/api/offers`
+- **Method**: `POST`
+- **Description**: Creates a new offer. Only accessible by authenticated admin users.
+- **Request Body (JSON)**:
+{
+  "offer": "Free drink with every ticket purchase!"
+}
+- **Example Response**: 
+{
+  "_id": "60f6b9b5e47e8c3f8c5a5a8f",
+  "text": "Free drink with every ticket purchase!",
+  "__v": 0
+}
+
+### DELETE an Offer by ID (Admin only)
+
+- **URL**: `/api/offers/[id]`
+- **Method**: `DELETE`
+- **Description**: Deletes an offer by its ID. Requires authenticated admin user.
+- **Response**: 
+{
+  "success": true
+}
+
+## Profile Picture API
+
+### POST Upload Profile Picture
+
+- **URL**: `/api/upload-profile`
+- **Method**: `POST`
+- **Auth**: Required (User)
+- **Description**: Uploads or updates a user's profile picture to Cloudinary and stores the image URL in the database.
+- **Request Type**: multipart/form-data
+- **Form Data Parameters**: file: Image file to upload.
+- **Response**: 
+{
+  "profilePicture": "https://res.cloudinary.com/your_cloud_name/image/upload/v1234567890/profile_pics/user_123.jpg"
+}
+
+### DELETE Remove Profile Picture
+
+- **URL**: `/api/remove-profile`
+- **Method**: `DELETE`
+- **Auth**: Required (User)
+- **Description**: Deletes the user's profile picture from Cloudinary and removes the URL from the user record in the database.
+- **Response**: 
+{
+  "message": "Profile image removed."
+}
+
+```
 
 ### Instructions for Using the Auth Context
 
