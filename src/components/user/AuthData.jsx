@@ -9,7 +9,6 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
-  const [userLevel, setUserLevel] = useState('silver');
 
   const checkUser = async () => {
     try {
@@ -18,6 +17,11 @@ export const AuthDataProvider = ({ children }) => {
         credentials: 'include',
       });
       const data = await response.json();
+
+      await fetch('/api/user/check', {
+        method: 'PUT',
+        credentials: 'include',
+      });
 
       if (response.ok) {
         const user = data.user || data;
@@ -46,6 +50,7 @@ export const AuthDataProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     checkUser();
@@ -68,7 +73,7 @@ export const AuthDataProvider = ({ children }) => {
   };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin, userLevel }}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin }}>
       {children}
     </AuthData.Provider>
   );
