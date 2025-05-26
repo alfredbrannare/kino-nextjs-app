@@ -1,12 +1,11 @@
 'use client';
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import EventsTabs from "src/components/events/EventsTabs";
-import EventCardSkeleton from "src/components/events/MovieCardSkeleton";
 import LoadingSpinner from "src/components/LoadingSpinner";
 
-export default function Events() {
+function EventsContent() {
   const [events, setEvents] = useState([]);
   const [liveEvents, setLiveEvents] = useState([]);
   const searchParams = useSearchParams();
@@ -70,5 +69,14 @@ export default function Events() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+export default function Events() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <EventsContent />
+    </Suspense>
   );
 }
