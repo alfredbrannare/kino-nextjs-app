@@ -14,9 +14,10 @@ const userSchema = new mongoose.Schema({
   hashedPassword: String,
   role: {
     type: String,
-    enum: ["user", "member", "admin", "student", "senior"],
+    enum: ["user", "admin", "silver", "guld", "kinoguru"],
     default: "user member"
   },
+  points: Number,
   benefits: {
     type: [String],
     default: ["2 små läsk för priset av en!"]
