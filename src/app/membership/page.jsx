@@ -175,6 +175,9 @@ export default function MembershipPage() {
                       <li><Link href="/admin/screenings">Visningshantering</Link></li>
                       <li><Link href="/admin/reviews">Reviewshantering</Link></li>
                       <li><Link href="/admin/offers">Erbjudandehantering</Link></li>
+                      <li><Link href="/admin/live-events">Liveevenemanghantering</Link></li>
+                      <li><Link href="/admin/events">Evenemanghantering</Link></li>
+
                     </ul>
                   </div>
                 )}
