@@ -70,25 +70,33 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 ticketInfo
             })
         })
-            .then(res => res.json())
-            .then(({ booking, movieTitle }) => {
-                console.log('Bokning klar', booking);
-                console.log('Filmtitel:', movieTitle);
+            .then(async (res) => {
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    alert(errorData.error || "Bokningen misslyckades");
+                    setIsBooking(false);
+                    return;
+                }
+
+                return res.json();
+            })
+            .then((data) => {
+                if (!data) return;
+
+                const { booking, movieTitle } = data;
 
                 setConfirmedSeats(selectedSeats);
                 setMovieTitle(movieTitle);
-                setTotalPrice(booking.totalPrice);
+                setTotalPrice(Number(booking?.totalPrice) || 0);
                 setShowConfirmationModal(true);
                 setSelectedSeats([]);
 
                 fetch(`/api/bookings?movieId=${movieId}&screeningTime=${encodeURIComponent(screeningTime)}&auditorium=${auditorium}`)
                     .then(res => res.json())
-                    .then(updated => {
-                        setBookedSeats(updated);
-                    })
+                    .then(updated => setBookedSeats(updated))
                     .finally(() => setIsBooking(false));
-            })
-    }
+            });
+    };
 
     const Legend = ({ color, label }) => (
         <div className="flex items-center gap-2">
