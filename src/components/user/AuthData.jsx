@@ -18,11 +18,6 @@ export const AuthDataProvider = ({ children }) => {
       });
       const data = await response.json();
 
-      await fetch('/api/user/check', {
-        method: 'PUT',
-        credentials: 'include',
-      });
-
       if (response.ok) {
         const user = data.user || data;
         setUserData(user);
