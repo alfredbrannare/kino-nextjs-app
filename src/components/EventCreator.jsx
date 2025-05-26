@@ -45,12 +45,11 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
         const url = isEditing ? `/api/events/${eventId}` : '/api/events';
 
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch(url, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    credentials: 'include',
                 },
                 body: JSON.stringify(eventData),
             });

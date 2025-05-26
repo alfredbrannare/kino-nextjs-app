@@ -45,7 +45,7 @@ const LiveEventsPage = () => {
         try {
             await fetch(`/api/events/live/${id}`, {
                 method: "DELETE",
-                headers: { 'Authorization': `Bearer ${token}` },
+                credentials: 'include',
             })
         } catch (error) {
             console.error("Error deleting live event:", error)

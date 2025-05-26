@@ -12,7 +12,6 @@ const EventsPage = () => {
     const [loading, setLoading] = useState(true)
     const [update, setUpdate] = useState(false)
     const [inputSearch, setInputSearch] = useState('');
-    const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
     const router = useRouter();
@@ -45,7 +44,7 @@ const EventsPage = () => {
         try {
             await fetch(`/api/events/${id}`, {
                 method: "DELETE",
-                headers: { 'Authorization': `Bearer ${token}` },
+                credentials: 'include',
             })
         } catch (error) {
             console.error("Error deleting  event:", error)

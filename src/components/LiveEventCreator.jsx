@@ -52,12 +52,11 @@ const LiveEventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, cle
         const url = isEditing ? `/api/events/live/${eventId}` : '/api/events/live';
 
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch(url, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    credentials: 'include',
                 },
                 body: JSON.stringify(eventData),
             });
