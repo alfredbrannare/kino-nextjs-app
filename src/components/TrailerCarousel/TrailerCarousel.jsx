@@ -33,8 +33,16 @@ const TrailerCarousel = ({ trailerMovies }) => {
           </div>
         )}
         <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10 pointer-events-none">
-          <button onClick={prevSlide} className="btn btn-circle pointer-events-auto">❮</button>
-          <button onClick={nextSlide} className="btn btn-circle pointer-events-auto">❯</button>
+          <button onClick={prevSlide} 
+          className="btn btn-circle pointer-events-auto"
+            aria-label="Previous slide"> 
+            ❮
+            </button>
+          <button onClick={nextSlide} 
+          className="btn btn-circle pointer-events-auto"
+            aria-label="Next Slide">
+            ❯
+            </button>
         </div>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
@@ -42,9 +50,11 @@ const TrailerCarousel = ({ trailerMovies }) => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`transition-all duration-300 rounded-full hover:cursor-pointer ${index === currentSlide
-              ? 'w-4 h-4 bg-yellow-400'
-              : 'w-3 h-3 bg-[#CDCDCD]'
+            aria-label={`Go to slide ${index +1}`}
+            className={`transition-all duration-300 rounded-full hover:cursor-pointer 
+              ${index === currentSlide
+              ? 'p-3 bg-yellow-400'
+              : 'p-3 bg-[#CDCDCD]'
               }`}
           />
         ))}
