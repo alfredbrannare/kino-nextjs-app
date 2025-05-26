@@ -251,17 +251,22 @@ export default function MembershipPage() {
               Medlemsnivå:{' '}
               {userData?.role.includes('silver') && (
                 <>
-                  silver <Award className="inline-block ml-1 text-silver-500" />{' '}
+                  silver<Award className="inline-block ml-1 text-silver-500" />
                 </>
               )}
               {userData?.role.includes('guld') && (
                 <>
-                  guld <Award className="inline-block ml-1 text-yellow-500" />{' '}
+                  guld<Award className="inline-block ml-1 text-yellow-500" />
                 </>
               )}
               {userData?.role.includes('kinoguru') && (
                 <>
-                  kinoguru <Award className="inline-block ml-1 text-purple-500" />
+                  kinoguru<Award className="inline-block ml-1 text-purple-500" />
+                </>
+              )}
+              {!userData?.role.includes('silver') && !userData?.role.includes('guld') && !userData?.role.includes('kinoguru') && (
+                <>
+                  Member
                 </>
               )}
             </p>
