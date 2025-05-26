@@ -47,6 +47,7 @@ export default function ReviewForm({ handleAddReview, userData }) {
 							name="rating"
 							className="bg-yellow-400 mask mask-star-2"
 							value={num}
+							aria-label={`Rating ${num}`}
 							checked={parseInt(rating) === num}
 							onChange={(e) => setRating(e.target.value)}
 						/>

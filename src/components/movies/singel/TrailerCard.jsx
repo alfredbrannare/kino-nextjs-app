@@ -1,4 +1,5 @@
 import { VideoOff } from 'lucide-react';
+import React from 'react';
 
 const TrailerCard = ({ trailerKey, title }) => {
 	return (
@@ -22,4 +23,4 @@ const TrailerCard = ({ trailerKey, title }) => {
 	);
 };
 
-export default TrailerCard;
+export default React.memo(TrailerCard);

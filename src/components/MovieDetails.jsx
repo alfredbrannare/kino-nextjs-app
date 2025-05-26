@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
@@ -110,7 +111,7 @@ const MovieDetails = ({ movie }) => {
 	const handleAddReview = async ({ rating, text }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
-
+			headers: { 'Content-Type': 'application/json' },
 			credentials: 'include',
 			body: JSON.stringify({ movieId, rating, text }),
 		});
@@ -231,7 +232,7 @@ const MovieDetails = ({ movie }) => {
 				</div>
 				<div
 					id="reviews-section"
-					className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
+					className="bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
 					<h2 className="m-4 text-2xl font-bold">Reviews</h2>
 					<div className="md:w-md">
 						<div>
