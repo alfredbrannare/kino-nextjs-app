@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { checkAuth } from "src/lib/auth";
 
 export const GET = async (req, { params }) => {
-  const id = await params.id;
   await connectDB();
+  const id = await params.id;
   const movie = await Movie.findById(id);
 
   return new Response(JSON.stringify(movie), {
