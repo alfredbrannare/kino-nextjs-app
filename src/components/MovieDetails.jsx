@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useAuth } from 'src/components/user/AuthData';
 import RatingCard from './movies/singel/RatingCard';
 import { MovieHeader } from './movies/singel/MovieHeader';
+import dynamic from 'next/dynamic';
 
 import TrailerCard from './movies/singel/TrailerCard';
 import Login from './Login';
@@ -18,6 +19,33 @@ const MovieDetails = ({ movie }) => {
 	const { isLoggedIn, userData } = useAuth();
 	const [reviews, setReviews] = useState([]);
 	const [screenings, setScreenings] = useState([]); //- Patrik
+	const [shouldLoadReviews, setShouldLoadReviews] = useState(false); //coditional loading
+	// dynamic stuff
+
+	const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
+		ssr: false,
+		loading: () => <p className="text-center">Laddar recensioner...</p>, // Optional fallback
+	});
+
+	const TrailerCard = dynamic(() => import('./movies/singel/TrailerCard'), {
+		ssr: false,
+	});
+
+	//
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setShouldLoadReviews(true);
+					observer.disconnect();
+				}
+			},
+			{ threshold: 0.1 }
+		);
+
+		const reviewsEl = document.getElementById(`reviews-section`);
+		if (reviewsEl) observer.observe(reviewsEl);
+	}, []);
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -60,17 +88,20 @@ const MovieDetails = ({ movie }) => {
 				});
 
 				setScreenings(enriched);
-				// console.log('Screenings för filmen:', enriched);
 			} catch (error) {
 				console.error('Error fetching screenings', error);
 			}
 		};
 
 		if (movie._id) {
-			fetchReviews();
 			fetchScreenings();
 		}
-	}, [movie._id]);
+
+		// fetch reviews only when section is in view
+		if (shouldLoadReviews && movie._id) {
+			fetchReviews();
+		}
+	}, [shouldLoadReviews, movie._id]);
 
 	const params = useParams();
 	const movieId = params.id;
@@ -147,6 +178,7 @@ const MovieDetails = ({ movie }) => {
 						alt={movie.title}
 						width={400}
 						height={600}
+						priority
 						className="object-contain rounded-lg shadow-lg"
 					/>
 				</div>
@@ -197,7 +229,9 @@ const MovieDetails = ({ movie }) => {
 						</div>
 					</div>
 				</div>
-				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
+				<div
+					id="reviews-section"
+					className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
 					<h2 className="m-4 text-2xl font-bold">Reviews</h2>
 					<div className="md:w-md">
 						<div>
