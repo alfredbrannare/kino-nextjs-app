@@ -28,8 +28,6 @@ export const AuthDataProvider = ({ children }) => {
 
       } else {
         setAdmin(false);
-        setStudent(false);
-        setSenior(false);
         setLoggedIn(false);
         setUserData(null);
         console.log('Error checking token:', data.message);
@@ -38,8 +36,6 @@ export const AuthDataProvider = ({ children }) => {
       console.error("Failed to check token:", error);
       setLoggedIn(false);
       setAdmin(false);
-      setStudent(false);
-      setSenior(false);
       setUserData(null);
     } finally {
       setLoading(false);
@@ -54,7 +50,7 @@ export const AuthDataProvider = ({ children }) => {
   const login = (userDataFromLogin) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
-    setAdmin(user?.role.includes('admin'));
+    setAdmin(userDataFromLogin?.role.includes('admin'));
   };
 
   const logout = async () => {
