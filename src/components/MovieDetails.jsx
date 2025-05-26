@@ -10,6 +10,7 @@ import { MovieHeader } from './movies/singel/MovieHeader';
 
 import TrailerCard from './movies/singel/TrailerCard';
 import Login from './Login';
+import Image from 'next/image';
 
 // TODO fix check for backend for rating
 
@@ -136,14 +137,21 @@ const MovieDetails = ({ movie }) => {
 
 				<div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
 					{/* Poster */}
-					<img
+					{/* <img
 						src={movie.image}
 						alt={movie.title}
 						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
+					/> */}
+					<Image
+						src={movie.image}
+						alt={movie.title}
+						width={400}
+						height={600}
+						className="object-contain rounded-lg shadow-lg"
 					/>
 				</div>
 				<div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
-					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
+					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 ">
 						<h2 className="mb-4 text-3xl font-bold text-center">
 							Välj visning
 						</h2>
