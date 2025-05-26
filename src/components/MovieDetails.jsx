@@ -99,7 +99,7 @@ const MovieDetails = ({ movie }) => {
 		<>
 			<div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
 				{/* Left colum Main info and booking */}
-				<div className="flex flex-col justify-center order-1 gap-6 mt-10 col-span-full md:col-span-3">
+				<div className="flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3">
 					{/* title, metaInfo description */}
 
 					<MovieHeader
@@ -119,8 +119,10 @@ const MovieDetails = ({ movie }) => {
 				{/* Ticket booking section */}
 				<div className="flex flex-col justify-between order-3 h-full md:col-span-3">
 					{/* description */}
-					<div className="pb-5 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
-						<p className="m-4 text-xl">{movie.description}</p>
+					<div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
+						<p className="m-4 text-xl text-center md:text-left">
+							{movie.description}
+						</p>
 					</div>
 					<div className="justify-center">
 						<div className="justify-end mx-4 ">
