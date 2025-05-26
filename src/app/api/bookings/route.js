@@ -1,7 +1,9 @@
 import connectDB from "src/lib/mongodb";
 import Booking from "src/models/model.booking.js";
+import Movie from "src/models/model.movies.js";
 import Auditorium from "src/models/model.auditorium";
 import Screening from "src/models/model.screenings";
+import { checkAuth } from "src/lib/auth";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -21,16 +23,19 @@ export async function GET(request) {
     }
 }
 
-export async function  POST(request) {
-    const body = await request.json();
-    const { movieId, screeningTime, seats, userId, auditorium, ticketInfo } = body;
-
-    if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
-        return Response.json({ error: "Missing required booking fields" }, { status: 400 });
-    }
-
+export async function POST(request) {
     try {
         await connectDB();
+
+        const authenticatedUser = await checkAuth();
+        const userId = authenticatedUser?._id || null;
+
+        const body = await request.json();
+        const { movieId, screeningTime, seats, auditorium, ticketInfo } = body;
+
+        if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
+            return Response.json({ error: "Missing required booking fields" }, { status: 400 });
+        }
 
         //Controls that seats aren't booked already
         const existing = await Booking.find({ movieId, screeningTime, auditorium });
@@ -70,28 +75,45 @@ export async function  POST(request) {
             }
         }
 
-        const booking = await Booking.create({ movieId, screeningTime, seats: labeledSeats, userId:'6820d93969eddb5ac9ed9f95', auditorium, totalPrice });
-  // 2. Hämta auditoriumId
-  const auditoriumDoc = await Auditorium.findOne({ slug: auditorium });
-  if (!auditoriumDoc) {
-    return Response.json({ error: "Auditorium not found" }, { status: 404 });
-  }
+        // Create booking
+        const booking = await Booking.create({
+            movieId,
+            screeningTime,
+            seats: labeledSeats,
+            userId,
+            auditorium,
+            totalPrice
+        });
 
-  // 3. Lägg till bokningen i rätt screening
-  await Screening.findOneAndUpdate(
-    {
-      movieId,
-      startTime: new Date(screeningTime), // Säkerställ Date-matchning
-      auditoriumId: auditoriumDoc._id
-    },
-    {
-      $push: { bookedSeats: booking._id }
+        // Get movie title
+        const movie = await Movie.findById(movieId);
+
+        // Get auditoriumId
+        const auditoriumDoc = await Auditorium.findOne({ slug: auditorium });
+        if (!auditoriumDoc) {
+            return Response.json({ error: "Auditorium not found" }, { status: 404 });
+        }
+
+        // Add booking to Screening.bookedSeats[]
+        await Screening.findOneAndUpdate(
+            {
+            movieId,
+            startTime: new Date(screeningTime),
+            auditoriumId: auditoriumDoc._id
+            },
+            {
+            $push: { bookedSeats: booking._id }
+            }
+        );
+
+        // Return booking + movie title
+        return Response.json({
+            booking,
+            movieTitle: movie?.title || "Okänd titel"
+        }, { status: 201 });
+
+        } catch (err) {
+        console.error('Booking error', err);
+        return Response.json({ error: 'Något gick fel' }, { status: 500 });
     }
-  );
-
-  return Response.json(booking, { status: 201 });
-} catch (err) {
-  console.error('Booking error', err);
-  return Response.json({ error: 'Något gick fel' }, { status: 500 });
-}
 }
