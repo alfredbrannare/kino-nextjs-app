@@ -111,21 +111,21 @@ const MovieDetails = ({ movie }) => {
 					/>
 				</div>
 
-				<div className="order-2 mt-10 col-span-full md:col-span-2 ">
+				<div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
 					{/* rating */}
 
 					<RatingCard rating={movie.rating} />
 				</div>
-				{/* Ticket booking section */}
-				<div className="flex flex-col justify-between order-3 h-full md:col-span-3">
+
+				<div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
 					{/* description */}
 					<div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
-						<p className="m-4 text-xl text-center md:text-left">
+						<p className="m-2 text-xl text-center md:m-4 md:text-left">
 							{movie.description}
 						</p>
 					</div>
 					<div className="justify-center">
-						<div className="justify-end mx-4 ">
+						<div className="justify-end m-4 ">
 							<TrailerCard
 								trailerKey={movie.trailerKey}
 								title={movie.title}
@@ -134,8 +134,7 @@ const MovieDetails = ({ movie }) => {
 					</div>
 				</div>
 
-				{/* <div className="flex flex-col order-3 col-span-2 col-start-1 row-start-2 gap-4 md:order-none"> */}
-				<div className="flex justify-center order-4 col-span-full md:col-span-2 ">
+				<div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
 					{/* Poster */}
 					<img
 						src={movie.image}
@@ -143,7 +142,7 @@ const MovieDetails = ({ movie }) => {
 						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
 					/>
 				</div>
-				<div className="row-start-3 col-span-full md:col-span-5">
+				<div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
 					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full m-4 ">
 						<h2 className="mb-4 text-3xl font-bold text-center">
 							Välj visning
@@ -190,12 +189,12 @@ const MovieDetails = ({ movie }) => {
 						</div>
 					</div>
 				</div>
-				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center order-5 mx-auto md: justify-center flex flex-col items-center mt-14">
-					<h2 className="mb-4 text-2xl font-bold">Reviews</h2>
+				<div className="bg-[#2B0404] shadow-lg rounded-lg col-span-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
+					<h2 className="m-4 text-2xl font-bold">Reviews</h2>
 					<div className="md:w-md">
 						<div>
 							{!isLoggedIn ? (
-								<div className="flex items-center justify-center gap-2 my-4 text-xl">
+								<div className="flex items-center justify-center gap-2 mx-4 text-xl">
 									<span className="inline-block">
 										<Login />
 									</span>
