@@ -7,7 +7,6 @@ import { fetchMovies } from "src/lib/fetchMovies";
 import { searchMovies } from "src/utils/movies/searchMovies";
 import { sortMovies } from "src/utils/movies/sortMovies";
 import MovieCardSkeleton from "src/components/MovieCardSkeleton";
-import Head from "next/head";
 
 export default function MoviePageContent() {
     const [unsortedMovies, setUnsort] = useState([]);

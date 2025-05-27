@@ -34,7 +34,7 @@ const MovieCard = ({ movie }) => {
 
 	return (
 		<article className="group relative">
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100 w-48 h-79">
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100 w-48 h-79 hidden xl:block">
 				<Image
 					src={movie.image}
 					alt="Blur effect of poster"
@@ -45,7 +45,7 @@ const MovieCard = ({ movie }) => {
 					className="w-full h-full object-cover blur-xl"
 					width={192}
 					height={316}
-					quality={10}
+					quality={5}
 					priority={false}
 				/>
 			</div>
@@ -66,7 +66,7 @@ const MovieCard = ({ movie }) => {
 					className="w-full h-full object-fit relative"
 					width={200}
 					height={332}
-					quality={75}
+					quality={50}
 					priority={true}
 				/>
 
