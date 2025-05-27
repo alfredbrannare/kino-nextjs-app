@@ -2,9 +2,10 @@
 
 import { useAuth } from "src/components/user/AuthData"
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar, Award } from 'lucide-react';
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, checkUser } = useAuth();
@@ -19,12 +20,12 @@ export default function MembershipPage() {
   const [showAllTickets, setShowAllTickets] = useState(false);
   const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));
 
-  const toggleExpand = (id) => {
+  const toggleExpand = useCallback((id) => {
     setExpandedTickets((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
-  };
+  }, []);
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -188,10 +189,12 @@ export default function MembershipPage() {
 
           <div className="flex flex-col items-center justify-center flex-grow">
             <div className="relative group">
-              <img
+              <Image
                 src={userData?.profilePicture || "/kino-card.jpg"}
                 className="border-2 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-full w-50 h-50 object-cover"
                 alt="Profilbild"
+                width={200}
+                height={200}
               />
 
               {/* Desktop */}
