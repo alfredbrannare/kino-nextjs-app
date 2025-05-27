@@ -33,16 +33,16 @@ export default function TicketsPage() {
               className="w-40 rounded shadow-md mx-auto sm:mx-0"
             />
 
-<div className="flex-1 flex flex-col">
-  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-    <h2 className="text-4xl text-center sm:text-left text-[#CDCDCD] font-bold max-w-xs mx-auto sm:mx-0">
-      {movie.title}
-    </h2>
-    <div className="flex space-x-6 text-yellow-400 text-sm whitespace-nowrap mt-2 sm:mt-0 justify-center sm:justify-start">
-      <p>Längd: {movie.runtime || 'Ej specificerad'} minuter</p>
-      <p>Genre: {movie.genres || 'Ej specificerad'}</p>
-    </div>
-  </div>
+            <div className="flex-1 text-center sm:text-left flex flex-col">
+              <div className="flex justify-between items-start mb-2 flex-wrap">
+                <h2 className="text-4xl text-center sm:text-left text-[#CDCDCD] font-bold max-w-xs">
+                  {movie.title}
+                </h2>
+                <div className="flex space-x-6 text-yellow-400 text-sm whitespace-nowrap mt-2 sm:mt-0">
+                  <p>Längd: {movie.runtime || 'Ej specificerad'} minuter</p>
+                  <p>Genre: {movie.genres || 'Ej specificerad'}</p>
+                </div>
+              </div>
 
               <p className="pt-4 text-sm text-center sm:text-left text-[#CDCDCD] max-w-3xl mx-auto sm:mx-0">
                 {movie.description}
