@@ -1,9 +1,3 @@
-docker run -v C:\Users\user\kino-nextjs-app\data\mongo:/data/db -p 27017:27017 mongo
-OMDB=5cd99ae7
-MONGO_URI=mongodb://localhost:27017
-
-## remember to add ip to mongo atlas
-
 ## Screenings API
 
 ### GET the 5 Nearest Upcoming Screenings
@@ -107,7 +101,35 @@ MONGO_URI=mongodb://localhost:27017
 - **Response**: JSON array of review objects
 - **Example Response**:
 
+## Users API
+
+### POST Login User
+
+- **URL**: `/api/login`
+- **Method**: `POST`
+- **Description**: Description: Authenticates a user with email and password. Returns a token in an httpOnly cookie if credentials are valid. All fields are required.
+
+### POST Logout User
+
+- **URL**: `/api/logout`
+- **Method**: `POST`
+- **Description**: Description: Logs the user out by removing the httpOnly token cookie.
+
+### GET Current User Info and Role Update
+
+- **URL**: `/api/register`
+- **Method**: `POST`
+- **Description**: Registers a new user with name, email, and password. Validates input, hashes password, stores the user, sets a login token via HTTP-only cookie.
+
+### GET Current User Info and Role Update
+
+- **URL**: `/api/user/me`
+- **Method**: `GET`
+- **Description**: Authenticates the user, checks their points, updates their role (silver, guld, kinoguru), and returns their user info with the new role.
+
 ```
+
+
 {
   "success": true,
   "reviews": [
