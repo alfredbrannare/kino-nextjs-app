@@ -131,6 +131,82 @@ MONGO_URI=mongodb://localhost:27017
 }
 ```
 
+## Live Events API
+
+### GET an Event by ID
+
+- **URL**: `/api/events/live/[id]`
+- **Method**: `GET`
+- **Description**: Retrieves a single live event by its ID.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+
+```
+  {
+  "\_id": "682c408c51ae0f3436daaabe",
+  "title": "Fidelio",
+  "time": "19:00",
+  "date": "2025-06-10",
+  "image": "https://example.com/event-image.jpg",
+  "description": "Fidelio, Beethovens enda opera och hans storslagna hyllning till kärleken.",
+  "genre": "Opera",
+  "runtime": 123,
+  }
+```
+
+### DELETE an Event by ID (Admin only)
+
+- **URL**: `/api/events/live/[id]`
+- **Method**: `DELETE`
+- **Description**: Deletes a live event by its ID. Requires user to be authenticated and have admin role.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+
+```
+  {
+  "message": "Live event deleted successfully"
+  }
+```
+
+### PUT Update an Event by ID (Admin only)
+
+- **URL**: `/api/events/live/[id]`
+- **Method**: `PUT`
+- **Description**: Updates an existing live event by ID. Requires admin authentication.
+- **Request Body**:
+
+```
+  {
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the live event.",
+  "genre": "Updated genre of the live event",
+  "runtime": 123
+  }
+```
+
+- **Response**:
+
+```
+  {
+  "message": "Event \"Updated Event Title\" was successfully updated!",
+  "event": {
+  "\_id": "60e5b7f9b8a1c72d6c9f1234",
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the live event.",
+  "genre": "Updated genre of the live event",
+  "runtime": 123,
+  "inCinemas": false,
+  "\_\_v": 0
+  }
+  }
+```
+
 ### Instructions for Using the Auth Context
 
 Import the useAuth Hook
