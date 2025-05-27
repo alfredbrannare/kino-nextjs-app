@@ -120,7 +120,8 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             <div className="flex justify-center mb-6">
                 <div className="w-full h-6 bg-gray-700 rounded-sm shadow-sm text-gray-400 font-bold mb-6 text-center">Bioduk</div>
             </div>
-            <div className="overflow-x-auto w-full px-4">
+            <div className="overflow-x-auto w-full px-4" role="region" aria-label="Välj platser i salongen">
+                <h2 className="sr-only">Salongsplatser</h2>
                 <div className="flex flex-col items-center space-y-2 min-w-[360px] p-4">
                     {salong.map((row, rowIndex) => (
                         <div key={rowIndex} className="flex justify-center gap-2 sm:gap-3 min-w-[360px] ">
@@ -137,6 +138,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                                         key={seatIndex}
                                         onClick={() => toggleSeat(seat)}
                                         disabled={isBooked}
+                                        aria-label={`Stol ${seat.row}${seat.seat}, ${seat.isWheelchair ? 'rullstolsplats' : 'vanlig stol'}, ${isBooked ? 'bokad' : isSelected ? 'vald' : 'ledig'}`}
                                         className={`w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded text-white ${isBooked
                                             ? 'bg-red-500 cursor-not-allowed'
                                             : isSelected ? 'bg-green-800 border-3 border-white cursor-pointer'
@@ -154,15 +156,16 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                 </div>
             </div>
             {showSeatWarning && (
-                <p className="text-center text-sm text-red-500">
+                <p className="text-center text-sm text-red-500" aria-live="assertive">
                     Du kan inte välja fler platser än antal biljetter
                 </p>
             )}
 
             {bookingSuccess && (
-                <p className="text-green-600 mt-2">Tack! Platserna är bokade!</p>
+                <p className="text-green-600 mt-2" aria-live="polite">Tack! Platserna är bokade!</p>
             )}
-            <div className="mt-6 space-y-2 text-center">
+            <div className="mt-6 space-y-2 text-center" role="region" aria-label="Stolguide">
+                <h2 className="sr-only">Förklaring till färger</h2>
                 <p className="text-sm font-medium">Stolguide:</p>
                 <div className="flex gap-6 flex-wrap text-sm sm:text-base justify-center">
                     <Legend color="bg-gray-500" label="Valbar plats" />
@@ -179,8 +182,9 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                         selectedSeats.length !== maxSeats ||
                         selectedSeats.length === 0
                     }
+                    aria-disabled={isBooking || selectedSeats.length !== maxSeats || selectedSeats.length === 0}
                     onClick={handleBooking}
-                    className={`mt-6 px-6 py-3 w-full sm:w-auto rounded text-black font-semibold transition ${selectedSeats.length !== maxSeats || isBooking
+                    className={`mt-6 px-6 py-3 w-full sm:w-auto rounded text-black font-semibold transition focus:outline focus:outline-white ${selectedSeats.length !== maxSeats || isBooking
                         ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-400 cursor-pointer'
                         }`}
                 >
