@@ -195,6 +195,7 @@ export default function MembershipPage() {
                 alt="Profilbild"
                 width={200}
                 height={200}
+                priority
               />
 
               {/* Desktop */}
