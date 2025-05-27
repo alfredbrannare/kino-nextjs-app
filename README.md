@@ -327,3 +327,176 @@ You can also conditionally render components based on whether the user is logged
        ) : (
       <p>Hide this data for logged-in users</p>
      )}
+
+## Auditoriums API
+
+### GET `/api/auditoriums/[slug]`
+**Method:** `GET`  
+**Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
+
+**URL Parameters:**
+- `slug` (required): The unique identifier for the auditorium (e.g. `city`, `big-hall`)
+
+**Response:**
+```json
+{
+  "_id": "68164b2ef469735514b5f89a",
+  "name": "Uppsala City",
+  "slug": "city",
+  "seats": [
+    { "row": 1, "seat": 1, "isWheelchair": true },
+    { "row": 1, "seat": 2, "isWheelchair": false },
+    { "row": 1, "seat": 3, "isWheelchair": false }
+  ],
+  "totalSeats": 56,
+  "__v": 0
+}
+```
+
+---
+
+## Booking API
+
+### GET `/api/bookings`
+**Method:** `GET`  
+**Description:** Fetches all booked seats for a specific screening of a movie in a given auditorium.
+
+**Query Parameters:**
+- `movieId` (required): The ID of the movie  
+- `screeningTime` (required): The start time of the screening (ISO format)  
+- `auditorium` (required): The slug of the auditorium (e.g. `city`)
+
+**Example Request:**
+```
+/api/bookings?movieId=abc123&screeningTime=2025-05-28T14:00:00.000Z&auditorium=city
+```
+
+**Response:**
+```json
+[
+  { "row": 1, "seat": 5, "type": "ordinary" },
+  { "row": 1, "seat": 6, "type": "ordinary" },
+  { "row": 1, "seat": 7, "type": "child" },
+  { "row": 2, "seat": 7, "type": "member" },
+  { "row": 4, "seat": 4, "type": "student" },
+  { "row": 4, "seat": 5, "type": "student" },
+  { "row": 9, "seat": 1, "type": "retired" }
+]
+```
+
+---
+
+### POST `/api/bookings`
+**Method:** `POST`  
+**Description:** Creates a booking for a specific movie screening. If the booking includes member tickets, the user must be logged in. The backend automatically links the booking to the authenticated user (if any) and updates the related screening.
+
+**Request Body:**
+```json
+{
+  "movieId": "681b3a14a20707b6cf797187",
+  "screeningTime": "2025-05-28T14:00:00.000Z",
+  "auditorium": "city",
+  "seats": [
+    { "row": 1, "seat": 7 },
+    { "row": 1, "seat": 8 }
+  ],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 2
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "booking": {
+    "_id": "681f2d47e17e8fa94212a123",
+    "movieId": "681b3a14a20707b6cf797187",
+    "screeningTime": "2025-05-28T14:00:00.000Z",
+    "auditorium": "city",
+    "seats": [
+      { "row": 1, "seat": 7, "type": "member" },
+      { "row": 1, "seat": 8, "type": "member" }
+    ],
+    "userId": "681a25fc1b75d872c0c502ab",
+    "totalPrice": 210,
+    "__v": 0
+  },
+  "movieTitle": "Lilo & Stitch"
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: If any required field is missing
+- `403 Forbidden`: If member tickets are selected but the user is not logged in
+- `409 Conflict`: If one or more seats are already booked
+
+---
+
+### Example: Booking as a Logged-In Member
+
+**Scenario:**  
+A logged-in user opens a screening and selects *Medlem* tickets. All other ticket types are hidden.  
+When submitting the booking, the request is automatically linked to the authenticated user.
+
+#### Requirements
+- The user must be logged in via the `<Login />` component  
+- `useAuth()` provides access to the user's `isLoggedIn` and `userData`  
+- The booking request must include at least one member ticket
+
+#### Booking Flow
+1. User selects **only** member tickets in `TicketSelector.jsx`  
+2. All other ticket types are automatically set to `0` on login  
+3. On submit, the frontend sends a `POST /api/bookings` with `ticketInfo.member > 0`  
+4. The backend:
+   - Extracts the `userId` via JWT with `checkAuth()`
+   - Rejects the request if the user is not logged in
+   - Saves the booking and links it to the authenticated user
+   - Adds the booking ID to the correct `Screening` via `$push`
+
+#### Example Payload (simplified):
+```json
+{
+  "movieId": "...",
+  "screeningTime": "...",
+  "auditorium": "city",
+  "seats": [{ "row": 1, "seat": 4 }],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 1
+  }
+}
+```
+
+---
+
+### Booking → Screening Mapping (Server-side)
+When a booking is made, the backend also:
+
+- Converts the provided `auditorium` slug into an `_id` using the `Auditorium` model
+- Finds the matching `Screening` document using `movieId`, `startTime`, and `auditoriumId`
+- Pushes the new booking’s `_id` into the screening’s `bookedSeats` array:
+
+```js
+Screening.findOneAndUpdate(
+  {
+    movieId,
+    startTime: new Date(screeningTime),
+    auditoriumId: auditoriumDoc._id
+  },
+  {
+    $push: { bookedSeats: booking._id }
+  }
+)
+```
+
+This ensures that:
+- Booked seats are correctly linked to their screening
+- Future requests can show which seats are taken for each showtime
