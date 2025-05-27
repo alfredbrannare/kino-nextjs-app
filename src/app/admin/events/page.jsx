@@ -14,6 +14,7 @@ const EventsPage = () => {
     const [inputSearch, setInputSearch] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
+    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {

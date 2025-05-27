@@ -12,7 +12,7 @@ const LiveEventsPage = () => {
     const [loading, setLoading] = useState(true)
     const [update, setUpdate] = useState(false)
     const [inputSearch, setInputSearch] = useState('');
-    const { isLoggedIn, isAdmin, isLoading: isAuthLoading, token } = useAuth();
+    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
     const router = useRouter();
