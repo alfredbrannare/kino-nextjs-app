@@ -1,3 +1,19 @@
+## Motivation for choosing Tailwind CSS and DaisyUI
+
+- In the development of our project, we chose to use Tailwind Css in combination with DaisyUI as our UI framework. This decision is based on:
+
+- Fast and flexible development
+  Tailwind allows for rapid and responsive design. It removes the need to write traditional CSS, speeding up the development process and simplifying code maintenance.
+
+- Consistent design with less code
+  Tailwind enables a consistent design system using utility classes. This allows us to create intuitive reusable and easy to modifiable UI components without reinventing styles for each element.
+
+- DaisyUI -
+  DaisyUI has a component-based UI kit, it is a plugin for Tailwind that provides pre-designed, clean and accessible UI components such as buttons, modals, cards, tables and more, fully compatible with Tailwind’s utility classes and are easy to customize.
+
+- Active community support -
+  Both Tailwind CSS and DaisyUI have large, active communities and strong documentation. This made it easier for us to onboard and find solutions and best practices
+
 ## Screenings API
 
 ### GET the 5 Nearest Upcoming Screenings
@@ -152,6 +168,7 @@
   ]
 }
 ```
+
 ## Events API
 
 ### GET an Event by ID
@@ -161,26 +178,26 @@
 - **Description**: Retrieves a single event by its ID.
 - **Response**: JSON object representing the event.
 - **Example Response**:
-{ 
-  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  {
+  "\_id": "60e5b7f9b8a1c72d6c9f1234",
   "title": "Movie Premiere Night",
   "time": "19:00",
   "date": "2025-06-10",
   "image": "https://example.com/event-image.jpg",
   "description": "Join us for the premiere of the latest blockbuster!",
-  "__v": 0
-} 
+  "\_\_v": 0
+  }
 
 ### DELETE an Event by ID (Admin only)
 
 - **URL**: `/api/events/[id]`
 - **Method**: `DELETE`
-- **Description**:  Deletes an event by its ID. Requires user to be authenticated and have admin role.
+- **Description**: Deletes an event by its ID. Requires user to be authenticated and have admin role.
 - **Response**: JSON object representing the event.
 - **Example Response**:
-{
+  {
   "message": "Event deleted successfully"
-}
+  }
 
 ### PUT Update an Event by ID (Admin only)
 
@@ -188,23 +205,23 @@
 - **Method**: `PUT`
 - **Description**: Updates an existing event by ID. Requires admin authentication.
 - **Request Body**:
-{
+  {
   "title": "Updated Event Title",
   "time": "20:00",
   "date": "2025-06-11",
   "image": "https://example.com/updated-event-image.jpg",
   "description": "Updated description of the event."
-}
+  }
 - **Response**:
-{
-  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  {
+  "\_id": "60e5b7f9b8a1c72d6c9f1234",
   "title": "Updated Event Title",
   "time": "20:00",
   "date": "2025-06-11",
   "image": "https://example.com/updated-event-image.jpg",
   "description": "Updated description of the event.",
-  "__v": 0
-}
+  "\_\_v": 0
+  }
 
 ## Offers API
 
@@ -214,21 +231,21 @@
 - **Method**: `GET`
 - **Description**: Retrieves all offers.
 - **Response**: JSON object containing an array of offer objects.
-- **Example Response**: 
-{
+- **Example Response**:
+  {
   "offers": [
-    {
-      "_id": "60f6b8a9e47e8c3f8c5a5a8d",
-      "text": "20% off on all tickets this weekend!",
-      "__v": 0
-    },
-    {
-      "_id": "60f6b8bae47e8c3f8c5a5a8e",
-      "text": "Buy one get one free on popcorn.",
-      "__v": 0
-    }
+  {
+  "_id": "60f6b8a9e47e8c3f8c5a5a8d",
+  "text": "20% off on all tickets this weekend!",
+  "__v": 0
+  },
+  {
+  "_id": "60f6b8bae47e8c3f8c5a5a8e",
+  "text": "Buy one get one free on popcorn.",
+  "__v": 0
+  }
   ]
-}
+  }
 
 ### POST Create a New Offer (Admin only)
 
@@ -236,25 +253,25 @@
 - **Method**: `POST`
 - **Description**: Creates a new offer. Only accessible by authenticated admin users.
 - **Request Body (JSON)**:
-{
+  {
   "offer": "Free drink with every ticket purchase!"
-}
-- **Example Response**: 
-{
-  "_id": "60f6b9b5e47e8c3f8c5a5a8f",
+  }
+- **Example Response**:
+  {
+  "\_id": "60f6b9b5e47e8c3f8c5a5a8f",
   "text": "Free drink with every ticket purchase!",
-  "__v": 0
-}
+  "\_\_v": 0
+  }
 
 ### DELETE an Offer by ID (Admin only)
 
 - **URL**: `/api/offers/[id]`
 - **Method**: `DELETE`
 - **Description**: Deletes an offer by its ID. Requires authenticated admin user.
-- **Response**: 
-{
+- **Response**:
+  {
   "success": true
-}
+  }
 
 ## Profile Picture API
 
@@ -266,10 +283,10 @@
 - **Description**: Uploads or updates a user's profile picture to Cloudinary and stores the image URL in the database.
 - **Request Type**: multipart/form-data
 - **Form Data Parameters**: file: Image file to upload.
-- **Response**: 
-{
+- **Response**:
+  {
   "profilePicture": "https://res.cloudinary.com/your_cloud_name/image/upload/v1234567890/profile_pics/user_123.jpg"
-}
+  }
 
 ### DELETE Remove Profile Picture
 
@@ -277,10 +294,10 @@
 - **Method**: `DELETE`
 - **Auth**: Required (User)
 - **Description**: Deletes the user's profile picture from Cloudinary and removes the URL from the user record in the database.
-- **Response**: 
-{
+- **Response**:
+  {
   "message": "Profile image removed."
-}
+  }
 
 ```
 
@@ -326,16 +343,18 @@
 - **Example Response**:
 
 ```
-  {
-  "\_id": "682c408c51ae0f3436daaabe",
-  "title": "Fidelio",
-  "time": "19:00",
-  "date": "2025-06-10",
-  "image": "https://example.com/event-image.jpg",
-  "description": "Fidelio, Beethovens enda opera och hans storslagna hyllning till kärleken.",
-  "genre": "Opera",
-  "runtime": 123,
-  }
+
+{
+"\_id": "682c408c51ae0f3436daaabe",
+"title": "Fidelio",
+"time": "19:00",
+"date": "2025-06-10",
+"image": "https://example.com/event-image.jpg",
+"description": "Fidelio, Beethovens enda opera och hans storslagna hyllning till kärleken.",
+"genre": "Opera",
+"runtime": 123,
+}
+
 ```
 
 ### DELETE an Event by ID (Admin only)
@@ -347,9 +366,11 @@
 - **Example Response**:
 
 ```
-  {
-  "message": "Live event deleted successfully"
-  }
+
+{
+"message": "Live event deleted successfully"
+}
+
 ```
 
 ### PUT Update an Event by ID (Admin only)
@@ -360,36 +381,40 @@
 - **Request Body**:
 
 ```
-  {
-  "title": "Updated Event Title",
-  "time": "20:00",
-  "date": "2025-06-11",
-  "image": "https://example.com/updated-event-image.jpg",
-  "description": "Updated description of the live event.",
-  "genre": "Updated genre of the live event",
-  "runtime": 123
-  }
+
+{
+"title": "Updated Event Title",
+"time": "20:00",
+"date": "2025-06-11",
+"image": "https://example.com/updated-event-image.jpg",
+"description": "Updated description of the live event.",
+"genre": "Updated genre of the live event",
+"runtime": 123
+}
+
 ```
 
 - **Response**:
 
 ```
-  {
-  "message": "Event \"Updated Event Title\" was successfully updated!",
-  "event": {
-  "\_id": "60e5b7f9b8a1c72d6c9f1234",
-  "title": "Updated Event Title",
-  "time": "20:00",
-  "date": "2025-06-11",
-  "image": "https://example.com/updated-event-image.jpg",
-  "description": "Updated description of the live event.",
-  "genre": "Updated genre of the live event",
-  "runtime": 123,
-  "inCinemas": false,
-  "\_\_v": 0
-  }
-  }
-```
+
+{
+"message": "Event \"Updated Event Title\" was successfully updated!",
+"event": {
+"\_id": "60e5b7f9b8a1c72d6c9f1234",
+"title": "Updated Event Title",
+"time": "20:00",
+"date": "2025-06-11",
+"image": "https://example.com/updated-event-image.jpg",
+"description": "Updated description of the live event.",
+"genre": "Updated genre of the live event",
+"runtime": 123,
+"inCinemas": false,
+"\_\_v": 0
+}
+}
+
+````
 
 ### Instructions for Using the Auth Context
 
@@ -460,7 +485,7 @@ You can also conditionally render components based on whether the user is logged
 ## Auditoriums API
 
 ### GET `/api/auditoriums/[slug]`
-**Method:** `GET`  
+**Method:** `GET`
 **Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
 
 **URL Parameters:**
@@ -480,86 +505,94 @@ You can also conditionally render components based on whether the user is logged
   "totalSeats": 56,
   "__v": 0
 }
-```
+````
 
 ---
 
 ## Booking API
 
 ### GET `/api/bookings`
+
 **Method:** `GET`  
 **Description:** Fetches all booked seats for a specific screening of a movie in a given auditorium.
 
 **Query Parameters:**
-- `movieId` (required): The ID of the movie  
-- `screeningTime` (required): The start time of the screening (ISO format)  
+
+- `movieId` (required): The ID of the movie
+- `screeningTime` (required): The start time of the screening (ISO format)
 - `auditorium` (required): The slug of the auditorium (e.g. `city`)
 
 **Example Request:**
+
 ```
 /api/bookings?movieId=abc123&screeningTime=2025-05-28T14:00:00.000Z&auditorium=city
 ```
 
 **Response:**
+
 ```json
 [
-  { "row": 1, "seat": 5, "type": "ordinary" },
-  { "row": 1, "seat": 6, "type": "ordinary" },
-  { "row": 1, "seat": 7, "type": "child" },
-  { "row": 2, "seat": 7, "type": "member" },
-  { "row": 4, "seat": 4, "type": "student" },
-  { "row": 4, "seat": 5, "type": "student" },
-  { "row": 9, "seat": 1, "type": "retired" }
+	{ "row": 1, "seat": 5, "type": "ordinary" },
+	{ "row": 1, "seat": 6, "type": "ordinary" },
+	{ "row": 1, "seat": 7, "type": "child" },
+	{ "row": 2, "seat": 7, "type": "member" },
+	{ "row": 4, "seat": 4, "type": "student" },
+	{ "row": 4, "seat": 5, "type": "student" },
+	{ "row": 9, "seat": 1, "type": "retired" }
 ]
 ```
 
 ---
 
 ### POST `/api/bookings`
+
 **Method:** `POST`  
 **Description:** Creates a booking for a specific movie screening. If the booking includes member tickets, the user must be logged in. The backend automatically links the booking to the authenticated user (if any) and updates the related screening.
 
 **Request Body:**
+
 ```json
 {
-  "movieId": "681b3a14a20707b6cf797187",
-  "screeningTime": "2025-05-28T14:00:00.000Z",
-  "auditorium": "city",
-  "seats": [
-    { "row": 1, "seat": 7 },
-    { "row": 1, "seat": 8 }
-  ],
-  "ticketInfo": {
-    "ordinary": 0,
-    "child": 0,
-    "retired": 0,
-    "student": 0,
-    "member": 2
-  }
+	"movieId": "681b3a14a20707b6cf797187",
+	"screeningTime": "2025-05-28T14:00:00.000Z",
+	"auditorium": "city",
+	"seats": [
+		{ "row": 1, "seat": 7 },
+		{ "row": 1, "seat": 8 }
+	],
+	"ticketInfo": {
+		"ordinary": 0,
+		"child": 0,
+		"retired": 0,
+		"student": 0,
+		"member": 2
+	}
 }
 ```
 
 **Response:**
+
 ```json
 {
-  "booking": {
-    "_id": "681f2d47e17e8fa94212a123",
-    "movieId": "681b3a14a20707b6cf797187",
-    "screeningTime": "2025-05-28T14:00:00.000Z",
-    "auditorium": "city",
-    "seats": [
-      { "row": 1, "seat": 7, "type": "member" },
-      { "row": 1, "seat": 8, "type": "member" }
-    ],
-    "userId": "681a25fc1b75d872c0c502ab",
-    "totalPrice": 210,
-    "__v": 0
-  },
-  "movieTitle": "Lilo & Stitch"
+	"booking": {
+		"_id": "681f2d47e17e8fa94212a123",
+		"movieId": "681b3a14a20707b6cf797187",
+		"screeningTime": "2025-05-28T14:00:00.000Z",
+		"auditorium": "city",
+		"seats": [
+			{ "row": 1, "seat": 7, "type": "member" },
+			{ "row": 1, "seat": 8, "type": "member" }
+		],
+		"userId": "681a25fc1b75d872c0c502ab",
+		"totalPrice": 210,
+		"__v": 0
+	},
+	"movieTitle": "Lilo & Stitch"
 }
 ```
 
 **Error Responses:**
+
 - `400 Bad Request`: If any required field is missing
 - `403 Forbidden`: If member tickets are selected but the user is not logged in
 - `409 Conflict`: If one or more seats are already booked
@@ -569,18 +602,20 @@ You can also conditionally render components based on whether the user is logged
 ### Example: Booking as a Logged-In Member
 
 **Scenario:**  
-A logged-in user opens a screening and selects *Medlem* tickets. All other ticket types are hidden.  
+A logged-in user opens a screening and selects _Medlem_ tickets. All other ticket types are hidden.  
 When submitting the booking, the request is automatically linked to the authenticated user.
 
 #### Requirements
-- The user must be logged in via the `<Login />` component  
-- `useAuth()` provides access to the user's `isLoggedIn` and `userData`  
+
+- The user must be logged in via the `<Login />` component
+- `useAuth()` provides access to the user's `isLoggedIn` and `userData`
 - The booking request must include at least one member ticket
 
 #### Booking Flow
-1. User selects **only** member tickets in `TicketSelector.jsx`  
-2. All other ticket types are automatically set to `0` on login  
-3. On submit, the frontend sends a `POST /api/bookings` with `ticketInfo.member > 0`  
+
+1. User selects **only** member tickets in `TicketSelector.jsx`
+2. All other ticket types are automatically set to `0` on login
+3. On submit, the frontend sends a `POST /api/bookings` with `ticketInfo.member > 0`
 4. The backend:
    - Extracts the `userId` via JWT with `checkAuth()`
    - Rejects the request if the user is not logged in
@@ -588,25 +623,27 @@ When submitting the booking, the request is automatically linked to the authenti
    - Adds the booking ID to the correct `Screening` via `$push`
 
 #### Example Payload (simplified):
+
 ```json
 {
-  "movieId": "...",
-  "screeningTime": "...",
-  "auditorium": "city",
-  "seats": [{ "row": 1, "seat": 4 }],
-  "ticketInfo": {
-    "ordinary": 0,
-    "child": 0,
-    "retired": 0,
-    "student": 0,
-    "member": 1
-  }
+	"movieId": "...",
+	"screeningTime": "...",
+	"auditorium": "city",
+	"seats": [{ "row": 1, "seat": 4 }],
+	"ticketInfo": {
+		"ordinary": 0,
+		"child": 0,
+		"retired": 0,
+		"student": 0,
+		"member": 1
+	}
 }
 ```
 
 ---
 
 ### Booking → Screening Mapping (Server-side)
+
 When a booking is made, the backend also:
 
 - Converts the provided `auditorium` slug into an `_id` using the `Auditorium` model
@@ -615,17 +652,18 @@ When a booking is made, the backend also:
 
 ```js
 Screening.findOneAndUpdate(
-  {
-    movieId,
-    startTime: new Date(screeningTime),
-    auditoriumId: auditoriumDoc._id
-  },
-  {
-    $push: { bookedSeats: booking._id }
-  }
-)
+	{
+		movieId,
+		startTime: new Date(screeningTime),
+		auditoriumId: auditoriumDoc._id,
+	},
+	{
+		$push: { bookedSeats: booking._id },
+	}
+);
 ```
 
 This ensures that:
+
 - Booked seats are correctly linked to their screening
 - Future requests can show which seats are taken for each showtime
