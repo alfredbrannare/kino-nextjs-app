@@ -262,6 +262,37 @@ MONGO_URI=mongodb://localhost:27017
 
 ```
 
+## Get Movies with Upcoming Screenings API
+### GET Movies
+
+- **URL**: `/api/movies-with-screenings`
+- **Method**: `GET`
+- **Description**: Fetches all movies and their screenings.
+- **Response**: JSON array of movie objects
+- **Example Response**:
+[
+  {
+    "_id": "movieId",
+    "title": "Movie Title",
+    "description": "Movie description",
+    "rating": 8.7,
+    "image": "/image.jpg",
+    ...
+    "screenings": [
+      {
+        "_id": "screeningId",
+        "startTime": "2025-05-28T18:30:00.000Z",
+        "auditorium": "Salong 1",
+        "availableSeats": 64,
+        "bookedCount": 36
+      },
+      ...
+    ]
+  },
+  ...
+]
+
+
 ### Instructions for Using the Auth Context
 
 Import the useAuth Hook

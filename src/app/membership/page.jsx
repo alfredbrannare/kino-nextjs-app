@@ -263,7 +263,7 @@ export default function MembershipPage() {
               <Ticket size={40} /> Dina Biljetter
             </h3>
             {booking.length === 0 ? (
-              <p className="text-[#CDCDCD]">Inga bokningar hittades.</p>
+              <p className="text-center text-[#CDCDCD]">Inga bokningar hittades.</p>
             ) : (
               <ul className="space-y-4">
                 {(showAllTickets ? sortedBookings : sortedBookings.slice(0, 2)).map((b) => {
@@ -350,7 +350,7 @@ export default function MembershipPage() {
                   <li key={index}>{offer.text}</li>
                 ))
               ) : (
-                <li>Inga aktuella erbjudanden.</li>
+                <li className="text-center">Inga aktuella erbjudanden.</li>
               )}
             </ul>
           </div>
