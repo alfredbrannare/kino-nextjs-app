@@ -4,6 +4,7 @@ import Movie from "src/models/model.movies.js";
 import Auditorium from "src/models/model.auditorium";
 import Screening from "src/models/model.screenings";
 import { checkAuth } from "src/lib/auth";
+import User from "src/models/model.users.js";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -84,6 +85,12 @@ export async function POST(request) {
             auditorium,
             totalPrice
         });
+
+        await User.findByIdAndUpdate(
+            authenticatedUser.id,
+            { $inc: { points: totalPrice } },
+            { new: true }
+        );
 
         // Get movie title
         const movie = await Movie.findById(movieId);
