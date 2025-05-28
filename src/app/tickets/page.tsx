@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Views from 'src/components/views/Views';
+import Views from '@/components/views/Views';
 import Link from 'next/link';
 
 export default function TicketsPage() {

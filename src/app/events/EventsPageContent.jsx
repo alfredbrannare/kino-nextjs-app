@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import EventsTabs from "src/components/events/EventsTabs";
-import LoadingSpinner from "src/components/LoadingSpinner";
+import EventsTabs from "@/components/events/EventsTabs";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function EventsPageContent() {
     const [events, setEvents] = useState([]);

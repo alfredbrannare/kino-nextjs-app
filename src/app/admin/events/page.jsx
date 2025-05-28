@@ -1,11 +1,11 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useAuth } from "src/components/user/AuthData"
+import { useAuth } from "@/components/user/AuthData"
 import { useRouter } from "next/navigation";
-import AdminTabs from "src/components/AdminTabs"
+import AdminTabs from "@/components/AdminTabs"
 import { SquarePen } from "lucide-react";
-import EventCreator from "src/components/EventCreator";
+import EventCreator from "@/components/EventCreator";
 
 const EventsPage = () => {
     const [Events, setEvents] = useState([])

@@ -1,7 +1,7 @@
-import connectDB from "src/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import { checkAuth } from "src/lib/auth";
-import LiveEvents from "src/models/model.live_events";
+import { checkAuth } from "@/lib/auth";
+import LiveEvents from "@/models/model.live_events";
 
 export const GET = async (req, { params }) => {
     const id = await params.id;

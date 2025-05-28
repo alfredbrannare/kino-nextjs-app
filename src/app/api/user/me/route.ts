@@ -1,7 +1,7 @@
-import connectDB from "../../../../lib/mongodb";
-import { checkAuth } from "../../../../lib/auth";
+import connectDB from "@/lib/mongodb";
+import { checkAuth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import User from "src/models/model.users";
+import User from "@/models/model.users";
 
 export const GET = async (req) => {
   try {

@@ -4,8 +4,9 @@ import User from "@/models/model.users";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
   try {
     await connectDB();
 
@@ -19,7 +20,7 @@ export const POST = async (req) => {
       );
     }
 
-    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!validateEmail(email)) {
       return NextResponse.json(
         {
@@ -46,6 +47,10 @@ export const POST = async (req) => {
         },
         { status: 400 }
       );
+    }
+
+    if(!process.env.JWT_SECRET){
+      throw new Error("JWT TOKEN IS NOT DEFINED");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);

@@ -1,7 +1,7 @@
-import connectDB from "src/lib/mongodb";
-import Movie from "src/models/model.movies";
-import Screening from "src/models/model.screenings";
-import Auditorium from "src/models/model.auditorium";
+import connectDB from "@/lib/mongodb";
+import Movie from "@/models/model.movies";
+import Screenings from "@/models/model.screenings";
+import Auditoriums from "@/models/model.auditorium";
 
 export const GET = async () => {
   try {
@@ -9,7 +9,7 @@ export const GET = async () => {
 
     const movies = await Movie.find();
 
-    const screenings = await Screening.find({ startTime: { $gte: new Date() } }) // only future screenings
+    const screenings = await Screenings.find({ startTime: { $gte: new Date() } }) // only future screenings
       .populate("movieId")
       .populate("auditoriumId")
       .populate({

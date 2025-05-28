@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from "react";
-import MovieCard from "src/components/MovieCard";
-import SearchMoviesInput from "src/components/movies/SearchMoviesInput";
-import SortMoviesDropdown from "src/components/movies/SortMoviesDropdown";
-import { fetchMovies } from "src/lib/fetchMovies";
-import { searchMovies } from "src/utils/movies/searchMovies";
-import { sortMovies } from "src/utils/movies/sortMovies";
-import MovieCardSkeleton from "src/components/MovieCardSkeleton";
+import MovieCard from "@/components/MovieCard";
+import SearchMoviesInput from "@/components/movies/SearchMoviesInput";
+import SortMoviesDropdown from "@/components/movies/SortMoviesDropdown";
+import { fetchMovies } from "@/lib/fetchMovies";
+import { searchMovies } from "@/utils/movies/searchMovies";
+import { sortMovies } from "@/utils/movies/sortMovies";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 
 export default function MoviePageContent() {
     const [unsortedMovies, setUnsort] = useState([]);

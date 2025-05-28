@@ -1,6 +1,6 @@
-import connectDB from 'src/lib/mongodb';
-import LiveEvents from 'src/models/model.live_events';
-import { checkAuth } from 'src/lib/auth';
+import connectDB from '@/lib/mongodb';
+import LiveEvents from '@/models/model.live_events';
+import { checkAuth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {

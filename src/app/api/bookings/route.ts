@@ -1,10 +1,10 @@
-import connectDB from "src/lib/mongodb";
-import Booking from "src/models/model.booking.js";
-import Movie from "src/models/model.movies.js";
-import Auditorium from "src/models/model.auditorium";
-import Screening from "src/models/model.screenings";
-import { checkAuth } from "src/lib/auth";
-import User from "src/models/model.users.js";
+import connectDB from "@/lib/mongodb";
+import Booking from "@/models/model.booking.js";
+import Movie from "@/models/model.movies.js";
+import Auditorium from "@/models/model.auditorium";
+import Screening from "@/models/model.screenings";
+import { checkAuth } from "@/lib/auth";
+import User from "@/models/model.users.js";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
