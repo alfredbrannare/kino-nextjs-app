@@ -77,20 +77,27 @@ export async function POST(request) {
         }
 
         // Create booking
-        const booking = await Booking.create({
+        const bookingData = {
             movieId,
             screeningTime,
             seats: labeledSeats,
-            userId,
             auditorium,
             totalPrice
-        });
+        };
 
-        await User.findByIdAndUpdate(
-            authenticatedUser.id,
-            { $inc: { points: totalPrice } },
-            { new: true }
-        );
+        if (userId) {
+            bookingData.userId = userId;
+        }
+
+        const booking = await Booking.create(bookingData);
+
+        if (userId) {
+            await User.findByIdAndUpdate(
+                userId,
+                { $inc: { points: totalPrice } },
+                { new: true }
+            );
+        }
 
         // Get movie title
         const movie = await Movie.findById(movieId);
