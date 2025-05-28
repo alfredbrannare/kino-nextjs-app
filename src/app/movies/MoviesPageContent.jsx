@@ -7,6 +7,7 @@ import { fetchMovies } from "src/lib/fetchMovies";
 import { searchMovies } from "src/utils/movies/searchMovies";
 import { sortMovies } from "src/utils/movies/sortMovies";
 import MovieCardSkeleton from "src/components/MovieCardSkeleton";
+import ErrorMessage from "src/components/ErrorMessage";
 
 export default function MoviePageContent() {
     const [unsortedMovies, setUnsort] = useState([]);
@@ -62,6 +63,10 @@ export default function MoviePageContent() {
                         Array.from({ length: 8 }).map((_, i) => (
                             <MovieCardSkeleton key={i} className="flex-shrink-0" />
                         ))
+                    ) : error ? (
+                        <ErrorMessage
+                            error={error}
+                        />
                     ) : movies.map((movie) => (
                         <MovieCard
                             key={movie._id}
