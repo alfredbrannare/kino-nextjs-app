@@ -3,8 +3,9 @@ import bcrypt from "bcrypt";
 import User from "@/models/model.users";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export const POST = async (req) => {
+export const POST = async (req: Request) => {
   try {
     await connectDB();
 
@@ -18,7 +19,7 @@ export const POST = async (req) => {
       );
     }
 
-    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!validateEmail(email)) {
       return NextResponse.json(
         {
@@ -62,6 +63,9 @@ export const POST = async (req) => {
       hashedPassword: hashedPassword,
     });
 
+    if(!process.env.JWT_SECRET){
+      throw new Error('JWT SECRET NOT FOUND!')
+    }
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
