@@ -171,6 +171,9 @@ const Main = () => {
                           <div className="hero-content flex-col lg:flex-row-reverse">
                             <img
                               src={event.image}
+                              width="384"
+                              height="256"
+                              loading="lazy"
                               className="w-[384px] h-[256px] object-cover"
                               alt={`Image for ${event.title}`}
                             />
@@ -209,6 +212,9 @@ const Main = () => {
                         <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
                           <img
                             src={event.image}
+                            width="384"
+                            height="256"
+                            loading="lazy"
                             className="w-full max-w-sm h-auto"
                             alt={`Image for ${event.title}`}
                           />
@@ -236,7 +242,9 @@ const Main = () => {
                 <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
-                {isLoading ? null : !isLoggedIn ? (
+                {isLoading ? (
+                  <div className="min-h-[150px]"/>
+                ) : !isLoggedIn ? (
                   <Login />
                 ) : null}
               </div>
@@ -244,11 +252,16 @@ const Main = () => {
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero-content flex-col lg:flex-row-reverse">
+                    <div className="aspect-3/2 w-full max-w-sm">
                     <img
                       src="/KinoEntrance.png"
+                      width="384"
+                      height="256"
+                      loading="lazy"
                       className="w-full max-w-sm h-auto"
                       alt="Kino Entrance"
                     />
+                    </div>
                     <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                       <h1 className="text-3xl font-bold text-[#CDCDCD]">DIN LOKALA BIOGRAF</h1>
                       <p className="py-6 text-[#CDCDCD]">
@@ -268,11 +281,16 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="bg-[#2B0404] py-0 px-4">
                     <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
+                      <div className="aspect-3/2 w-full max-w-sm">
                       <img
                         src="/KinoDoors.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                       />
+                      </div>
                       <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
                         <p className="py-6 text-[#CDCDCD]">
@@ -305,11 +323,16 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
+                      <div className="aspect-[3/2] w-full max-w-sm">
                       <img
                         src="/KinoScreen.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                       />
+                      </div>
                       <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">BÄTTRE LJUD OCH BILD ÄN HEMMA</h1>
                         <p className="py-6 text-[#CDCDCD] ">
@@ -324,11 +347,16 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
+                      <div className="aspect-[3/2] w-full max-w-sm">
                       <img
                         src="/KinoSeats.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                       />
+                      </div>
                       <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
                         <p className="py-6 text-[#CDCDCD]">

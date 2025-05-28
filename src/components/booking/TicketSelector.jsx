@@ -50,56 +50,73 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
 
     return (
         <div className="m-auto p-4 md:p-8 pb-6 space-y-6 bg-gray-900 border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] max-w-[720px]">
+            <h2 className="sr-only">Välj biljettyper och antal</h2>
             {!isLoggedIn && (
                 <>
                     <div className="bg-gray-800 p-3 rounded">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div className="text-center sm:text-left">
-                                <span className="text-lg">Ordinarie</span>
+                                <span id="label-ordinary" className="text-lg">Ordinarie</span>
                             </div>
                             <div className="flex justify-center sm:justify-start items-center gap-2">
-                                <button onClick={() => setOrdinary(Math.max(ordinary - 1, 0))} className="bg-gray-600 px-2 rounded hover:border-white border border-transparent">−</button>
+                                <button
+                                    aria-label="Minska antal ordinarie biljetter"
+                                    onClick={() => setOrdinary(Math.max(ordinary - 1, 0))} className="bg-gray-600 px-2 rounded hover:border-white border border-transparent">−</button>
                                 <span>{ordinary}</span>
-                                <button onClick={() => setOrdinary(ordinary + 1)} className="bg-yellow-400 text-black px-2 rounded hover:border-white hover:bg-yellow-300 border border-transparent">+</button>
+                                <button
+                                    aria-label="Öka antal ordinarie biljetter"
+                                    onClick={() => setOrdinary(ordinary + 1)} className="bg-yellow-400 text-black px-2 rounded hover:border-white hover:bg-yellow-300 border border-transparent">+</button>
                             </div>
                         </div>
                     </div>
                     <div className="bg-gray-800 p-3 rounded">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                             <div className="text-center sm:text-left">
-                                <span className="text-lg block">Barn</span>
+                                <span id="label-child" className="text-lg block">Barn</span>
                                 <span className="block text-gray-400 text-sm">(20% rabatt för barn under 11 år)</span>
                             </div>
                             <div className="flex justify-center sm:justify-start items-center gap-2">
-                                <button onClick={() => setChild(Math.max(child - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
+                                <button
+                                    aria-label="Minska antal barnbiljetter"
+                                    onClick={() => setChild(Math.max(child - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
                                 <span>{child}</span>
-                                <button onClick={() => setChild(child + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
+                                <button
+                                    aria-label="Öka antal barnbiljetter"
+                                    onClick={() => setChild(child + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
                             </div>
                         </div>
                     </div>
                     <div className="bg-gray-800 p-3 rounded">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                             <div className="text-center sm:text-left">
-                                <span className="text-lg block">Pensionär</span>
+                                <span id="label-retired" className="text-lg block">Pensionär</span>
                                 <span className="block text-gray-400 text-sm">(20% rabatt)</span>
                             </div>
                             <div className="flex justify-center sm:justify-start items-center gap-2">
-                                <button onClick={() => setRetired(Math.max(retired - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
+                                <button
+                                    aria-label="Minska antal pensionärbiljetter"
+                                    onClick={() => setRetired(Math.max(retired - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
                                 <span>{retired}</span>
-                                <button onClick={() => setRetired(retired + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
+                                <button
+                                    aria-label="Öka antal pensionärbiljetter"
+                                    onClick={() => setRetired(retired + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
                             </div>
                         </div>
                     </div>
                     <div className="bg-gray-800 p-3 rounded">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                             <div className="text-center sm:text-left">
-                                <span className="text-lg block">Student</span>
+                                <span id="label-student" className="text-lg block">Student</span>
                                 <span className="block text-gray-400 text-sm">(15% rabatt)</span>
                             </div>
                             <div className="flex justify-center sm:justify-start items-center gap-2">
-                                <button onClick={() => setStudent(Math.max(student - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
+                                <button
+                                    aria-label="Minska antal studentbiljetter"
+                                    onClick={() => setStudent(Math.max(student - 1, 0))} className="bg-gray-600 px-2 rounded border border-transparent hover:border-white">−</button>
                                 <span>{student}</span>
-                                <button onClick={() => setStudent(student + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
+                                <button
+                                    aria-label="Öka antal studentbiljetter"
+                                    onClick={() => setStudent(student + 1)} className="bg-yellow-400 text-black px-2 rounded border border-transparent hover:border-white hover:bg-yellow-300">+</button>
                             </div>
                         </div>
                     </div>
@@ -108,17 +125,18 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
             <div className="bg-gray-800 p-3 rounded">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                     <div className="text-center sm:text-left">
-                        <span className="text-lg block">Medlem</span>
+                        <span id="label-member" className="text-lg block">Medlem</span>
                         <span className="block text-gray-400 text-sm">(25% rabatt)</span>
                         {!isLoggedIn && <Login />}
                         {!isLoggedIn && showWarning && (
-                            <span className="block text-sm text-red-500 mt-1">
+                            <span className="block text-sm text-red-500 mt-1" aria-live="assertive">
                                 Logga in för att boka medlemsbiljetter
                             </span>
                         )}
                     </div>
                     <div className="flex justify-center sm:justify-start items-center gap-2">
                         <button
+                            aria-label="Minska antal medlemsbiljetter"
                             onClick={() => {
                                 if (!isLoggedIn) {
                                     setShowWarning(true);
@@ -136,6 +154,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                         </button>
                         <span>{member}</span>
                         <button
+                            aria-label="Öka antal medlemsbiljetter"
                             onClick={() => {
                                 if (!isLoggedIn) {
                                     setShowWarning(true);

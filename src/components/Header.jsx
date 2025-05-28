@@ -16,8 +16,14 @@ const Header = () => {
         <div className="header-container w-full max-w-[1280px] mx-auto flex justify-between items-center">
           <div className="navbar-start text-[#CDCDCD]">
             <div className="dropdown custom-sm:hidden">
-              <div tabIndex="0" role="button" className="btn btn-ghost">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div tabIndex="0" role="button" className="btn btn-ghost" aria-label="Menu">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
                 </svg>
               </div>
@@ -116,7 +122,7 @@ const Header = () => {
                 href="/membership"
                 className="hover:scale-110 mr-1 flex items-center gap-2 text-yellow-400 hover:text-white transition-colors"
               >
-                <span className="font-semibold text-sm hidden sm:inline">
+                <span className="font-semibold text-sm">
                   {userData?.name || userData?.email || 'Medlem'}
                 </span>
                 <UserRound className="hover:scale-110 mr-1" />

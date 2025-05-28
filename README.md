@@ -1,9 +1,3 @@
-docker run -v C:\Users\user\kino-nextjs-app\data\mongo:/data/db -p 27017:27017 mongo
-OMDB=5cd99ae7
-MONGO_URI=mongodb://localhost:27017
-
-## remember to add ip to mongo atlas
-
 ## Screenings API
 
 ### GET the 5 Nearest Upcoming Screenings
@@ -107,7 +101,35 @@ MONGO_URI=mongodb://localhost:27017
 - **Response**: JSON array of review objects
 - **Example Response**:
 
+## Users API
+
+### POST Login User
+
+- **URL**: `/api/login`
+- **Method**: `POST`
+- **Description**: Description: Authenticates a user with email and password. Returns a token in an httpOnly cookie if credentials are valid. All fields are required.
+
+### POST Logout User
+
+- **URL**: `/api/logout`
+- **Method**: `POST`
+- **Description**: Description: Logs the user out by removing the httpOnly token cookie.
+
+### GET Current User Info and Role Update
+
+- **URL**: `/api/register`
+- **Method**: `POST`
+- **Description**: Registers a new user with name, email, and password. Validates input, hashes password, stores the user, sets a login token via HTTP-only cookie.
+
+### GET Current User Info and Role Update
+
+- **URL**: `/api/user/me`
+- **Method**: `GET`
+- **Description**: Authenticates the user, checks their points, updates their role (silver, guld, kinoguru), and returns their user info with the new role.
+
 ```
+
+
 {
   "success": true,
   "reviews": [
@@ -130,6 +152,168 @@ MONGO_URI=mongodb://localhost:27017
   ]
 }
 ```
+## Events API
+
+### GET an Event by ID
+
+- **URL**: `/api/events/[id]`
+- **Method**: `GET`
+- **Description**: Retrieves a single event by its ID.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+{ 
+  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  "title": "Movie Premiere Night",
+  "time": "19:00",
+  "date": "2025-06-10",
+  "image": "https://example.com/event-image.jpg",
+  "description": "Join us for the premiere of the latest blockbuster!",
+  "__v": 0
+} 
+
+### DELETE an Event by ID (Admin only)
+
+- **URL**: `/api/events/[id]`
+- **Method**: `DELETE`
+- **Description**:  Deletes an event by its ID. Requires user to be authenticated and have admin role.
+- **Response**: JSON object representing the event.
+- **Example Response**:
+{
+  "message": "Event deleted successfully"
+}
+
+### PUT Update an Event by ID (Admin only)
+
+- **URL**: `/api/events/[id]`
+- **Method**: `PUT`
+- **Description**: Updates an existing event by ID. Requires admin authentication.
+- **Request Body**:
+{
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the event."
+}
+- **Response**:
+{
+  "_id": "60e5b7f9b8a1c72d6c9f1234",
+  "title": "Updated Event Title",
+  "time": "20:00",
+  "date": "2025-06-11",
+  "image": "https://example.com/updated-event-image.jpg",
+  "description": "Updated description of the event.",
+  "__v": 0
+}
+
+## Offers API
+
+### GET all offers
+
+- **URL**: `/api/offers`
+- **Method**: `GET`
+- **Description**: Retrieves all offers.
+- **Response**: JSON object containing an array of offer objects.
+- **Example Response**: 
+{
+  "offers": [
+    {
+      "_id": "60f6b8a9e47e8c3f8c5a5a8d",
+      "text": "20% off on all tickets this weekend!",
+      "__v": 0
+    },
+    {
+      "_id": "60f6b8bae47e8c3f8c5a5a8e",
+      "text": "Buy one get one free on popcorn.",
+      "__v": 0
+    }
+  ]
+}
+
+### POST Create a New Offer (Admin only)
+
+- **URL**: `/api/offers`
+- **Method**: `POST`
+- **Description**: Creates a new offer. Only accessible by authenticated admin users.
+- **Request Body (JSON)**:
+{
+  "offer": "Free drink with every ticket purchase!"
+}
+- **Example Response**: 
+{
+  "_id": "60f6b9b5e47e8c3f8c5a5a8f",
+  "text": "Free drink with every ticket purchase!",
+  "__v": 0
+}
+
+### DELETE an Offer by ID (Admin only)
+
+- **URL**: `/api/offers/[id]`
+- **Method**: `DELETE`
+- **Description**: Deletes an offer by its ID. Requires authenticated admin user.
+- **Response**: 
+{
+  "success": true
+}
+
+## Profile Picture API
+
+### POST Upload Profile Picture
+
+- **URL**: `/api/upload-profile`
+- **Method**: `POST`
+- **Auth**: Required (User)
+- **Description**: Uploads or updates a user's profile picture to Cloudinary and stores the image URL in the database.
+- **Request Type**: multipart/form-data
+- **Form Data Parameters**: file: Image file to upload.
+- **Response**: 
+{
+  "profilePicture": "https://res.cloudinary.com/your_cloud_name/image/upload/v1234567890/profile_pics/user_123.jpg"
+}
+
+### DELETE Remove Profile Picture
+
+- **URL**: `/api/remove-profile`
+- **Method**: `DELETE`
+- **Auth**: Required (User)
+- **Description**: Deletes the user's profile picture from Cloudinary and removes the URL from the user record in the database.
+- **Response**: 
+{
+  "message": "Profile image removed."
+}
+
+```
+
+## Get Movies with Upcoming Screenings API
+### GET Movies
+
+- **URL**: `/api/movies-with-screenings`
+- **Method**: `GET`
+- **Description**: Fetches all movies and their screenings.
+- **Response**: JSON array of movie objects
+- **Example Response**:
+[
+  {
+    "_id": "movieId",
+    "title": "Movie Title",
+    "description": "Movie description",
+    "rating": 8.7,
+    "image": "/image.jpg",
+    ...
+    "screenings": [
+      {
+        "_id": "screeningId",
+        "startTime": "2025-05-28T18:30:00.000Z",
+        "auditorium": "Salong 1",
+        "availableSeats": 64,
+        "bookedCount": 36
+      },
+      ...
+    ]
+  },
+  ...
+]
+
 
 ## Live Events API
 
@@ -254,7 +438,7 @@ On the backend, you can check the user's token to validate their authentication.
        }
 
       // Optionally, check if the user is an admin
-     const isAdmin = authenticatedUser.role === "admin";
+     const isAdmin = authenticatedUser.role.includes('admin');
        if (!isAdmin) {
         return NextResponse.json(
          { message: "You don't have the right to use this feature!" },
@@ -272,3 +456,176 @@ You can also conditionally render components based on whether the user is logged
        ) : (
       <p>Hide this data for logged-in users</p>
      )}
+
+## Auditoriums API
+
+### GET `/api/auditoriums/[slug]`
+**Method:** `GET`  
+**Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
+
+**URL Parameters:**
+- `slug` (required): The unique identifier for the auditorium (e.g. `city`, `big-hall`)
+
+**Response:**
+```json
+{
+  "_id": "68164b2ef469735514b5f89a",
+  "name": "Uppsala City",
+  "slug": "city",
+  "seats": [
+    { "row": 1, "seat": 1, "isWheelchair": true },
+    { "row": 1, "seat": 2, "isWheelchair": false },
+    { "row": 1, "seat": 3, "isWheelchair": false }
+  ],
+  "totalSeats": 56,
+  "__v": 0
+}
+```
+
+---
+
+## Booking API
+
+### GET `/api/bookings`
+**Method:** `GET`  
+**Description:** Fetches all booked seats for a specific screening of a movie in a given auditorium.
+
+**Query Parameters:**
+- `movieId` (required): The ID of the movie  
+- `screeningTime` (required): The start time of the screening (ISO format)  
+- `auditorium` (required): The slug of the auditorium (e.g. `city`)
+
+**Example Request:**
+```
+/api/bookings?movieId=abc123&screeningTime=2025-05-28T14:00:00.000Z&auditorium=city
+```
+
+**Response:**
+```json
+[
+  { "row": 1, "seat": 5, "type": "ordinary" },
+  { "row": 1, "seat": 6, "type": "ordinary" },
+  { "row": 1, "seat": 7, "type": "child" },
+  { "row": 2, "seat": 7, "type": "member" },
+  { "row": 4, "seat": 4, "type": "student" },
+  { "row": 4, "seat": 5, "type": "student" },
+  { "row": 9, "seat": 1, "type": "retired" }
+]
+```
+
+---
+
+### POST `/api/bookings`
+**Method:** `POST`  
+**Description:** Creates a booking for a specific movie screening. If the booking includes member tickets, the user must be logged in. The backend automatically links the booking to the authenticated user (if any) and updates the related screening.
+
+**Request Body:**
+```json
+{
+  "movieId": "681b3a14a20707b6cf797187",
+  "screeningTime": "2025-05-28T14:00:00.000Z",
+  "auditorium": "city",
+  "seats": [
+    { "row": 1, "seat": 7 },
+    { "row": 1, "seat": 8 }
+  ],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 2
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "booking": {
+    "_id": "681f2d47e17e8fa94212a123",
+    "movieId": "681b3a14a20707b6cf797187",
+    "screeningTime": "2025-05-28T14:00:00.000Z",
+    "auditorium": "city",
+    "seats": [
+      { "row": 1, "seat": 7, "type": "member" },
+      { "row": 1, "seat": 8, "type": "member" }
+    ],
+    "userId": "681a25fc1b75d872c0c502ab",
+    "totalPrice": 210,
+    "__v": 0
+  },
+  "movieTitle": "Lilo & Stitch"
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: If any required field is missing
+- `403 Forbidden`: If member tickets are selected but the user is not logged in
+- `409 Conflict`: If one or more seats are already booked
+
+---
+
+### Example: Booking as a Logged-In Member
+
+**Scenario:**  
+A logged-in user opens a screening and selects *Medlem* tickets. All other ticket types are hidden.  
+When submitting the booking, the request is automatically linked to the authenticated user.
+
+#### Requirements
+- The user must be logged in via the `<Login />` component  
+- `useAuth()` provides access to the user's `isLoggedIn` and `userData`  
+- The booking request must include at least one member ticket
+
+#### Booking Flow
+1. User selects **only** member tickets in `TicketSelector.jsx`  
+2. All other ticket types are automatically set to `0` on login  
+3. On submit, the frontend sends a `POST /api/bookings` with `ticketInfo.member > 0`  
+4. The backend:
+   - Extracts the `userId` via JWT with `checkAuth()`
+   - Rejects the request if the user is not logged in
+   - Saves the booking and links it to the authenticated user
+   - Adds the booking ID to the correct `Screening` via `$push`
+
+#### Example Payload (simplified):
+```json
+{
+  "movieId": "...",
+  "screeningTime": "...",
+  "auditorium": "city",
+  "seats": [{ "row": 1, "seat": 4 }],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 1
+  }
+}
+```
+
+---
+
+### Booking → Screening Mapping (Server-side)
+When a booking is made, the backend also:
+
+- Converts the provided `auditorium` slug into an `_id` using the `Auditorium` model
+- Finds the matching `Screening` document using `movieId`, `startTime`, and `auditoriumId`
+- Pushes the new booking’s `_id` into the screening’s `bookedSeats` array:
+
+```js
+Screening.findOneAndUpdate(
+  {
+    movieId,
+    startTime: new Date(screeningTime),
+    auditoriumId: auditoriumDoc._id
+  },
+  {
+    $push: { bookedSeats: booking._id }
+  }
+)
+```
+
+This ensures that:
+- Booked seats are correctly linked to their screening
+- Future requests can show which seats are taken for each showtime
