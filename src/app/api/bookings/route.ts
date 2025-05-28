@@ -1,8 +1,10 @@
-import connectDB from "@/lib/mongodb";
-import Booking from "@/models/model.booking.js";
-import Movie from "@/models/model.movies.js";
-import Auditorium from "@/models/model.auditorium";
-import Screening from "@/models/model.screenings";
+import connectDB from "src/lib/mongodb";
+import Booking from "src/models/model.booking.js";
+import Movie from "src/models/model.movies.js";
+import Auditorium from "src/models/model.auditorium";
+import Screening from "src/models/model.screenings";
+import { checkAuth } from "src/lib/auth";
+import User from "src/models/model.users.js";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -23,15 +25,18 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-    const body = await request.json();
-    const { movieId, screeningTime, seats, userId, auditorium, ticketInfo } = body;
-
-    if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
-        return Response.json({ error: "Missing required booking fields" }, { status: 400 });
-    }
-
     try {
         await connectDB();
+
+        const authenticatedUser = await checkAuth();
+        const userId = authenticatedUser?._id || null;
+
+        const body = await request.json();
+        const { movieId, screeningTime, seats, auditorium, ticketInfo } = body;
+
+        if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
+            return Response.json({ error: "Missing required booking fields" }, { status: 400 });
+        }
 
         //Controls that seats aren't booked already
         const existing = await Booking.find({ movieId, screeningTime, auditorium });
@@ -72,14 +77,27 @@ export async function POST(request) {
         }
 
         // Create booking
-        const booking = await Booking.create({
+        const bookingData = {
             movieId,
             screeningTime,
             seats: labeledSeats,
-            userId: '6820d93969eddb5ac9ed9f95',
             auditorium,
             totalPrice
-        });
+        };
+
+        if (userId) {
+            bookingData.userId = userId;
+        }
+
+        const booking = await Booking.create(bookingData);
+
+        if (userId) {
+            await User.findByIdAndUpdate(
+                userId,
+                { $inc: { points: totalPrice } },
+                { new: true }
+            );
+        }
 
         // Get movie title
         const movie = await Movie.findById(movieId);

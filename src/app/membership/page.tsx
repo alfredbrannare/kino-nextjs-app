@@ -2,12 +2,13 @@
 
 import { useAuth } from "../../components/user/AuthData"
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
-import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar } from 'lucide-react';
+import { useEffect, useState, useRef, useCallback } from "react";
+import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar, Award } from 'lucide-react';
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MembershipPage() {
-  const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, fetchUser } = useAuth();
+  const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, checkUser } = useAuth();
   const [booking, setBooking] = useState([]);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
   const adminMenuRef = useRef(null);
@@ -19,12 +20,12 @@ export default function MembershipPage() {
   const [showAllTickets, setShowAllTickets] = useState(false);
   const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));
 
-  const toggleExpand = (id) => {
+  const toggleExpand = useCallback((id) => {
     setExpandedTickets((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
-  };
+  }, []);
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -121,7 +122,7 @@ export default function MembershipPage() {
 
       if (res.ok && data.profilePicture) {
         alert('Profilbilden har uppdaterats!');
-        await fetchUser();
+        await checkUser();
       } else {
         alert(`Något gick fel vid uppladdningen: ${data.error || 'Okänt fel'}`);
       }
@@ -145,7 +146,7 @@ export default function MembershipPage() {
 
       if (res.ok) {
         alert("Profilbilden har tagits bort.");
-        await fetchUser();
+        await checkUser();
       } else {
         alert(`Kunde inte ta bort bilden: ${data.error || 'Okänt fel'}`);
       }
@@ -175,6 +176,9 @@ export default function MembershipPage() {
                       <li><Link href="/admin/screenings">Visningshantering</Link></li>
                       <li><Link href="/admin/reviews">Reviewshantering</Link></li>
                       <li><Link href="/admin/offers">Erbjudandehantering</Link></li>
+                      <li><Link href="/admin/live-events">Liveevenemanghantering</Link></li>
+                      <li><Link href="/admin/events">Evenemanghantering</Link></li>
+
                     </ul>
                   </div>
                 )}
@@ -185,10 +189,13 @@ export default function MembershipPage() {
 
           <div className="flex flex-col items-center justify-center flex-grow">
             <div className="relative group">
-              <img
+              <Image
                 src={userData?.profilePicture || "/kino-card.jpg"}
                 className="border-2 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-full w-50 h-50 object-cover"
                 alt="Profilbild"
+                width={200}
+                height={200}
+                priority
               />
 
               {/* Desktop */}
@@ -245,7 +252,27 @@ export default function MembershipPage() {
             <h2 className="text-3xl font-bold text-yellow-400 text-center mt-4 mb-4">{userData?.name}</h2>
             <p className="text-[#CDCDCD] text-m font-bold text-center">{userData?.email}</p>
             <p className="mt-2 font-bold text-m text-[#CDCDCD] text-center">
-              {`Medlemsnivå: ${userData?.role === 'user' ? 'Filmguru' : 'Admin'}`}
+              Medlemsnivå:{' '}
+              {userData?.role.includes('silver') && (
+                <>
+                  silver<Award className="inline-block ml-1 text-silver-500" />
+                </>
+              )}
+              {userData?.role.includes('guld') && (
+                <>
+                  guld<Award className="inline-block ml-1 text-yellow-500" />
+                </>
+              )}
+              {userData?.role.includes('kinoguru') && (
+                <>
+                  kinoguru<Award className="inline-block ml-1 text-purple-500" />
+                </>
+              )}
+              {!userData?.role.includes('silver') && !userData?.role.includes('guld') && !userData?.role.includes('kinoguru') && (
+                <>
+                  Member
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -260,7 +287,7 @@ export default function MembershipPage() {
               <Ticket size={40} /> Dina Biljetter
             </h3>
             {booking.length === 0 ? (
-              <p className="text-[#CDCDCD]">Inga bokningar hittades.</p>
+              <p className="text-center text-[#CDCDCD]">Inga bokningar hittades.</p>
             ) : (
               <ul className="space-y-4">
                 {(showAllTickets ? sortedBookings : sortedBookings.slice(0, 2)).map((b) => {
@@ -347,7 +374,7 @@ export default function MembershipPage() {
                   <li key={index}>{offer.text}</li>
                 ))
               ) : (
-                <li>Inga aktuella erbjudanden.</li>
+                <li className="text-center">Inga aktuella erbjudanden.</li>
               )}
             </ul>
           </div>

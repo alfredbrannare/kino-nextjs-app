@@ -24,6 +24,8 @@ const screeningsSchema = new mongoose.Schema({
   }]
 });
 
+screeningsSchema.index({ startTime: 1 }, { expireAfterSeconds: 0 });
+
 const Screening =
   mongoose.models.Screenings || mongoose.model("Screenings", screeningsSchema);
 

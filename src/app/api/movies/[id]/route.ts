@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 
 export const GET = async (req, { params }) => {
-  const id = await params.id;
   await connectDB();
+  const id = await params.id;
   const movie = await Movie.findById(id);
 
   return new Response(JSON.stringify(movie), {
@@ -22,7 +22,7 @@ export const DELETE = async (req, { params }) => {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role === "admin";
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(
@@ -48,7 +48,7 @@ export const PUT = async (req, { params }) => {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role === "admin";
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(

@@ -1,11 +1,18 @@
+'use client';
 import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
 import { useEffect, useState } from 'react';
 import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
+import { useAuth } from '@/components/user/AuthData';
+import RatingCard from './movies/singel/RatingCard';
+import { MovieHeader } from './movies/singel/MovieHeader';
+import dynamic from 'next/dynamic';
 
-import { useAuth } from '../components/user/AuthData';
+import TrailerCard from './movies/singel/TrailerCard';
+import Login from './Login';
+import Image from 'next/image';
 
 // TODO fix check for backend for rating
 
@@ -13,6 +20,33 @@ const MovieDetails = ({ movie }) => {
 	const { isLoggedIn, userData } = useAuth();
 	const [reviews, setReviews] = useState([]);
 	const [screenings, setScreenings] = useState([]); //- Patrik
+	const [shouldLoadReviews, setShouldLoadReviews] = useState(false); //coditional loading
+	// dynamic stuff
+
+	const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
+		ssr: false,
+		loading: () => <p className="text-center">Laddar recensioner...</p>, // Optional fallback
+	});
+
+	const TrailerCard = dynamic(() => import('./movies/singel/TrailerCard'), {
+		ssr: false,
+	});
+
+	//
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setShouldLoadReviews(true);
+					observer.disconnect();
+				}
+			},
+			{ threshold: 0.1 }
+		);
+
+		const reviewsEl = document.getElementById(`reviews-section`);
+		if (reviewsEl) observer.observe(reviewsEl);
+	}, []);
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -50,33 +84,36 @@ const MovieDetails = ({ movie }) => {
 							hour: '2-digit',
 							minute: '2-digit',
 						}),
-						sal: screening.auditoriumId?.name || "Okänd salong",
+						sal: screening.auditoriumId?.name || 'Okänd salong',
 					};
 				});
 
 				setScreenings(enriched);
-				console.log("Screenings för filmen:", enriched);
 			} catch (error) {
-				console.error("Error fetching screenings", error);
+				console.error('Error fetching screenings', error);
 			}
 		};
 
-
 		if (movie._id) {
-			fetchReviews();
 			fetchScreenings();
 		}
-	}, [movie._id]);
+
+		// fetch reviews only when section is in view
+		if (shouldLoadReviews && movie._id) {
+			fetchReviews();
+		}
+	}, [shouldLoadReviews, movie._id]);
 
 	const params = useParams();
 	const movieId = params.id;
 
 	// to get new review
-	const handleAddReview = async ({ rating, text, user }) => {
+	const handleAddReview = async ({ rating, text }) => {
 		const response = await fetch('/api/reviews', {
 			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
 			credentials: 'include',
-			body: JSON.stringify({ movieId, rating, text, user }),
+			body: JSON.stringify({ movieId, rating, text }),
 		});
 
 		if (response.ok) {
@@ -93,105 +130,131 @@ const MovieDetails = ({ movie }) => {
 
 	return (
 		<>
-			<div className="lg:grid grid-cols-8 gap-4 relative">
-				<div className="col-start-3 col-span-4  text-center pt-10">
-					<h1 className="font-semibold text-3xl">{movie.title}</h1>
-					<span>{movie.description}</span>
-					<br />
-					<div className="relative mx-auto pt-10">
-						<img
-							className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded relative z-10"
-							src={movie.image}
-							alt={movie.title}
-						/>
-						<img
-							className="absolute top-10 left-0 right-0 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg blur-lg rounded z-0"
-							src={movie.image}
-							alt={movie.title}
-						/>
-					</div>
-					<br />
-					<Link
-						className="btn"
-						href={'/movies'}>
-						Back
-					</Link>
+			<div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
+				{/* Left colum Main info and booking */}
+				<div className="flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3">
+					{/* title, metaInfo description */}
+
+					<MovieHeader
+						title={movie.title}
+						description={movie.description}
+						ageRating={movie.ageRating ?? 10}
+						duration={movie.runtime ?? '1.40'}
+						genre={movie.genres ?? 'Horror'}
+					/>
 				</div>
 
-				<div className="col-start-7 content-center justify-items-center  col-span-2 ml-5 ">
-					<div className="flex-col justify-items-center mx-auto w-full border-4 border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] rounded-lg p-4 mb-10">
-						<h1 className="text-2xl font-semibold text-center mb-2">Rating</h1>
-						<h2 className="text-4xl font-bold text-center">
-							{Number(movie.rating).toFixed(1)}/10
-						</h2>
-					</div>
-					<div className="flex-col justify-center">
-						<h2 className="card-title text-2xl flex justify-center mb-4 mt-4">
-							Filmen går följande tider
-						</h2>
+				<div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
+					{/* rating */}
 
-						{/* showings ska vara här, det här kan vara en komponent */}
-						{screenings.length === 0 ? (
-							<p className="text-sm text-gray-400">Inga visningar hittades.</p>
-						) : (
-							screenings.map((screening) => (
-								<Link
-									key={screening._id}
-									href={{
-										pathname: `/auditoriums/city`,
-										query: {
-											movieId: screening.movieId._id,
-											movieTitle: movie.title,
-											screeningTime: screening.startTime,
-											auditorium: 'city',
-										},
-									}}>
-									<Views
-										views={{
-											tid: new Date(screening.startTime).toLocaleString(
-												'sv-SE',
-												{
-													weekday: 'short',
-													day: 'numeric',
-													month: 'short',
-													hour: '2-digit',
-													minute: '2-digit',
-												}
-											),
-											sal: screening.auditoriumId.name,
-											maxSeats: screening.auditoriumId.capacity ?? 100,
-											emptySeats: 100,
-											bookedCount: screening.bookedCount,
-										}}
-									/>
-								</Link>
-							))
-						)}
-					</div>
-					{/* button to get tickets */}
-					<div className="flex justify-center w-full">
-						<button className="btn">Boka biljett</button>
-					</div>
+					<RatingCard rating={movie.rating} />
 				</div>
-				<div className="col-start-3 col-span-4 flex flex-col mt-5">
-					{/* reviews ska vara här */}
-					<h2 className="text-2xl  card-title self-center ">Reviews</h2>
-					<div>
-						{/* TODO: hide if not login */}
-						{!isLoggedIn ? (
-							<p className="justify-self-center my-4">
-								Logga in för att lämna en review
-							</p>
-						) : (
-							<ReviewForm
-								handleAddReview={handleAddReview}
-								userData={userData}
+
+				<div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
+					{/* description */}
+					<div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
+						<p className="m-2 text-xl text-center md:m-4 md:text-left">
+							{movie.description}
+						</p>
+					</div>
+					<div className="justify-center">
+						<div className="justify-end m-4 ">
+							<TrailerCard
+								trailerKey={movie.trailerKey}
+								title={movie.title}
 							/>
-						)}
+						</div>
 					</div>
-					<div className="mb-5">
-						{/* ReviewsList */}
-						<ReviewsList reviews={reviews} />
+				</div>
+
+				<div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
+					{/* Poster */}
+					{/* <img
+						src={movie.image}
+						alt={movie.title}
+						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
+					/> */}
+					<Image
+						src={movie.image}
+						alt={movie.title}
+						width={400}
+						height={600}
+						priority
+						className="object-contain rounded-lg shadow-lg"
+					/>
+				</div>
+				<div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
+					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 ">
+						<h2 className="mb-4 text-3xl font-bold text-center">
+							Välj visning
+						</h2>
+
+						{/* date select */}
+						<div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+							{screenings.length === 0 ? (
+								<p className="text-sm text-gray-400">
+									Inga visningar hittades.
+								</p>
+							) : (
+								screenings.map((screening) => (
+									<Link
+										key={screening._id}
+										href={{
+											pathname: `/auditoriums/city`,
+											query: {
+												movieId: screening.movieId._id,
+												screeningTime: screening.startTime,
+												auditorium: 'city',
+											},
+										}}>
+										<Views
+											views={{
+												tid: new Date(screening.startTime).toLocaleString(
+													'sv-SE',
+													{
+														weekday: 'short',
+														day: 'numeric',
+														month: 'short',
+														hour: '2-digit',
+														minute: '2-digit',
+													}
+												),
+												sal: screening.auditoriumId.name,
+												maxSeats: screening.auditoriumId.capacity ?? 100,
+												bookedCount: screening.bookedCount,
+											}}
+										/>
+									</Link>
+								))
+							)}
+						</div>
+					</div>
+				</div>
+				<div
+					id="reviews-section"
+					className="bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
+					<h2 className="m-4 text-2xl font-bold">Reviews</h2>
+					<div className="md:w-md">
+						<div>
+							{!isLoggedIn ? (
+								<div className="flex items-center justify-center gap-2 mx-4 text-xl">
+									<span className="inline-block">
+										<Login />
+									</span>
+									<span>för att lämna en review</span>
+								</div>
+							) : (
+								<ReviewForm
+									handleAddReview={handleAddReview}
+									userData={userData}
+								/>
+							)}
+						</div>
+						<div className="mb-5">
+							{/* ReviewsList */}
+
+							<ReviewsList reviews={reviews} />
+						</div>
 					</div>
 				</div>
 			</div>

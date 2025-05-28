@@ -10,45 +10,47 @@ export const AuthDataProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   const [isAdmin, setAdmin] = useState(false);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const response = await fetch('/api/user/me', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const data = await response.json();
+  const checkUser = async () => {
+    try {
+      const response = await fetch('/api/user/me', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();
 
-        if (response.ok) {
-          const user = data.user || data;
-          setUserData(user);
-          setLoggedIn(true);
-          //ADMIN
-          setAdmin(user?.role === 'admin');
+      if (response.ok) {
+        const user = data.user || data;
+        setUserData(user);
+        setLoggedIn(true);
+        //Roles
+        setAdmin(user?.role.includes('admin'));
 
-        } else {
-          setAdmin(false);
-          setLoggedIn(false);
-          setUserData(null);
-          console.log('Error checking token:', data.message);
-        }
-      } catch (error) {
-        console.error("Failed to check token:", error);
-        setLoggedIn(false);
+
+      } else {
         setAdmin(false);
+        setLoggedIn(false);
         setUserData(null);
-      } finally {
-        setLoading(false);
+        console.log('Error checking token:', data.message);
       }
-    };
+    } catch (error) {
+      console.error("Failed to check token:", error);
+      setLoggedIn(false);
+      setAdmin(false);
+      setUserData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
+  useEffect(() => {
     checkUser();
   }, []);
 
   const login = (userDataFromLogin) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
-    setAdmin(userDataFromLogin?.role === 'admin');
+    setAdmin(userDataFromLogin?.role.includes('admin'));
   };
 
   const logout = async () => {
@@ -62,7 +64,7 @@ export const AuthDataProvider = ({ children }) => {
   };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, isAdmin}}>
+    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin }}>
       {children}
     </AuthData.Provider>
   );

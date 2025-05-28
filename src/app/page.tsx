@@ -1,13 +1,13 @@
 "use client";
+import Login from '../components/Login'
+import TrailerCarousel from "@/components/TrailerCarousel/TrailerCarousel";
 import MovieCard from "../components/MovieCard";
+import Link from "next/link";
 import MovieCardSkeleton from "../components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
-import Login from "../components/Login";
-import TrailerCarousel from "../components/TrailerCarousel/TrailerCarousel";
-import { useAuth } from "../components/user/AuthData";
-import Image from "next/image";
-import Link from "next/link";
+import { useAuth } from "@/components/user/AuthData";
+import EventCardSkeleton from "@/components/events/MovieCardSkeleton";
 
 interface Movie {
   _id: string;
@@ -22,17 +22,51 @@ interface Movie {
   trailerKey?: string;
 }
 
-interface AuthResponse {
-  isLoggedIn: boolean;
-  isLoading: boolean;
-}
 
 const Main = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [events, setEvents] = useState([]);
+  const [liveEvents, setLiveEvents] = useState([]);
   const [upcomingMovies, setUpcomigMovies] = useState<Movie[]>([]);
   const { isLoggedIn, isLoading } = useAuth();
+
+  useEffect(() => {
+    const fetchLiveEvents = async () => {
+      try {
+        const res = await fetch('/api/events/live');
+        const data = await res.json();
+        console.log(data);
+        const limitedData = data.slice(0, 1);
+        setLiveEvents(limitedData);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        setError('Vi har för tillfället problem med att hämta evenemang');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchLiveEvents();
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/events');
+        const data = await res.json();
+        console.log(data);
+        const limitedData = data.slice(0, 1);
+        setEvents(limitedData);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        setError('Vi har för tillfället problem med att hämta evenemang');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const fetchCurrentMovies = async () => {
@@ -79,8 +113,8 @@ const Main = () => {
   return (
     <div>
       <div className="w-full">
-        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0">
-          <div className="relative mx-auto w-full border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]">
+        <div className="max-w-screen-2xl mx-auto px-0 sm:px-0" >
+          <div className="relative mx-auto w-full border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] bg-[#250303]">
             <TrailerCarousel trailerMovies={trailerMovies} />
             <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">
@@ -154,15 +188,82 @@ const Main = () => {
                   SE ALLA FILMER
                 </Link>
               </div>
-
-              <div className="w-full my-6">
-                <div className="justify-center align-center my-6">
-                  <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">
-                    LIVE PÅ KINO
-                  </h1>
-                </div>
-              </div>
-
+              <section className="my-12 text-center">
+                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                {loading ? (
+                  <EventCardSkeleton></EventCardSkeleton>
+                ) : liveEvents.map((event) => (
+                  <div className="w-full my-6" key={event._id}>
+                    <div className="justify-center align-center my-6">
+                      <div className="flex flex-col gap-6 px-4 py-8">
+                        <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                          <div className="hero-content flex-col lg:flex-row-reverse">
+                            <img
+                              src={event.image}
+                              width="384"
+                              height="256"
+                              loading="lazy"
+                              className="w-[384px] h-[256px] object-cover"
+                              alt={`Image for ${event.title}`}
+                            />
+                            <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
+                              <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
+                              <p className="mt-3">
+                                {Math.floor(event.runtime / 60)} timmar och {event.runtime % 60} minuter
+                              </p>
+                              <p className="py-6 text-[#CDCDCD]">
+                                {event.description}
+                              </p>
+                              <div className="flex justify-center lg:justify-start mt-6">
+                                <Link href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                  LÄS MER
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <Link href="/events?tab=tab1" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                  SE ALLA LIVE EVENEMANG
+                </Link>
+              </section>
+              <section>
+                <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
+                {loading ? (
+                  <EventCardSkeleton></EventCardSkeleton>
+                ) : events.map((event) => (
+                  <div className="flex flex-col gap-6 px-4 py-8" key={event._id}>
+                    <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
+                      <div className="bg-[#2B0404] py-0 px-4">
+                        <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
+                          <img
+                            src={event.image}
+                            width="384"
+                            height="256"
+                            loading="lazy"
+                            className="w-full max-w-sm h-auto"
+                            alt={`Image for ${event.title}`}
+                          />
+                          <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
+                            <h1 className="text-3xl font-bold text-[#CDCDCD]">{event.title}</h1>
+                            <p className="py-6 text-[#CDCDCD]">
+                              {event.description}
+                            </p>
+                            <div className="flex justify-center lg:justify-end mt-6">
+                              <Link href="/events?tab=tab2" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
+                                LÄS MER
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </section>
               <div className="bg-[#CDCDCD] py-16 px-4 text-center">
                 <h2 className="text-3xl font-bold text-[#2B0404] drop-shadow-md mb-8">
                   KINO - EN ALLDELES SPECIELL BIOUPPLEVELSE
@@ -170,19 +271,28 @@ const Main = () => {
                 <h3 className="text-l font-bold text-[#2B0404] drop-shadow-md mb-8">
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
-                {isLoading ? null : !isLoggedIn ? <Login /> : null}
+                {isLoading ? (
+                  <div className="min-h-[150px]"/>
+                ) : !isLoggedIn ? (
+                  <Login />
+                ) : null}
               </div>
 
               <div className="flex flex-col gap-6 px-4 py-8 bg-[#250303]">
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero-content flex-col lg:flex-row-reverse">
-                    <Image
+                    <div className="aspect-3/2 w-full max-w-sm">
+                    <img
                       src="/KinoEntrance.png"
+                      width="384"
+                      height="256"
+                      loading="lazy"
                       className="w-full max-w-sm h-auto"
                       alt="Kino Entrance"
                       width="500"
                       height="500"
                     />
+                    </div>
                     <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                       <h1 className="text-3xl font-bold text-[#CDCDCD]">
                         DIN LOKALA BIOGRAF
@@ -209,13 +319,18 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="bg-[#2B0404] py-0 px-4">
                     <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
-                      <Image
+                      <div className="aspect-3/2 w-full max-w-sm">
+                      <img
                         src="/KinoDoors.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                         width="500"
                         height="500"
                       />
+                      </div>
                       <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">
                           ANNORLUNDA OCH UNIKT
@@ -226,10 +341,7 @@ const Main = () => {
                           dolore magna aliqua.
                         </p>
                         <div className="flex justify-center lg:justify-end mt-6">
-                          <a
-                            href="/about"
-                            className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110"
-                          >
+                          <a href="/about" className="bg-transparent hover:bg-[#CDCDCD] text-[#CDCDCD] font-semibold hover:text-[#2B0404] py-2 px-4 rounded transition-all duration-300 ease-in-out border border-gray-200 hover:border-transparent rounded hover:cursor-pointer hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:scale-105 backdrop-brightness-110">
                             LÄS MER
                           </a>
                         </div>
@@ -257,13 +369,18 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
-                      <Image
+                      <div className="aspect-[3/2] w-full max-w-sm">
+                      <img
                         src="/KinoScreen.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                         width="500"
                         height="500"
                       />
+                      </div>
                       <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">
                           BÄTTRE LJUD OCH BILD ÄN HEMMA
@@ -282,13 +399,18 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
-                      <Image
+                      <div className="aspect-[3/2] w-full max-w-sm">
+                      <img
                         src="/KinoSeats.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
                         width="500"
                         height="500"
                       />
+                      </div>
                       <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">
                           MAT OCH DRYCK VID DIN PLATS
