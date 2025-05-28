@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import TrailerCard from './movies/singel/TrailerCard';
 import Login from './Login';
 import Image from 'next/image';
+import ErrorMessage from './ErrorMessage';
 
 // TODO fix check for backend for rating
 
@@ -21,6 +22,7 @@ const MovieDetails = ({ movie }) => {
 	const [reviews, setReviews] = useState([]);
 	const [screenings, setScreenings] = useState([]); //- Patrik
 	const [shouldLoadReviews, setShouldLoadReviews] = useState(false); //coditional loading
+	const [reviewsError, setReviewsError] = useState(null);
 	// dynamic stuff
 
 	const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
@@ -60,6 +62,7 @@ const MovieDetails = ({ movie }) => {
 				}
 			} catch (error) {
 				console.error('Error fetching reviews:', error);
+				setReviewsError('Vi har för tillfället problem att hämta recensioner');
 			}
 		};
 		//- Patrik
@@ -251,9 +254,14 @@ const MovieDetails = ({ movie }) => {
 							)}
 						</div>
 						<div className="mb-5">
-							{/* ReviewsList */}
-
-							<ReviewsList reviews={reviews} />
+							{reviewsError ? (
+								<ErrorMessage
+									error={reviewsError}
+								/>
+							) : (
+								<ReviewsList
+									reviews={reviews} />
+							)}
 						</div>
 					</div>
 				</div>
