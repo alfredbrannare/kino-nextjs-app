@@ -1,11 +1,18 @@
 import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 
-export const GET = async (req, { params }) => {
+type Params = {
+  params: {
+    id: string;
+  };
+};
+
+export const GET = async (_req: NextRequest, { params }: Params) => {
   await connectDB();
-  const id = await params.id;
+  console.log(params);
+  const id = params.id;
   const movie = await Movie.findById(id);
 
   return new Response(JSON.stringify(movie), {
@@ -14,15 +21,15 @@ export const GET = async (req, { params }) => {
   });
 };
 
-export const DELETE = async (req, { params }) => {
+export const DELETE = async (_req: NextRequest, { params }: Params) => {
   await connectDB();
-  const authenticatedUser = await checkAuth(req);
+  const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role.includes('admin');
+  const isAdmin = authenticatedUser.role.includes("admin");
 
   if (!isAdmin) {
     return NextResponse.json(
@@ -40,15 +47,15 @@ export const DELETE = async (req, { params }) => {
   }
 };
 
-export const PUT = async (req, { params }) => {
+export const PUT = async (req: NextRequest, { params }: Params) => {
   await connectDB();
-  const authenticatedUser = await checkAuth(req);
+  const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role.includes('admin');
+  const isAdmin = authenticatedUser.role.includes("admin");
 
   if (!isAdmin) {
     return NextResponse.json(

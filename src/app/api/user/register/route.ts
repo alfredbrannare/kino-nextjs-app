@@ -2,10 +2,10 @@ import connectDB from "@/lib/mongodb";
 import bcrypt from "bcrypt";
 import User from "@/models/model.users";
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
   try {
     await connectDB();
 
