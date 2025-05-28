@@ -12,7 +12,11 @@ export const checkAuth = async () => {
       return null;
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if(!process.env.JWT_SECRET){
+      throw new Error("JWT SERCRET NOT FOUND!")
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {id: string};
     const user = await User.findById(decoded.id).select("-hashedPassword");
 
     if (!user) {
@@ -21,7 +25,9 @@ export const checkAuth = async () => {
 
     return user;
   } catch (error) {
+    if(error instanceof Error){
     console.error("Auth error:", error.message);
     return null;
+    }
   }
 };
