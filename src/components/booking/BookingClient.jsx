@@ -5,8 +5,8 @@ import TicketSelector from "./TicketSelector";
 import { Clapperboard, Clock, Theater } from "lucide-react";
 import { useAuth } from "../user/AuthData";
 
-export default function BookingClient({ movieId, screeningTime, auditorium, userId }) {
-    const { isLoggedIn } = useAuth();
+export default function BookingClient({ movieId, screeningTime, auditorium }) {
+    const { isLoggedIn, userId } = useAuth();
     const [ticketInfo, setTicketInfo] = useState({ total: 0, details: {}, totalPrice: 0 });
     const [seatsFromDB, setSeatsFromDB] = useState([]);
     const [movieTitle, setMovieTitle] = useState("");
