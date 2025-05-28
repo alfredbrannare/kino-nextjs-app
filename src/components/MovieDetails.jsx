@@ -195,9 +195,11 @@ const MovieDetails = ({ movie }) => {
 						{/* date select */}
 						<div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
 							{screenings.length === 0 ? (
-								<p className="text-sm text-gray-400">
-									Inga visningar hittades.
-								</p>
+								<div className="col-span-full flex justify-center items-center">
+									<ErrorMessage
+										error={'Inga visningar hittades.'}
+									/>
+								</div>
 							) : (
 								screenings.map((screening) => (
 									<Link
