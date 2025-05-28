@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EventsTabs from "src/components/events/EventsTabs";
 import LoadingSpinner from "src/components/LoadingSpinner";
+import ErrorMessage from "src/components/ErrorMessage";
 
 export default function EventsPageContent() {
     const [events, setEvents] = useState([]);
@@ -12,6 +13,7 @@ export default function EventsPageContent() {
     const initialTab = searchParams.get('tab') || 'tab1';
     const [activeTab, setActiveTab] = useState(initialTab);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const tabs = [
         { id: "tab1", label: "Live på Kino" },
@@ -25,6 +27,10 @@ export default function EventsPageContent() {
         ]).then(([eventData, liveEventData]) => {
             setEvents(eventData);
             setLiveEvents(liveEventData);
+            setLoading(false);
+        }).catch((err) => {
+            console.error('Error fetching events:', err);
+            setError('Vi har för tillfället problem med att hämta evenemang');
             setLoading(false);
         });
     }, []);
@@ -50,6 +56,8 @@ export default function EventsPageContent() {
                 >
                     {loading ? (
                         <LoadingSpinner />
+                    ) : error ? (
+                        <ErrorMessage error={error} />
                     ) : (
                         <div className="space-y-10" aria-labelledby="evenemang-titlar">
                             {currentEvents.map((event, index) => (
