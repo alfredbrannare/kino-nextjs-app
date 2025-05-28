@@ -80,6 +80,7 @@ export const PUT = async (req, { params }) => {
         { new: true, runValidators: true }
     );
 
-    return NextResponse.json(updatedEvent, { status: 200 });
+    return NextResponse.json({ message: `Event "${updatedEvent.title}" was successfully updated!`, event: updatedEvent },
+        { status: 200 });
 };
 

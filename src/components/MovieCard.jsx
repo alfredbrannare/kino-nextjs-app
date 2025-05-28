@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MovieCard = ({ movie }) => {
 	if (!movie || !movie._id || !movie.title || !movie.image) {
@@ -31,17 +32,25 @@ const MovieCard = ({ movie }) => {
 		formattedTime = `${time}`;
 	}
 
+	const imageUrl = movie.image.replace('/original/', '/w500/')
+
 	return (
 		<article className="group relative">
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100 w-48 h-79">
-				<img
-					src={movie.image}
-					alt=""
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100 w-48 h-79 hidden xl:block">
+				<Image
+					src={imageUrl}
+					alt="Blur effect of poster"
 					onError={(e) => {
 						e.target.onerror = null;
 						e.target.src = "/kino-card.jpg";
 					}}
 					className="w-full h-full object-cover blur-xl"
+					width={192}
+					height={316}
+					quality={5}
+					priority={false}
+					loading="lazy"
+					sizes='200px'
 				/>
 			</div>
 
@@ -51,14 +60,18 @@ const MovieCard = ({ movie }) => {
 				id={movie.movieId ?? movie._id}
 				aria-labelledby={`movie-title-${movie.movieId ?? movie._id}`}
 			>
-				<img
-					src={movie.image}
+				<Image
+					src={imageUrl}
 					alt={movie.title}
 					onError={(e) => {
 						e.target.onerror = null;
 						e.target.src = "/kino-card.jpg";
 					}}
 					className="w-full h-full object-fit relative"
+					width={200}
+					height={332}
+					quality={50}
+					sizes='200px'
 				/>
 
 				<div className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.86)] text-white p-2 opacity-100 sm:opacity-100 xl:opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-300">
