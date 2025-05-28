@@ -58,17 +58,22 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
         setIsBooking(true);
         setBookingSuccess(false);
 
+        const bookingPayload = {
+            movieId,
+            screeningTime,
+            seats: selectedSeats,
+            auditorium,
+            ticketInfo
+        };
+
+        if (userId) {
+            bookingPayload.userId = userId;
+        }
+
         fetch('/api/bookings', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({
-                movieId,
-                screeningTime,
-                seats: selectedSeats,
-                userId,
-                auditorium,
-                ticketInfo
-            })
+            body: JSON.stringify(bookingPayload)
         })
             .then(async (res) => {
                 if (!res.ok) {
