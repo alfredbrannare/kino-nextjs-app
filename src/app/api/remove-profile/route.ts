@@ -10,11 +10,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function DELETE(req) {
+export async function DELETE() {
   try {
     await connectDB();
 
-    const user = await checkAuth(req);
+    const user = await checkAuth();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

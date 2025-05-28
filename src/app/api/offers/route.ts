@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Offer from "@/models/model.offer";
 import { checkAuth } from "@/lib/auth";
@@ -9,10 +9,10 @@ export async function GET() {
   return NextResponse.json({ offers });
 }
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const user = await checkAuth(req);
+    const user = await checkAuth();
     if (!user || user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

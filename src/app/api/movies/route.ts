@@ -1,7 +1,7 @@
 import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
 import { checkAuth } from "@/lib/auth";
-import { NextResponse } from "next/server"; // Import NextResponse
+import { NextRequest, NextResponse } from "next/server"; // Import NextResponse
 
 export const GET = async () => {
   try {
@@ -14,17 +14,17 @@ export const GET = async () => {
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Database error" }), {
+    return new Response(JSON.stringify({ error: `Database error: ${error}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
 };
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
   await connectDB();
 
-  const authenticatedUser = await checkAuth(req);
+  const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

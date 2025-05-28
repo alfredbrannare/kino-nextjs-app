@@ -2,12 +2,7 @@ import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
 import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
-
-type Params = {
-  params: {
-    id: string;
-  };
-};
+import { Params } from "@/ts/types";
 
 export const GET = async (_req: NextRequest, { params }: Params) => {
   await connectDB();
