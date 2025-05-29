@@ -1,12 +1,19 @@
 import { FC } from "react";
 
 type Props = {
-	title: string;
-	ageRating: number;
-	duration: string;
-	genre: string;
-}
-const MovieHeader: FC<Props> = ({ title, ageRating, duration, genre }) => {
+  title: string;
+  ageRating: number;
+  description?: string;
+  duration: string;
+  genre: string;
+};
+const MovieHeader: FC<Props> = ({
+  title,
+  description,
+  ageRating,
+  duration,
+  genre,
+}) => {
   // convert string to number
   const totalMinutes = parseInt(duration, 10);
   const hours = Math.floor(totalMinutes / 60);
@@ -23,6 +30,11 @@ const MovieHeader: FC<Props> = ({ title, ageRating, duration, genre }) => {
           <span>{formattedDuration}</span>
           <span className="font-semibold">{genre}</span>
         </div>
+        {description && (
+          <p className="mt-4 text-base text-gray-300 md:text-lg">
+            {description}
+          </p>
+        )}
       </div>
     </div>
   );

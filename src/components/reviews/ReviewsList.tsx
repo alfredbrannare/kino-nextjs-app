@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
 import UserReview from './UserReview';
+import { ReviewsType } from '@/ts/types';
 
 const REVIEWS_PER_PAGE = 5;
 
 type Props = {
-	reviews: [];
+	reviews: ReviewsType[];
 }
 
 const ReviewsList: FC<Props> = ({ reviews }) => {

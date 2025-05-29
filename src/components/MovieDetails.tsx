@@ -15,12 +15,22 @@ import { AuthContextType, MovieType, ReviewsType, ScreeningType } from "@/ts/typ
 // TODO fix check for backend for rating
 type Props = {
   movie: MovieType;
+};
+
+interface ExtendedScreeningType extends ScreeningType {
+  bookedCount: number;
+  tid: string;
+  sal: string;
 }
 
-const MovieDetails:FC<Props> = ({ movie }) => {
+type BookingWithSeats = {
+  seats?: { length: number }[];
+};
+
+const MovieDetails: FC<Props> = ({ movie }) => {
   const { isLoggedIn, userData } = useAuth() as AuthContextType;
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
-  const [screenings, setScreenings] = useState<ScreeningType[]>([]); //- Patrik
+  const [screenings, setScreenings] = useState<ExtendedScreeningType[]>([]);
   const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false); //coditional loading
   // dynamic stuff
 
@@ -67,26 +77,33 @@ const MovieDetails:FC<Props> = ({ movie }) => {
     const fetchScreenings = async () => {
       try {
         const res = await fetch(`/api/screenings?movieId=${movie._id}`);
-        const data = await res.json();
+        const data: ScreeningType[] = await res.json();
 
-        const enriched = data.map((screening) => {
-          const bookedCount = screening.bookedSeats?.reduce(
-            (sum, booking) => sum + (booking.seats?.length || 0),
-            0
-          );
+        const enrichedData: ExtendedScreeningType[] = data.map(
+          (apiScreening: ScreeningType) => {
+            const bookedSeatsAsArray = apiScreening.bookedSeats as unknown as
+              | BookingWithSeats[]
+              | undefined;
+            const bookedCount =
+              bookedSeatsAsArray?.reduce(
+                (sum, booking: BookingWithSeats) =>
+                  sum + (booking.seats?.length || 0),
+                0
+              ) || 0; // Ensure bookedCount is a number, default to 0
 
-          return {
-            ...screening,
-            bookedCount,
-            tid: new Date(screening.startTime).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-            sal: screening.auditoriumId?.name || "Okänd salong",
-          };
-        });
+            return {
+              ...apiScreening,
+              bookedCount,
+              tid: new Date(apiScreening.startTime).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+              sal: apiScreening.auditoriumId?.name || "Okänd salong",
+            };
+          }
+        );
 
-        setScreenings(enriched);
+        setScreenings(enrichedData);
       } catch (error) {
         console.error("Error fetching screenings", error);
       }
@@ -106,7 +123,13 @@ const MovieDetails:FC<Props> = ({ movie }) => {
   const movieId = params.id;
 
   // to get new review
-  const handleAddReview = async ({ rating, text }) => {
+  const handleAddReview = async ({
+    rating,
+    text,
+  }: {
+    rating: string;
+    text: string;
+  }) => {
     const response = await fetch("/api/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -136,16 +159,33 @@ const MovieDetails:FC<Props> = ({ movie }) => {
           <MovieHeader
             title={movie.title}
             description={movie.description}
-            ageRating={movie.ageRating ?? 10}
-            duration={movie.runtime ?? "1.40"}
-            genre={movie.genres ?? "Horror"}
+            ageRating={
+              typeof movie.ageRating === "string"
+                ? isNaN(parseInt(movie.ageRating, 10))
+                  ? 10
+                  : parseInt(movie.ageRating, 10)
+                : movie.ageRating ?? 10
+            }
+            duration={
+              typeof movie.runtime === "number"
+                ? movie.runtime.toString()
+                : movie.runtime ?? "1.40"
+            }
+            genre={
+              movie.genres
+                ? Array.isArray(movie.genres)
+                  ? movie.genres.join(", ")
+                  : movie.genres
+                : "Horror"
+            }
           />
         </div>
 
         <div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
           {/* rating */}
-
-          <RatingCard rating={movie.rating} />
+          <RatingCard
+            rating={parseFloat(movie.rating || "0") || 0}
+          />
         </div>
 
         <div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
@@ -243,7 +283,6 @@ const MovieDetails:FC<Props> = ({ movie }) => {
               ) : (
                 <ReviewForm
                   handleAddReview={handleAddReview}
-                  userData={userData}
                 />
               )}
             </div>
