@@ -30,7 +30,7 @@ const CookieBanner = () => {
       <p style={styles.text}>
         Vi använder nödvändiga cookies för att säkerställa att webbplatsen fungerar.
         För närvarande är webbplatsen under utveckling och all användardata kommer att raderas vid lanseringen.
-        Genom att klicka på "Acceptera" godkänner du detta.
+        Genom att klicka på &quot;Acceptera&quot; godkänner du detta.
       </p>
       <button onClick={handleAccept} style={styles.button}>
         Acceptera

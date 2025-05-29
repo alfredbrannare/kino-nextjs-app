@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SeatSelector from "./SeatSelector";
 import TicketSelector from "./TicketSelector";
 import { Clapperboard, Clock, Theater } from "lucide-react";
@@ -36,6 +36,15 @@ const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
             .then(data => setSeatsFromDB(data.seats));
     }, [auditorium]);
 
+    const handleTicketChange = useCallback((total: number, details: TicketDetails, totalPrice: number) => {
+        setTicketInfo({
+            total: total,
+            details: details,
+            totalPrice: totalPrice
+        });
+        
+    }, []);
+
     return (
         <>
             <div className="sticky top-0 z-40 bg-[#2B0404] text-yellow-400 px-4 mt-2 py-2 text-sm sm:text-base border-b border-yellow-400">
@@ -64,11 +73,7 @@ const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
 
                 <TicketSelector
                     isLoggedIn={isLoggedIn}
-                    onChange={(total: number, details: TicketDetails, totalPrice: number) => setTicketInfo({
-                        total: total,
-                        details: details,
-                        totalPrice: totalPrice
-                    })}
+                    onChange={handleTicketChange}
                 />
 
                 <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>

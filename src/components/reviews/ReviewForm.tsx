@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ReviewForm({ handleAddReview, userData }) {
+export default function ReviewForm({ handleAddReview }) {
 	const [rating, setRating] = useState(0);
 	const [text, setText] = useState('');
 	// const [hasRating, setHasRating] = useState(null);

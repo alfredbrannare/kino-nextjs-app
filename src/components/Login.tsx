@@ -1,8 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from './user/AuthData';
-import { LogIn } from 'lucide-react';
 
 const Login = () => {
     const { login, loading } = useAuth();

@@ -3,14 +3,12 @@ import Link from 'next/link';
 import Views from './views/Views';
 import ReviewForm from './reviews/ReviewForm';
 import { useEffect, useState } from 'react';
-import ReviewsList from './reviews/ReviewsList';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/components/user/AuthData';
 import RatingCard from './movies/singel/RatingCard';
 import { MovieHeader } from './movies/singel/MovieHeader';
 import dynamic from 'next/dynamic';
 
-import TrailerCard from './movies/singel/TrailerCard';
 import Login from './Login';
 import Image from 'next/image';
 
@@ -73,9 +71,6 @@ const MovieDetails = ({ movie }) => {
 						(sum, booking) => sum + (booking.seats?.length || 0),
 						0
 					);
-
-					const totalSeats = screening.auditoriumId?.seats?.length || 0;
-					const availableSeats = totalSeats - bookedCount;
 
 					return {
 						...screening,

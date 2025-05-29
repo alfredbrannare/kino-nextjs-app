@@ -44,7 +44,7 @@ const TicketSelector: FC<Props> = ({ isLoggedIn = false, onChange }) => {
                 member
             }, totalPrice);
         }
-    }, [ordinary, child, retired, student, member]);
+    }, [ordinary, child, retired, student, member, total, totalPrice, onChange]);
 
     useEffect(() => {
         if (isLoggedIn) {

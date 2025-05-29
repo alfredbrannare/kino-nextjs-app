@@ -2,6 +2,8 @@ import { Types } from "mongoose";
 
 export type Params = {
   params: {
+    userId: string;
+    settingId: string;
     id: string;
   };
 };
