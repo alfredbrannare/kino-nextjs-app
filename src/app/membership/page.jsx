@@ -18,7 +18,7 @@ export default function MembershipPage() {
   const menuRef = useRef(null);
   const [expandedTickets, setExpandedTickets] = useState({});
   const [showAllTickets, setShowAllTickets] = useState(false);
-  const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));
+  const sortedBookings = [...booking].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const toggleExpand = useCallback((id) => {
     setExpandedTickets((prev) => ({
