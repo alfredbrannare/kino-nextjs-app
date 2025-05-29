@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export type Params = {
   params: {
     id: string;
@@ -18,4 +20,23 @@ export interface BookingType {
   auditorium: string;
   totalPrice: number;
   userId?: string | null;
+}
+
+export interface ScreeningType {
+  _id: Types.ObjectId;
+  startTime: Date;
+  auditorium: string;
+  availableSeats: number;
+  bookedCount: number;
+}
+
+export interface UserType {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  hashedPassword: string;
+  role: string;
+  benefits: [];
+  points:number;
+  profilePicture?: string;
 }

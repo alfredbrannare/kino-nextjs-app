@@ -1,7 +1,8 @@
 import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
 import Screenings from "@/models/model.screenings";
-import Auditoriums from "@/models/model.auditorium";
+import "@/models/model.auditorium";
+import { BookingType, ScreeningType } from "@/ts/types";
 
 export const GET = async () => {
   try {
@@ -9,7 +10,9 @@ export const GET = async () => {
 
     const movies = await Movie.find();
 
-    const screenings = await Screenings.find({ startTime: { $gte: new Date() } }) // only future screenings
+    const screenings = await Screenings.find({
+      startTime: { $gte: new Date() },
+    }) // only future screenings
       .populate("movieId")
       .populate("auditoriumId")
       .populate({
@@ -20,12 +23,13 @@ export const GET = async () => {
       });
 
     // Group screenings by movie
-    const screeningsByMovie = {};
+    const screeningsByMovie:Record<string, ScreeningType[]>  = {};
     for (const screening of screenings) {
       const movieId = screening.movieId._id.toString();
 
       const bookedCount = screening.bookedSeats?.reduce(
-        (sum, booking) => sum + (booking.seats?.length || 0),
+        (sum: number, booking: BookingType) =>
+          sum + (booking.seats?.length || 0),
         0
       );
 
