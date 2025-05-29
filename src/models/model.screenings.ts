@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Movie from "@/models/model.movies";
-import Auditorium from "@/models/model.auditorium";
-import Booking from "./model.booking";
+import "@/models/model.movies";
+import "@/models/model.auditorium";
+import "@/models/model.booking";
 
 const screeningsSchema = new mongoose.Schema({
   movieId: {

@@ -1,11 +1,15 @@
 import connectDB from "@/lib/mongodb";
+import "@/models/model.movies";
+import "@/models/model.booking";
+import "@/models/model.auditorium";
 import Screening from "@/models/model.screenings";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 import Movie from "@/models/model.movies";
-import Auditorium from "@/models/model.auditorium";
+import { NextApiRequest } from "next";
+import { Params } from "@/ts/types";
 
-export const GET = async (req, { params }) => {
+export const GET = async (_req: NextApiRequest, { params }: Params) => {
   const id = await params.id;
   await connectDB();
   const screenings = await Screening.findById(id).populate("movieId", "title")
@@ -17,10 +21,10 @@ export const GET = async (req, { params }) => {
   });
 };
 
-export const DELETE = async (req, { params }) => {
+export const DELETE = async (_req: NextRequest, { params }: Params) => {
   try {
     await connectDB();
-    const authenticatedUser = await checkAuth(req);
+    const authenticatedUser = await checkAuth();
 
     if (!authenticatedUser || !authenticatedUser.role.includes('admin')) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
@@ -40,9 +44,9 @@ export const DELETE = async (req, { params }) => {
   }
 };
 
-export const PUT = async (req, { params }) => {
+export const PUT = async (req: NextRequest, { params }: Params) => {
   await connectDB();
-  const authenticatedUser = await checkAuth(req);
+  const authenticatedUser = await checkAuth();
   console.log(authenticatedUser);
 
   if (!authenticatedUser) {
