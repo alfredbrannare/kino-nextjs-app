@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/components/user/AuthData";
 import EventCardSkeleton from "@/components/events/MovieCardSkeleton";
 import Image from 'next/image';
+import { AuthContextType, EventType, LiveEventsType } from '@/ts/types';
 
 interface Movie {
   _id: string;
@@ -28,10 +29,10 @@ const Main = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [events, setEvents] = useState([]);
-  const [liveEvents, setLiveEvents] = useState([]);
+  const [events, setEvents] = useState<EventType[]>([]);
+  const [liveEvents, setLiveEvents] = useState<LiveEventsType[]>([]);
   const [upcomingMovies, setUpcomigMovies] = useState<Movie[]>([]);
-  const { isLoggedIn, isLoading } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth() as AuthContextType;
 
   useEffect(() => {
     const fetchLiveEvents = async () => {
@@ -138,7 +139,7 @@ const Main = () => {
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
                 {(loading ? Array.from({ length: 5 }) : movies).map(
                   (movie, i) => (
-                    <div key={movie?._id || i} className="flex justify-center">
+                    <div key={i} className="flex justify-center">
                       {loading ? (
                         <MovieCardSkeleton />
                       ) : (
@@ -169,7 +170,7 @@ const Main = () => {
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
                 {(loading ? Array.from({ length: 5 }) : upcomingMovies).map(
                   (movie, i) => (
-                    <div key={movie?._id || i} className="flex justify-start">
+                    <div key={i} className="flex justify-start">
                       {loading ? (
                         <MovieCardSkeleton />
                       ) : (

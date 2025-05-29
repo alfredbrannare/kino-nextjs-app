@@ -18,7 +18,7 @@ const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
     const { isLoggedIn, userId } = useAuth() as AuthContextType;
     const [ticketInfo, setTicketInfo] = useState<TicketSelectionInfo>({ total: 0, details: { ordinary: 0, child: 0, retired: 0, student: 0, member: 0 }, totalPrice: 0 });
     const [seatsFromDB, setSeatsFromDB] = useState<Seat[]>([]);
-    const [movieTitle, setMovieTitle] = useState("");
+    const [movieTitle, setMovieTitle] = useState<string>("");
 
     useEffect(() => {
         if (!movieId) return;
@@ -72,7 +72,7 @@ const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
                 <h3 className="text-l mt-10 mb-10">Välj biljetter</h3>
 
                 <TicketSelector
-                    isLoggedIn={isLoggedIn}
+                    isLoggedIn={isLoggedIn ?? false}
                     onChange={handleTicketChange}
                 />
 

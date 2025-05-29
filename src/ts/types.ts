@@ -14,7 +14,12 @@ export type Context = {
   };
 };
 
-export type DiscountType = 'ordinary' | 'child' | 'retired' | 'student' | 'member';
+export type DiscountType =
+  | "ordinary"
+  | "child"
+  | "retired"
+  | "student"
+  | "member";
 
 export interface Seat {
   isWheelchair: boolean;
@@ -23,12 +28,14 @@ export interface Seat {
   type: DiscountType | string;
 }
 export interface BookingType {
-  movieId: string;
+  _id?: string;
+  movieId: MovieType;
   screeningTime: string;
   seats: Seat[];
   auditorium: string;
   totalPrice: number;
   userId?: string | null;
+  title?: string;
 }
 
 export interface ScreeningType {
@@ -90,15 +97,21 @@ export interface BookingPageProps {
 }
 
 export interface AuthContextType {
-  isLoggedIn: boolean;
-  isAdmin: boolean;
-  isLoading: boolean;
-  userId: string;
+  userData?: UserType;
+  isLoggedIn?: boolean;
+  isAdmin?: boolean;
+  isLoading?: boolean;
+  userId?: string;
+  loading?: boolean;
+  logout?: () => void;
+  checkUser?: () => void;
 }
 
 export interface EventType {
   _id: string;
   title: string;
+  image: string;
+  description: string;
 }
 
 export interface OffersType {
@@ -106,15 +119,27 @@ export interface OffersType {
   text: string;
 }
 
+export interface LiveEventsType {
+  _id: string;
+  id: string;
+  title: string;
+  date: Date;
+  time: string;
+  description: string;
+  image: string;
+  genre: string;
+  runtime: number;
+}
+
 export interface TicketDetails {
-    ordinary: number;
-    child: number;
-    retired: number;
-    student: number;
-    member: number;
+  ordinary: number;
+  child: number;
+  retired: number;
+  student: number;
+  member: number;
 }
 export interface TicketSelectionInfo {
-    total: number;
-    details: TicketDetails;
-    totalPrice: number;
+  total: number;
+  details: TicketDetails;
+  totalPrice: number;
 }

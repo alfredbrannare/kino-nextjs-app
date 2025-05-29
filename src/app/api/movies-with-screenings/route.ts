@@ -2,7 +2,15 @@ import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
 import Screenings from "@/models/model.screenings";
 import "@/models/model.auditorium";
-import { BookingType, ScreeningType } from "@/ts/types";
+import { BookingType } from "@/ts/types";
+
+type EnrichedScreening = {
+  _id: string;
+  startTime: Date;
+  auditorium: string;
+  availableSeats: number;
+  bookedCount: number;
+};
 
 export const GET = async () => {
   try {
@@ -23,7 +31,7 @@ export const GET = async () => {
       });
 
     // Group screenings by movie
-    const screeningsByMovie:Record<string, ScreeningType[]>  = {};
+    const screeningsByMovie:Record<string, EnrichedScreening[]>  = {};
     for (const screening of screenings) {
       const movieId = screening.movieId._id.toString();
 
