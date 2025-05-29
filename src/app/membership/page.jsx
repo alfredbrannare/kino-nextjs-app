@@ -184,7 +184,7 @@ export default function MembershipPage() {
                 )}
               </div>
             )}
-            <LogOut size={24} className="cursor-pointer hover:scale-110 transition" onClick={logout} />
+            <LogOut size={24} data-testid="logout-icon" className="cursor-pointer hover:scale-110 transition" onClick={logout} />
           </div>
 
           <div className="flex flex-col items-center justify-center flex-grow">
