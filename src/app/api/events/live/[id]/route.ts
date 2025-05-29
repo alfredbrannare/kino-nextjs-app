@@ -1,9 +1,10 @@
 import connectDB from "@/lib/mongodb";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 import LiveEvents from "@/models/model.live_events";
+import { Params } from "@/ts/types";
 
-export const GET = async (req, { params }) => {
+export const GET = async (_req: NextRequest, { params }: Params) => {
     const id = await params.id;
     await connectDB();
     const movie = await LiveEvents.findById(id);
@@ -14,9 +15,9 @@ export const GET = async (req, { params }) => {
     });
 };
 
-export const DELETE = async (req, { params }) => {
+export const DELETE = async (req: NextRequest, { params }: Params) => {
     await connectDB();
-    const authenticatedUser = await checkAuth(req);
+    const authenticatedUser = await checkAuth();
 
     if (!authenticatedUser) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -40,13 +41,13 @@ export const DELETE = async (req, { params }) => {
         return NextResponse.json({ message: "Live event deleted successfully" }, { status: 200 });
     } catch (error) {
         console.error(error);
-        return NextResponse({ message: "Internal server error during deletion" }, { status: 500 });
+        return NextResponse.json({ message: "Internal server error during deletion" }, { status: 500 });
     }
 };
 
-export const PUT = async (req, { params }) => {
+export const PUT = async (req: NextRequest, { params }: Params) => {
     await connectDB();
-    const authenticatedUser = await checkAuth(req);
+    const authenticatedUser = await checkAuth();
 
     if (!authenticatedUser) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
