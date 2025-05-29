@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, CSSProperties } from 'react';
 
 const CookieBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,7 +39,7 @@ const CookieBanner = () => {
   );
 };
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   banner: {
     position: 'fixed',
     bottom: 0,

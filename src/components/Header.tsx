@@ -16,7 +16,7 @@ const Header = () => {
         <div className="header-container w-full max-w-[1280px] mx-auto flex justify-between items-center">
           <div className="navbar-start text-[#CDCDCD]">
             <div className="dropdown custom-sm:hidden">
-              <div tabIndex="0" role="button" className="btn btn-ghost" aria-label="Menu">
+              <div tabIndex={0} role="button" className="btn btn-ghost" aria-label="Menu">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8"
@@ -28,7 +28,7 @@ const Header = () => {
                 </svg>
               </div>
               <ul
-                tabIndex="0"
+                tabIndex={0}
                 className="menu menu-sm dropdown-content bg-[#2B0404] text-[#CDCDCD] rounded-box z-10 mt-3 w-52 p-2 shadow">
                 <li><Link
                   href="/tickets"

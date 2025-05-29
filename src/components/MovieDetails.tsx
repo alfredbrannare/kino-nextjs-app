@@ -1,260 +1,262 @@
-'use client';
-import Link from 'next/link';
-import Views from './views/Views';
-import ReviewForm from './reviews/ReviewForm';
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { useAuth } from '@/components/user/AuthData';
-import RatingCard from './movies/singel/RatingCard';
-import { MovieHeader } from './movies/singel/MovieHeader';
-import dynamic from 'next/dynamic';
-
-import Login from './Login';
-import Image from 'next/image';
+"use client";
+import Link from "next/link";
+import Views from "./views/Views";
+import ReviewForm from "./reviews/ReviewForm";
+import { FC, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useAuth } from "@/components/user/AuthData";
+import RatingCard from "./movies/singel/RatingCard";
+import MovieHeader from "./movies/singel/MovieHeader";
+import dynamic from "next/dynamic";
+import Login from "./Login";
+import Image from "next/image";
+import { AuthContextType, MovieType, ReviewsType, ScreeningType } from "@/ts/types";
 
 // TODO fix check for backend for rating
+type Props = {
+  movie: MovieType;
+}
 
-const MovieDetails = ({ movie }) => {
-	const { isLoggedIn, userData } = useAuth();
-	const [reviews, setReviews] = useState([]);
-	const [screenings, setScreenings] = useState([]); //- Patrik
-	const [shouldLoadReviews, setShouldLoadReviews] = useState(false); //coditional loading
-	// dynamic stuff
+const MovieDetails:FC<Props> = ({ movie }) => {
+  const { isLoggedIn, userData } = useAuth() as AuthContextType;
+  const [reviews, setReviews] = useState<ReviewsType[]>([]);
+  const [screenings, setScreenings] = useState<ScreeningType[]>([]); //- Patrik
+  const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false); //coditional loading
+  // dynamic stuff
 
-	const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
-		ssr: false,
-		loading: () => <p className="text-center">Laddar recensioner...</p>, // Optional fallback
-	});
+  const ReviewsList = dynamic(() => import("./reviews/ReviewsList"), {
+    ssr: false,
+    loading: () => <p className="text-center">Laddar recensioner...</p>, // Optional fallback
+  });
 
-	const TrailerCard = dynamic(() => import('./movies/singel/TrailerCard'), {
-		ssr: false,
-	});
+  const TrailerCard = dynamic(() => import("./movies/singel/TrailerCard"), {
+    ssr: false,
+  });
 
-	//
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (entry.isIntersecting) {
-					setShouldLoadReviews(true);
-					observer.disconnect();
-				}
-			},
-			{ threshold: 0.1 }
-		);
+  //
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadReviews(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-		const reviewsEl = document.getElementById(`reviews-section`);
-		if (reviewsEl) observer.observe(reviewsEl);
-	}, []);
+    const reviewsEl = document.getElementById(`reviews-section`);
+    if (reviewsEl) observer.observe(reviewsEl);
+  }, []);
 
-	useEffect(() => {
-		const fetchReviews = async () => {
-			try {
-				const res = await fetch(`/api/reviews?movieId=${movie._id}`);
-				const data = await res.json();
-				if (res.ok) {
-					setReviews(data.reviews);
-				} else {
-					console.error('Failed to fetch reviews:', data.message);
-				}
-			} catch (error) {
-				console.error('Error fetching reviews:', error);
-			}
-		};
-		//- Patrik
-		const fetchScreenings = async () => {
-			try {
-				const res = await fetch(`/api/screenings?movieId=${movie._id}`);
-				const data = await res.json();
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setReviews(data.reviews);
+        } else {
+          console.error("Failed to fetch reviews:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+    //- Patrik
+    const fetchScreenings = async () => {
+      try {
+        const res = await fetch(`/api/screenings?movieId=${movie._id}`);
+        const data = await res.json();
 
-				const enriched = data.map((screening) => {
-					const bookedCount = screening.bookedSeats?.reduce(
-						(sum, booking) => sum + (booking.seats?.length || 0),
-						0
-					);
+        const enriched = data.map((screening) => {
+          const bookedCount = screening.bookedSeats?.reduce(
+            (sum, booking) => sum + (booking.seats?.length || 0),
+            0
+          );
 
-					return {
-						...screening,
-						bookedCount,
-						tid: new Date(screening.startTime).toLocaleTimeString([], {
-							hour: '2-digit',
-							minute: '2-digit',
-						}),
-						sal: screening.auditoriumId?.name || 'Okänd salong',
-					};
-				});
+          return {
+            ...screening,
+            bookedCount,
+            tid: new Date(screening.startTime).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            sal: screening.auditoriumId?.name || "Okänd salong",
+          };
+        });
 
-				setScreenings(enriched);
-			} catch (error) {
-				console.error('Error fetching screenings', error);
-			}
-		};
+        setScreenings(enriched);
+      } catch (error) {
+        console.error("Error fetching screenings", error);
+      }
+    };
 
-		if (movie._id) {
-			fetchScreenings();
-		}
+    if (movie._id) {
+      fetchScreenings();
+    }
 
-		// fetch reviews only when section is in view
-		if (shouldLoadReviews && movie._id) {
-			fetchReviews();
-		}
-	}, [shouldLoadReviews, movie._id]);
+    // fetch reviews only when section is in view
+    if (shouldLoadReviews && movie._id) {
+      fetchReviews();
+    }
+  }, [shouldLoadReviews, movie._id]);
 
-	const params = useParams();
-	const movieId = params.id;
+  const params = useParams();
+  const movieId = params.id;
 
-	// to get new review
-	const handleAddReview = async ({ rating, text }) => {
-		const response = await fetch('/api/reviews', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			credentials: 'include',
-			body: JSON.stringify({ movieId, rating, text }),
-		});
+  // to get new review
+  const handleAddReview = async ({ rating, text }) => {
+    const response = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ movieId, rating, text }),
+    });
 
-		if (response.ok) {
-			const data = await response.json();
-			console.log('Review saved:', data.review);
-			// refresh reviews here
-			const res = await fetch(`/api/reviews?movieId=${movie._id}`);
-			const latest = await res.json();
-			setReviews(latest.reviews);
-		} else {
-			console.error('Failed to save review');
-		}
-	};
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Review saved:", data.review);
+      // refresh reviews here
+      const res = await fetch(`/api/reviews?movieId=${movie._id}`);
+      const latest = await res.json();
+      setReviews(latest.reviews);
+    } else {
+      console.error("Failed to save review");
+    }
+  };
 
-	return (
-		<>
-			<div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
-				{/* Left colum Main info and booking */}
-				<div className="flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3">
-					{/* title, metaInfo description */}
+  return (
+    <>
+      <div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
+        {/* Left colum Main info and booking */}
+        <div className="flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3">
+          {/* title, metaInfo description */}
 
-					<MovieHeader
-						title={movie.title}
-						description={movie.description}
-						ageRating={movie.ageRating ?? 10}
-						duration={movie.runtime ?? '1.40'}
-						genre={movie.genres ?? 'Horror'}
-					/>
-				</div>
+          <MovieHeader
+            title={movie.title}
+            description={movie.description}
+            ageRating={movie.ageRating ?? 10}
+            duration={movie.runtime ?? "1.40"}
+            genre={movie.genres ?? "Horror"}
+          />
+        </div>
 
-				<div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
-					{/* rating */}
+        <div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
+          {/* rating */}
 
-					<RatingCard rating={movie.rating} />
-				</div>
+          <RatingCard rating={movie.rating} />
+        </div>
 
-				<div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
-					{/* description */}
-					<div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
-						<p className="m-2 text-xl text-center md:m-4 md:text-left">
-							{movie.description}
-						</p>
-					</div>
-					<div className="justify-center">
-						<div className="justify-end m-4 ">
-							<TrailerCard
-								trailerKey={movie.trailerKey}
-								title={movie.title}
-							/>
-						</div>
-					</div>
-				</div>
+        <div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
+          {/* description */}
+          <div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
+            <p className="m-2 text-xl text-center md:m-4 md:text-left">
+              {movie.description}
+            </p>
+          </div>
+          <div className="justify-center">
+            <div className="justify-end m-4 ">
+              <TrailerCard trailerKey={movie.trailerKey} title={movie.title} />
+            </div>
+          </div>
+        </div>
 
-				<div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
-					{/* Poster */}
-					{/* <img
+        <div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
+          {/* Poster */}
+          {/* <img
 						src={movie.image}
 						alt={movie.title}
 						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
 					/> */}
-					<Image
-						src={movie.image}
-						alt={movie.title}
-						width={400}
-						height={600}
-						priority
-						className="object-contain rounded-lg shadow-lg"
-					/>
-				</div>
-				<div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
-					<div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 ">
-						<h2 className="mb-4 text-3xl font-bold text-center">
-							Välj visning
-						</h2>
+          <Image
+            src={movie.image}
+            alt={movie.title}
+            width={400}
+            height={600}
+            priority
+            className="object-contain rounded-lg shadow-lg"
+          />
+        </div>
+        <div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
+          <div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 ">
+            <h2 className="mb-4 text-3xl font-bold text-center">
+              Välj visning
+            </h2>
 
-						{/* date select */}
-						<div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-							{screenings.length === 0 ? (
-								<p className="text-sm text-gray-400">
-									Inga visningar hittades.
-								</p>
-							) : (
-								screenings.map((screening) => (
-									<Link
-										key={screening._id}
-										href={{
-											pathname: `/auditoriums/city`,
-											query: {
-												movieId: screening.movieId._id,
-												screeningTime: screening.startTime,
-												auditorium: 'city',
-											},
-										}}>
-										<Views
-											views={{
-												tid: new Date(screening.startTime).toLocaleString(
-													'sv-SE',
-													{
-														weekday: 'short',
-														day: 'numeric',
-														month: 'short',
-														hour: '2-digit',
-														minute: '2-digit',
-													}
-												),
-												sal: screening.auditoriumId.name,
-												maxSeats: screening.auditoriumId.capacity ?? 100,
-												bookedCount: screening.bookedCount,
-											}}
-										/>
-									</Link>
-								))
-							)}
-						</div>
-					</div>
-				</div>
-				<div
-					id="reviews-section"
-					className="bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14">
-					<h2 className="m-4 text-2xl font-bold">Reviews</h2>
-					<div className="md:w-md">
-						<div>
-							{!isLoggedIn ? (
-								<div className="flex items-center justify-center gap-2 mx-4 text-xl">
-									<span className="inline-block">
-										<Login />
-									</span>
-									<span>för att lämna en review</span>
-								</div>
-							) : (
-								<ReviewForm
-									handleAddReview={handleAddReview}
-									userData={userData}
-								/>
-							)}
-						</div>
-						<div className="mb-5">
-							{/* ReviewsList */}
+            {/* date select */}
+            <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+              {screenings.length === 0 ? (
+                <p className="text-sm text-gray-400">
+                  Inga visningar hittades.
+                </p>
+              ) : (
+                screenings.map((screening) => (
+                  <Link
+                    key={screening._id}
+                    href={{
+                      pathname: `/auditoriums/city`,
+                      query: {
+                        movieId: screening.movieId._id,
+                        screeningTime: screening.startTime,
+                        auditorium: "city",
+                      },
+                    }}
+                  >
+                    <Views
+                      views={{
+                        tid: new Date(screening.startTime).toLocaleString(
+                          "sv-SE",
+                          {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        ),
+                        sal: screening.auditoriumId.name,
+                        maxSeats: screening.auditoriumId.capacity ?? 100,
+                        bookedCount: screening.bookedCount,
+                      }}
+                    />
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+        <div
+          id="reviews-section"
+          className="bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14"
+        >
+          <h2 className="m-4 text-2xl font-bold">Reviews</h2>
+          <div className="md:w-md">
+            <div>
+              {!isLoggedIn ? (
+                <div className="flex items-center justify-center gap-2 mx-4 text-xl">
+                  <span className="inline-block">
+                    <Login />
+                  </span>
+                  <span>för att lämna en review</span>
+                </div>
+              ) : (
+                <ReviewForm
+                  handleAddReview={handleAddReview}
+                  userData={userData}
+                />
+              )}
+            </div>
+            <div className="mb-5">
+              {/* ReviewsList */}
 
-							<ReviewsList reviews={reviews} />
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+              <ReviewsList reviews={reviews} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default MovieDetails;

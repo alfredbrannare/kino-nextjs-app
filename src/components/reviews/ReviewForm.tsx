@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
-export default function ReviewForm({ handleAddReview }) {
+type Props = {
+	handleAddReview: (reviewData: { rating: string; text: string }) => void;
+}
+
+const ReviewForm:FC<Props> = ({ handleAddReview }) => {
 	const [rating, setRating] = useState(0);
 	const [text, setText] = useState('');
 	// const [hasRating, setHasRating] = useState(null);
@@ -17,13 +21,13 @@ export default function ReviewForm({ handleAddReview }) {
 		return !newErrors.text && !newErrors.rating;
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		if (!validateForm()) return;
 
 		handleAddReview({
-			rating: parseInt(rating),
+			rating: rating.toString(),
 			text,
 		});
 		setRating(0);
@@ -48,8 +52,8 @@ export default function ReviewForm({ handleAddReview }) {
 							className="bg-yellow-400 mask mask-star-2"
 							value={num}
 							aria-label={`Rating ${num}`}
-							checked={parseInt(rating) === num}
-							onChange={(e) => setRating(e.target.value)}
+							checked={rating === num}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRating(parseInt(e.target.value, 10))}
 						/>
 					))}
 				</div>
@@ -63,8 +67,7 @@ export default function ReviewForm({ handleAddReview }) {
 					maxLength={256}
 					className="w-full textarea textarea-bordered"
 					placeholder="Write your review here"
-					value={text}
-					onChange={(e) => setText(e.target.value)}
+					value={text}					onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
 				/>
 				<div className="my-3 text-sm text-white">{text.length}/256 words</div>
 				{errors.text && (
@@ -115,3 +118,5 @@ export default function ReviewForm({ handleAddReview }) {
 		</form>
 	);
 }
+
+export default ReviewForm;

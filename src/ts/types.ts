@@ -62,11 +62,15 @@ export interface MovieType {
   _id: string;
   title: string;
   image: string;
-  runtime?: number | string;
-  genres?: string;
-  description: string;
-  screenings: ScreeningType[];
-  inCinemas: boolean;
+  rating?: string;
+  startTime?: string | Date;
+  year?: string;
+  movieId?: string;
+  description?: string;
+  genres?: string | string[];
+  ageRating?: number | string;
+  runtime?: string | number;
+  trailerKey?: string;
 }
 
 export interface ReviewsType {
@@ -75,14 +79,15 @@ export interface ReviewsType {
   userName: string;
   rating: number;
   text: string;
+  profileImage:string;
 }
 
 export interface UserType {
   _id: Types.ObjectId;
-  name: string;
+  name?: string;
   email: string;
   hashedPassword: string;
-  role: string;
+  role: string | string[];
   benefits: [];
   points: number;
   profilePicture?: string;
@@ -97,14 +102,15 @@ export interface BookingPageProps {
 }
 
 export interface AuthContextType {
-  userData?: UserType;
+  userData?: UserType | null;
   isLoggedIn?: boolean;
   isAdmin?: boolean;
   isLoading?: boolean;
   userId?: string;
   loading?: boolean;
-  logout?: () => void;
-  checkUser?: () => void;
+  logout?: () => Promise<void>;
+  checkUser?: () => Promise<void>;
+  login: (userDataFromLogin: UserType | null) => void;
 }
 
 export interface EventType {
@@ -143,3 +149,14 @@ export interface TicketSelectionInfo {
   details: TicketDetails;
   totalPrice: number;
 }
+
+export type LiveEventToEditType = {
+    _id: string;
+    title?: string;
+    time?: string;
+    date?: string;
+    image?: string;
+    genre?: string;
+    runtime?: string;
+    description?: string;
+};

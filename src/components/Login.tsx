@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from './user/AuthData';
+import { AuthContextType } from '@/ts/types';
 
 const Login = () => {
-    const { login, loading } = useAuth();
+    const { login, loading } = useAuth() as AuthContextType;
     const [isLogin, setIsLogin] = useState(true);
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const Login = () => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [responseMsg, setResponseMsg] = useState('');
 
-    const handleLogin = async (e) => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const response = await fetch('/api/user/login',
             {
@@ -38,7 +39,7 @@ const Login = () => {
         }
     };
 
-    const handleRegister = async (e) => {
+    const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const response = await fetch('/api/user/register',
             {

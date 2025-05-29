@@ -1,15 +1,26 @@
-'use client';
-import { useState } from 'react';
-import { VideoOff } from 'lucide-react';
+"use client";
+import { FC, useState } from "react";
+import { VideoOff } from "lucide-react";
 
-const TrailerCarousel = ({ trailerMovies }) => {
+type TrailerMovie = {
+  _id: string;
+  trailerKey: string;
+  title: string;
+};
+type Props = {
+  trailerMovies: TrailerMovie[];
+};
+
+const TrailerCarousel: FC<Props> = ({ trailerMovies }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = () =>
     setCurrentSlide((prev) => (prev + 1) % trailerMovies.length);
 
   const prevSlide = () =>
-    setCurrentSlide((prev) => (prev - 1 + trailerMovies.length) % trailerMovies.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + trailerMovies.length) % trailerMovies.length
+    );
 
   if (!trailerMovies || trailerMovies.length === 0) return null;
 
@@ -33,16 +44,20 @@ const TrailerCarousel = ({ trailerMovies }) => {
           </div>
         )}
         <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10 pointer-events-none">
-          <button onClick={prevSlide} 
-          className="btn btn-circle pointer-events-auto"
-            aria-label="Previous slide"> 
+          <button
+            onClick={prevSlide}
+            className="btn btn-circle pointer-events-auto"
+            aria-label="Previous slide"
+          >
             ❮
-            </button>
-          <button onClick={nextSlide} 
-          className="btn btn-circle pointer-events-auto"
-            aria-label="Next Slide">
+          </button>
+          <button
+            onClick={nextSlide}
+            className="btn btn-circle pointer-events-auto"
+            aria-label="Next Slide"
+          >
             ❯
-            </button>
+          </button>
         </div>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
@@ -50,11 +65,12 @@ const TrailerCarousel = ({ trailerMovies }) => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            aria-label={`Go to slide ${index +1}`}
+            aria-label={`Go to slide ${index + 1}`}
             className={`transition-all duration-300 rounded-full hover:cursor-pointer 
-              ${index === currentSlide
-              ? 'p-3 bg-yellow-400'
-              : 'p-3 bg-[#CDCDCD]'
+              ${
+                index === currentSlide
+                  ? "p-3 bg-yellow-400"
+                  : "p-3 bg-[#CDCDCD]"
               }`}
           />
         ))}

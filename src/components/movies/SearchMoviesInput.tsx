@@ -1,4 +1,11 @@
-const SearchMoviesInput = ({ value, onChange }) => {
+import { FC } from "react";
+
+type Props = {
+    value: string;
+    onChange: () => void;
+}
+
+const SearchMoviesInput: FC<Props> = ({ value, onChange }) => {
     return (
         <fieldset className="fieldset mx-2">
             <legend className="fieldset-legend text-center">Sök film:</legend>

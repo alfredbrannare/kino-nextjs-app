@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { FC } from 'react';
+import { MovieType } from '@/ts/types';
 
-const MovieCard = ({ movie }) => {
+type Props = {
+	movie: MovieType;
+}
+
+const MovieCard:FC<Props> = ({ movie }) => {
 	if (!movie || !movie._id || !movie.title || !movie.image) {
 		return (
 			<div className="w-72 h-96 mx-4 p-4 bg-gray-100 text-center text-sm text-gray-500">
@@ -10,9 +16,9 @@ const MovieCard = ({ movie }) => {
 		);
 	}
 
-	const ratingNum = parseFloat(movie.rating);
+	const ratingNum = parseFloat(movie.rating || '');
 	const roundedRating = isNaN(ratingNum) ? 'N/A' : Math.round(ratingNum * 10) / 10;
-	const hasRating = roundedRating !== null && roundedRating > 0;
+	const hasRating = typeof roundedRating === 'number' && roundedRating > 0;
 
 	let formattedDate = null;
 	let formattedTime = null;
@@ -41,8 +47,9 @@ const MovieCard = ({ movie }) => {
 					src={imageUrl}
 					alt="Blur effect of poster"
 					onError={(e) => {
-						e.target.onerror = null;
-						e.target.src = "/kino-card.jpg";
+						const target = e.target as HTMLImageElement;
+						target.onerror = null;
+						target.src = "/kino-card.jpg";
 					}}
 					className="w-full h-full object-cover blur-xl"
 					width={192}
@@ -64,8 +71,9 @@ const MovieCard = ({ movie }) => {
 					src={imageUrl}
 					alt={movie.title}
 					onError={(e) => {
-						e.target.onerror = null;
-						e.target.src = "/kino-card.jpg";
+						const target = e.target as HTMLImageElement;
+						target.onerror = null;
+						target.src = "/kino-card.jpg";
 					}}
 					className="w-full h-full object-fit relative"
 					width={200}
@@ -84,7 +92,7 @@ const MovieCard = ({ movie }) => {
 							<p>{formattedDate}</p>
 							<p>{formattedTime}</p>
 						</>
-					) : new Date(movie.year) > new Date() ? (
+					) : movie.year && new Date(movie.year) > new Date() ? (
 						<>
 							<p>Premiär</p>
 							<p>{movie.year}</p>

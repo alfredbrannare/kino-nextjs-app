@@ -1,4 +1,10 @@
-const SortMoviesDropdown = ({ value, onChange }) => {
+import { FC } from "react";
+
+type Props = {
+    value: string;
+    onChange: () => void;
+}
+const SortMoviesDropdown:FC<Props> = ({ value, onChange }) => {
     return (
         <fieldset className="fieldset mx-2">
             <legend className="fieldset-legend text-center">Sortera efter:</legend>

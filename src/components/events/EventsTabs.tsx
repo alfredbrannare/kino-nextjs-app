@@ -1,4 +1,15 @@
-export default function EventsTabs({ tabs, activeTab, setActiveTab }) {
+import { FC } from "react";
+
+type Props = {
+    tabs: {
+        id:string;
+        label: string;
+    }[];
+    activeTab: string;
+    setActiveTab: (id: string) => void;
+}
+
+const EventsTabs: FC<Props> = ({ tabs, activeTab, setActiveTab }) => {
     return (
         <div>
             <div className="border-t-2 border-[#CDCDCD] mb-6">
@@ -32,3 +43,5 @@ export default function EventsTabs({ tabs, activeTab, setActiveTab }) {
         </div>
     );
 }
+
+export default EventsTabs;

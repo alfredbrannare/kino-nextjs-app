@@ -1,23 +1,34 @@
-import { useState, useEffect } from "react";
+import { LiveEventToEditType } from "@/ts/types";
+import { useState, useEffect, FC, FormEvent, ChangeEvent } from "react";
 
-const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEventToEdit }) => {
-    const [id, setId] = useState('');
+type Props = {
+    setUpdate: (value: boolean) => void;
+    setIsEditing: (value: boolean) => void;
+    isEditing: boolean;
+    eventToEdit: LiveEventToEditType | null | undefined;
+    clearEventToEdit: () => void;
+};
+
+const LiveEventCreator: FC<Props> = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEventToEdit }) => {
     const [eventId, setEventId] = useState('');
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
     const [image, setImage] = useState('');
+    const [genre, setGenre] = useState('');
+    const [runtime, setRuntime] = useState('');
     const [description, setDescription] = useState('');
 
     useEffect(() => {
         if (isEditing && eventToEdit) {
-            setEventId(eventToEdit._id);
+            setEventId(eventToEdit._id || '');
             setTitle(eventToEdit.title || '');
             setTime(eventToEdit.time || '');
             setDate(eventToEdit.date ? eventToEdit.date.split('T')[0] : '');
             setImage(eventToEdit.image || '');
-
+            setGenre(eventToEdit.genre || '');
+            setRuntime(eventToEdit.runtime || '');
             setDescription(eventToEdit.description || '');
         } else {
             setEventId('');
@@ -25,24 +36,28 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
             setTime('');
             setDate('');
             setImage('');
+            setGenre('');
+            setRuntime('');
             setDescription('');
         }
     }, [isEditing, eventToEdit]);
 
-    const handleSubmitEvent = async (e) => {
+    const handleSubmitEvent = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 
         const eventData = {
             title,
-            date,
             time,
+            date,
             image,
+            genre,
+            runtime: parseInt(runtime, 10),
             description,
         }
 
         const method = isEditing ? 'PUT' : 'POST';
-        const url = isEditing ? `/api/events/${eventId}` : '/api/events';
+        const url = isEditing ? `/api/events/live/${eventId}` : '/api/events/live';
 
         try {
             const response = await fetch(url, {
@@ -59,13 +74,13 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                 setIsEditing(false);
                 clearEventToEdit();
                 setUpdate(true);
-                alert(`${isEditing ? 'Event updated' : 'Event added'} successfully!`);
+                alert(`${isEditing ? 'Live event updated' : 'Live event added'} successfully!`);
             } else {
                 alert(`Error: ${body.message || response.statusText}`);
             }
         } catch (error) {
-            console.error(`Error ${isEditing ? 'updating' : 'adding'} event:`, error);
-            alert(`Error ${isEditing ? 'updating' : 'adding'} event. Please try again.`);
+            console.error(`Error ${isEditing ? 'updating' : 'adding'} live event:`, error);
+            alert(`Error ${isEditing ? 'updating' : 'adding'} live event. Please try again.`);
         } finally {
             setLoading(false);
         }
@@ -84,7 +99,7 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                     type="text"
                     placeholder="Titel"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
                     required
                 />
             </div>
@@ -94,7 +109,7 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                     type="time"
                     placeholder="Tid"
                     value={time}
-                    onChange={(e) => setTime(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setTime(e.target.value)}
                     required
                 />
             </div>
@@ -104,17 +119,37 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                     type="date"
                     placeholder="Datum"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
                     required
                 />
             </div>
-            <div className="col-span-full md:col-span-1 lg:col-span-3 xl:col-span-4">
+            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-2">
                 <input
                     className="input w-full p-2"
                     type="text"
                     placeholder="Bild länk"
                     value={image}
-                    onChange={(e) => setImage(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setImage(e.target.value)}
+                    required
+                />
+            </div>
+            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
+                <input
+                    className="input w-full p-2"
+                    type="text"
+                    placeholder="Genre"
+                    value={genre}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setGenre(e.target.value)}
+                    required
+                />
+            </div>
+            <div className="col-span-full md:col-span-1 lg:col-span-1 xl:col-span-1">
+                <input
+                    className="input w-full p-2"
+                    type="number"
+                    placeholder="Längd (minuter)"
+                    value={runtime}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setRuntime(e.target.value)}
                     required
                 />
             </div>
@@ -123,7 +158,7 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
                     className="input w-full p-2 text-white placeholder-gray-400 h-32"
                     placeholder="Beskrivning"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
                     required
                 />
             </div>
@@ -152,4 +187,4 @@ const EventCreator = ({ setUpdate, setIsEditing, isEditing, eventToEdit, clearEv
     );
 };
 
-export default EventCreator;
+export default LiveEventCreator;

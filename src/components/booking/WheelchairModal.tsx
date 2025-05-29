@@ -1,6 +1,15 @@
 'use client'
 
-export default function WheelchairModal({ seat, onConfirm, onCancel }) {
+import { Seat } from "@/ts/types";
+import { FC } from "react";
+
+type Props = {
+    seat: Seat | null | undefined;
+    onConfirm: () => void;
+    onCancel: () => void;
+}
+
+const WheelchairModal: FC<Props> = ({ seat, onConfirm, onCancel }) => {
     if (!seat) return null;
 
     return (
@@ -28,3 +37,5 @@ export default function WheelchairModal({ seat, onConfirm, onCancel }) {
         </div>
     );
 }
+
+export default WheelchairModal;

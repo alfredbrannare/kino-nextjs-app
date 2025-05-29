@@ -1,8 +1,11 @@
-import { useState,} from "react";
+import { FC, useState,} from "react";
 
-const MovieCreator = ({ setUpdate }) => {
-  const [id, setId] = useState('');
-  const [loading, setLoading] = useState(false);
+type Props = {
+  setUpdate: (value: boolean) => void;
+}
+const MovieCreator:FC<Props> = ({ setUpdate }) => {
+  const [id, setId] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const addFilm = async () => {
     setLoading(true);

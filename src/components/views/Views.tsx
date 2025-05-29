@@ -1,5 +1,19 @@
 'use client';
-export default function Views({ views, size = "default" }) {
+
+import { FC } from "react";
+
+type ViewDetails = {
+	bookedCount: number;
+	maxSeats: number;
+	tid: string;
+	sal: string;
+};
+
+type Props = {
+	views: ViewDetails;
+	size?: "default" | "small";
+}
+const Views:FC<Props> = ({ views, size = "default" }) => {
 	const { bookedCount, maxSeats } = views;
 	const emptyPercentage = (bookedCount / maxSeats) * 100;
 
@@ -27,3 +41,5 @@ export default function Views({ views, size = "default" }) {
 		</div>
 	);
 }
+
+export default Views;

@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import UserReview from './UserReview';
 
 const REVIEWS_PER_PAGE = 5;
 
-export default function ReviewsList({ reviews }) {
-	const [currentPage, setCurrentPage] = useState(1);
+type Props = {
+	reviews: [];
+}
+
+const ReviewsList: FC<Props> = ({ reviews }) => {
+	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
 	const paginatedReviews = [...reviews]
@@ -49,3 +53,5 @@ export default function ReviewsList({ reviews }) {
 		</div>
 	);
 }
+
+export default ReviewsList;

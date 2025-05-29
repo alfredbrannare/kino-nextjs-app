@@ -1,14 +1,29 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { UserType } from "@/ts/types";
 
-const AuthData = createContext();
+interface AuthContextType {
+  userData: UserType | null;
+  isLoggedIn: boolean;
+  isLoading: boolean;
+  isAdmin: boolean;
+  login: (userDataFromLogin: UserType | null) => void;
+  logout: () => Promise<void>;
+  checkUser: () => Promise<void>;
+}
 
-export const AuthDataProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const [isAdmin, setAdmin] = useState(false);
+const AuthData = createContext<AuthContextType | undefined>(undefined);
+
+interface AuthDataProviderProps {
+  children: ReactNode;
+}
+
+export const AuthDataProvider = ({ children }: AuthDataProviderProps) => {
+  const [userData, setUserData] = useState<UserType | null>(null);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isAdmin, setAdmin] = useState<boolean>(false);
 
   const checkUser = async () => {
     try {
@@ -23,7 +38,7 @@ export const AuthDataProvider = ({ children }) => {
         setUserData(user);
         setLoggedIn(true);
         //Roles
-        setAdmin(user?.role.includes('admin'));
+        setAdmin(user?.role.includes('admin') ?? false);
 
 
       } else {
@@ -47,10 +62,10 @@ export const AuthDataProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const login = (userDataFromLogin) => {
+  const login = (userDataFromLogin: UserType | null) => {
     setUserData(userDataFromLogin || null);
     setLoggedIn(true);
-    setAdmin(userDataFromLogin?.role.includes('admin'));
+    setAdmin(userDataFromLogin?.role.includes('admin') ?? false);
   };
 
   const logout = async () => {
@@ -70,4 +85,10 @@ export const AuthDataProvider = ({ children }) => {
   );
 }
 
-export const useAuth = () => useContext(AuthData);
+export const useAuth = () => {
+  const context = useContext(AuthData);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthDataProvider');
+  }
+  return context;
+};

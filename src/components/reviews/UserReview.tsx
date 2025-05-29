@@ -1,6 +1,12 @@
+import { ReviewsType } from "@/ts/types";
 import Image from "next/image";
+import { FC } from "react";
 
-export default function UserReview({ review }) {
+type UserReviewProps = {
+	review: ReviewsType;
+}
+
+const UserReview:FC<UserReviewProps> = ({ review }) => {
 	return (
 		<div className="max-w-sm mb-2 p-4 border border-yellow-500 rounded-lg shadow bg-[#1a1a1a]">
 			<div className="flex items-center gap-4 mb-2">
@@ -20,3 +26,5 @@ export default function UserReview({ review }) {
 		</div>
 	);
 }
+
+export default UserReview;
