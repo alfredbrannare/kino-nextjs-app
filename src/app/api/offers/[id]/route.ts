@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Offer from "@/models/model.offer";
 import { checkAuth } from "@/lib/auth";
-import { Params } from "@/ts/types";
 
-export async function DELETE(_req: NextRequest, { params }: Params) {
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+) {
   try {
     await connectDB();
     const user = await checkAuth();
@@ -12,7 +12,7 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const id = (await params).id;
     await Offer.findByIdAndDelete(id);
 
     return NextResponse.json({ success: true });

@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
     //Price calculation
     const basePrice = 140;
     const discounts: Record<DiscountType, number> = {
+      ordinary: 1,
       child: 0.8, // 20% discount
       retired: 0.8, // 20% discount
       student: 0.85, // 15% discount

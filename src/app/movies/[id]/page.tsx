@@ -1,15 +1,15 @@
 // 'use client';
 // import { useEffect, useState, use } from 'react';
 import MovieDetails from '@/components/MovieDetails';
-import { Params } from '@/ts/types';
 import { headers } from 'next/headers';
 
-const Movie = async ({ params }: Params) => {
+const Movie = async ({ params }: { params: Promise<{ id: string[] }> }
+) => {
 	// const [movie, setMovie] = useState(null);
 	// const [loading, setLoading] = useState(true);
 
 	// const { id } = use(params); // Unwrap the params promise/object
-	const { id } = params; // Unwrap the params promise/object
+	const id = (await params).id;
 
 	// get host from headers to build URL
 	const host = (await headers()).get('host');

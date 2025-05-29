@@ -1,24 +1,33 @@
-import BookingClient from "../../../components/booking/BookingClient";
-import { BookingPageProps } from "@/ts/types";
+import BookingClient from "@/components/booking/BookingClient";
 
 export const metadata = {
-    title: "Boka biljetter – Kino Uppsala",
-    description: "Välj biljetter och sittplatser till din föreställning och genomför bokningen enkelt online."
+  title: "Boka biljetter – Kino Uppsala",
+  description:
+    "Välj biljetter och sittplatser till din föreställning och genomför bokningen enkelt online.",
 };
 
-export default function BookingPage({ searchParams }: BookingPageProps) {
-    const { movieId, screeningTime } = searchParams;
-    const auditorium = "city";
+export default async function BookingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    movieId: string;
+    screeningTime: string;
+    auditorium: string;
+  }>
+}) {
+  const movieId = (await searchParams).movieId;
+  const screeningTime = (await searchParams).screeningTime;
+  const auditorium = "city";
 
-    if (!movieId || !screeningTime) {
-        return <p className="text-center mt-10 text-gray-400">Laddar visning...</p>;
-    }
+  if (!movieId || !screeningTime) {
+    return <p className="text-center mt-10 text-gray-400">Laddar visning...</p>;
+  }
 
-    return (
-        <BookingClient
-            movieId={movieId}
-            screeningTime={screeningTime}
-            auditorium={auditorium}
-        />
-    );
+  return (
+    <BookingClient
+      movieId={movieId}
+      screeningTime={screeningTime}
+      auditorium={auditorium}
+    />
+  );
 }

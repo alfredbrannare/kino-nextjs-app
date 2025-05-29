@@ -1,10 +1,12 @@
 import connectDB from "@/lib/mongodb";
 import Auditorium from "@/models/model.auditorium";
-import { Context } from "@/ts/types";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_req: NextRequest, context: Context) {
-  const slug = context.params.slug;
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
+  const slug = (await params).slug;
 
   try {
     await connectDB();

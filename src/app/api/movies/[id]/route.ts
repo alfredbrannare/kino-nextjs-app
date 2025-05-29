@@ -2,11 +2,11 @@ import connectDB from "@/lib/mongodb";
 import Movie from "@/models/model.movies";
 import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
-import { Params } from "@/ts/types";
 
-export const GET = async (_req: NextRequest, { params }: Params) => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+) => {
   await connectDB();
-  const id = params.id;
+  const id = (await params).id;
   const movie = await Movie.findById(id);
 
   return new Response(JSON.stringify(movie), {
@@ -15,7 +15,8 @@ export const GET = async (_req: NextRequest, { params }: Params) => {
   });
 };
 
-export const DELETE = async (_req: NextRequest, { params }: Params) => {
+export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
 
@@ -33,7 +34,7 @@ export const DELETE = async (_req: NextRequest, { params }: Params) => {
   }
 
   try {
-    const id = params.id;
+      const id = (await params).id;
 
     await Movie.findByIdAndDelete(id);
   } catch (error) {
@@ -41,7 +42,8 @@ export const DELETE = async (_req: NextRequest, { params }: Params) => {
   }
 };
 
-export const PUT = async (req: NextRequest, { params }: Params) => {
+export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
 
@@ -58,7 +60,7 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
     );
   }
 
-  const id = params.id;
+  const id = (await params).id;
   const body = await req.json();
   const { inCinemas } = body;
 
