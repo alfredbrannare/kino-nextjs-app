@@ -5,8 +5,8 @@ import Event from "@/models/model.events";
 import { Params } from "@/ts/types";
 
 export const GET = async (_req: NextRequest, { params }: Params) => {
-  const id = await params.id;
   await connectDB();
+  const id = params.id;
   const movie = await Event.findById(id);
 
   return new Response(JSON.stringify(movie), {
@@ -15,7 +15,7 @@ export const GET = async (_req: NextRequest, { params }: Params) => {
   });
 };
 
-export const DELETE = async (req: NextRequest, { params }: Params) => {
+export const DELETE = async (_req: NextRequest, { params }: Params) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
 

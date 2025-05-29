@@ -1,9 +1,9 @@
 import connectDB from "@/lib/mongodb";
 import Screening from "@/models/model.screenings";
 import { checkAuth } from "@/lib/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req) => {
+export const GET = async (req: NextRequest) => {
 	try {
 		await connectDB();
 		const { searchParams } = new URL(req.url);
@@ -36,10 +36,10 @@ export const GET = async (req) => {
 	}
 };
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
 	await connectDB();
 
-	const authenticatedUser = await checkAuth(req);
+	const authenticatedUser = await checkAuth();
 
 	if (!authenticatedUser) {
 		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });

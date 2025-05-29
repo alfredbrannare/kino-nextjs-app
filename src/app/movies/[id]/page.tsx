@@ -1,10 +1,10 @@
 // 'use client';
 // import { useEffect, useState, use } from 'react';
 import MovieDetails from '@/components/MovieDetails';
-import MovieDetailsSkeleton from '@/components/movies/singel/skeleton/MovieDetailsSkeleton';
+import { Params } from '@/ts/types';
 import { headers } from 'next/headers';
 
-const Movie = async ({ params }) => {
+const Movie = async ({ params }: Params) => {
 	// const [movie, setMovie] = useState(null);
 	// const [loading, setLoading] = useState(true);
 

@@ -6,6 +6,12 @@ export type Params = {
   };
 };
 
+export type Context = {
+    params: {
+      slug: string;
+    }
+};
+
 export type DiscountType = "child" | "retired" | "student" | "member";
 
 export interface Seat {
@@ -23,11 +29,23 @@ export interface BookingType {
 }
 
 export interface ScreeningType {
-  _id: Types.ObjectId;
-  startTime: Date;
+  _id: string;
+  startTime: string;
   auditorium: string;
-  availableSeats: number;
-  bookedCount: number;
+  bookedSeats: number;
+  screeningTime: string;
+  availableSeats?: number;
+  bookedCount?: number;
+}
+
+export interface MovieType {
+  _id: string;
+  title: string;
+  image: string;
+  runtime?: number | string;
+  genres?: string;
+  description: string;
+  screenings: ScreeningType[];
 }
 
 export interface UserType {
@@ -39,4 +57,12 @@ export interface UserType {
   benefits: [];
   points:number;
   profilePicture?: string;
+}
+
+export interface BookingPageProps {
+    searchParams: {
+        movieId: string;
+        screeningTime: string;
+        auditorium: string;
+    };
 }

@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import Views from '@/components/views/Views';
 import Link from 'next/link';
+import Image from 'next/image';
+import { MovieType } from '@/ts/types'
 
 export default function TicketsPage() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<MovieType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,9 +29,11 @@ export default function TicketsPage() {
           className="p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]"
         >
           <div className="flex flex-col sm:flex-row gap-6">
-            <img
+            <Image
               src={movie.image}
               alt={movie.title}
+              width={128}
+              height={192}
               className="w-40 rounded shadow-md mx-auto sm:mx-0"
             />
 
@@ -81,7 +85,7 @@ export default function TicketsPage() {
                             minute: '2-digit',
                           }),
                           sal: s.auditorium,
-                          maxSeats: s.bookedCount + s.availableSeats,
+                          maxSeats: (s.bookedCount ?? 0) + (s.availableSeats ?? 0),
                           bookedCount: s.bookedCount,
                         }}
                         size="small"

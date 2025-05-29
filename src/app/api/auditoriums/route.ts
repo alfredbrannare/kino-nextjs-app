@@ -12,7 +12,7 @@ export const GET = async () => {
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Database error" }), {
+    return new Response(JSON.stringify({ error: `Database error: ${error}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

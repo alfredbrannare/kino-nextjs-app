@@ -1,12 +1,12 @@
 import BookingClient from "../../../components/booking/BookingClient";
+import { BookingPageProps } from "@/ts/types";
 
 export const metadata = {
     title: "Boka biljetter – Kino Uppsala",
     description: "Välj biljetter och sittplatser till din föreställning och genomför bokningen enkelt online."
 };
 
-
-export default function BookingPage({ searchParams }) {
+export default function BookingPage({ searchParams }: BookingPageProps) {
     const { movieId, screeningTime } = searchParams;
     const auditorium = "city";
 

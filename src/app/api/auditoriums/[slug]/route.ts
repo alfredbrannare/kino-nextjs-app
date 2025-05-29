@@ -1,7 +1,9 @@
 import connectDB from "@/lib/mongodb";
 import Auditorium from "@/models/model.auditorium";
+import { Context } from "@/ts/types";
+import { NextRequest } from "next/server";
 
-export async function GET(req, context) {
+export async function GET(_req: NextRequest, context: Context) {
   const slug = context.params.slug;
 
   try {

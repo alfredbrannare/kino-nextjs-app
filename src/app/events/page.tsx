@@ -1,6 +1,6 @@
 import EventsPageContent from "./EventsPageContent"
 import { Suspense } from "react";
-import LoadingSpinner from "src/components/LoadingSpinner";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export const metadata = {
   title: 'Alla evenemang - Kino Uppsala',

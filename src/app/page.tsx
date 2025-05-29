@@ -8,6 +8,7 @@ import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/user/AuthData";
 import EventCardSkeleton from "@/components/events/MovieCardSkeleton";
+import Image from 'next/image';
 
 interface Movie {
   _id: string;
@@ -198,7 +199,7 @@ const Main = () => {
                       <div className="flex flex-col gap-6 px-4 py-8">
                         <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                           <div className="hero-content flex-col lg:flex-row-reverse">
-                            <img
+                            <Image
                               src={event.image}
                               width="384"
                               height="256"
@@ -239,7 +240,7 @@ const Main = () => {
                     <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                       <div className="bg-[#2B0404] py-0 px-4">
                         <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
-                          <img
+                          <Image
                             src={event.image}
                             width="384"
                             height="256"
@@ -282,15 +283,13 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero-content flex-col lg:flex-row-reverse">
                     <div className="aspect-3/2 w-full max-w-sm">
-                    <img
+                    <Image
                       src="/KinoEntrance.png"
                       width="384"
                       height="256"
                       loading="lazy"
                       className="w-full max-w-sm h-auto"
                       alt="Kino Entrance"
-                      width="500"
-                      height="500"
                     />
                     </div>
                     <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
@@ -320,15 +319,13 @@ const Main = () => {
                   <div className="bg-[#2B0404] py-0 px-4">
                     <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
                       <div className="aspect-3/2 w-full max-w-sm">
-                      <img
+                      <Image
                         src="/KinoDoors.png"
                         width="384"
                         height="256"
                         loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
-                        width="500"
-                        height="500"
                       />
                       </div>
                       <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
@@ -370,15 +367,13 @@ const Main = () => {
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
                       <div className="aspect-[3/2] w-full max-w-sm">
-                      <img
+                      <Image
                         src="/KinoScreen.png"
                         width="384"
                         height="256"
                         loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
-                        width="500"
-                        height="500"
                       />
                       </div>
                       <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
@@ -400,15 +395,13 @@ const Main = () => {
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
                       <div className="aspect-[3/2] w-full max-w-sm">
-                      <img
+                      <Image
                         src="/KinoSeats.png"
                         width="384"
                         height="256"
                         loading="lazy"
                         className="w-full max-w-sm h-auto"
                         alt="Kino Entrance"
-                        width="500"
-                        height="500"
                       />
                       </div>
                       <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">

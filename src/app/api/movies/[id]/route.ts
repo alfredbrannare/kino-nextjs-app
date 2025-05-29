@@ -6,7 +6,6 @@ import { Params } from "@/ts/types";
 
 export const GET = async (_req: NextRequest, { params }: Params) => {
   await connectDB();
-  console.log(params);
   const id = params.id;
   const movie = await Movie.findById(id);
 

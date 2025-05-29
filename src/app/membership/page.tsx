@@ -15,7 +15,6 @@ export default function MembershipPage() {
   const router = useRouter();
   const [offers, setOffers] = useState([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const menuRef = useRef(null);
   const [expandedTickets, setExpandedTickets] = useState({});
   const [showAllTickets, setShowAllTickets] = useState(false);
   const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));

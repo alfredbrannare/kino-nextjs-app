@@ -3,10 +3,10 @@ import Booking from "@/models/model.booking";
 import { NextResponse } from "next/server";
 import connectDB from "../../../../lib/mongodb";
 
-export const GET = async (req) => {
+export const GET = async () => {
   try {
     await connectDB();
-    const authenticatedUser = await checkAuth(req);
+    const authenticatedUser = await checkAuth();
 
     if (!authenticatedUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
