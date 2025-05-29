@@ -71,6 +71,8 @@ export interface MovieType {
   ageRating?: number | string;
   runtime?: string | number;
   trailerKey?: string;
+  inCinemas?: boolean;
+  screenings?: ScreeningType[];
 }
 
 export interface ReviewsType {
@@ -79,7 +81,7 @@ export interface ReviewsType {
   userName: string;
   rating: number;
   text: string;
-  profileImage:string;
+  profileImage: string;
 }
 
 export interface UserType {
@@ -151,12 +153,12 @@ export interface TicketSelectionInfo {
 }
 
 export type LiveEventToEditType = {
-    _id: string;
-    title?: string;
-    time?: string;
-    date?: string;
-    image?: string;
-    genre?: string;
-    runtime?: string;
-    description?: string;
+  _id: string;
+  title?: string;
+  time?: string;
+  date?: string;
+  image?: string;
+  genre?: string;
+  runtime?: string;
+  description?: string;
 };

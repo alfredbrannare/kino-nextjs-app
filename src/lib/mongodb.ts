@@ -13,11 +13,16 @@ const connectDB = async () => {
   console.log(`🤐 SECRET: ${process.env.SECRET ? " Active " : " Inactive "}`);
 
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    const mongoURI = process.env.MONGO_URI;
+    if (!mongoURI) {
+      console.error("❌ MONGO_URI environment variable is not set.");
+      throw new Error("MONGO_URI environment variable is not set.");
+    }
+    await mongoose.connect(mongoURI);
     console.log("✅ Connected to MongoDB successfully");
     isConnected = true;
-  } catch {
-    console.log("❌ Not connected to MongoDB");
+  } catch (error) {
+    console.error("❌ Not connected to MongoDB:", error instanceof Error ? error.message : error);
   }
 };
 

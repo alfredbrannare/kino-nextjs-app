@@ -1,34 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC, ChangeEvent } from "react";
 import { DayPicker } from "react-day-picker";
 import { TimePicker } from 'react-accessible-time-picker';
 
-const ScreeningCreator = ({ setUpdate }) => {
-  const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState();
-  const [selectedTime, setSelectedTime] = useState({ hour: 12, minute: 0 });
-  const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState("");
-  const [screenings, setScreenings] = useState([]);
-  const [selectedScreenings, setSelectedScreenings] = useState("");
+type MovieForSelect = {
+  _id: string;
+  title: string;
+};
+
+type AuditoriumForSelect = {
+  _id: string;
+  name: string;
+};
+
+type SelectedTimeType = {
+  hour: string;
+  minute: string;
+};
+
+type Props = {
+  setUpdate: (value: boolean) => void;
+};
+
+const ScreeningCreator: FC<Props> = ({ setUpdate }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedTime, setSelectedTime] = useState<SelectedTimeType>({ hour: "12", minute: "00" }); // Use strings
+  const [movies, setMovies] = useState<MovieForSelect[]>([]);
+  const [selectedMovie, setSelectedMovie] = useState<string>("");
+  const [auditoriums, setAuditoriums] = useState<AuditoriumForSelect[]>([]);
+  const [selectedAuditorium, setSelectedAuditorium] = useState("");
 
   useEffect(() => {
     const fetchMovies = async () => {
       const res = await fetch("/api/movies");
-      const data = await res.json();
+      const data: MovieForSelect[] = await res.json();
       setMovies(data);
     };
-
     fetchMovies();
   }, []);
 
   useEffect(() => {
-    const fetchScreenings = async () => {
+    const fetchAuditoriums = async () => {
       const res = await fetch("/api/auditoriums");
-      const data = await res.json();
-      setScreenings(data);
+      const data: AuditoriumForSelect[] = await res.json();
+      setAuditoriums(data);
     };
-
-    fetchScreenings();
+    fetchAuditoriums();
   }, []);
 
   const addFilm = async () => {
@@ -36,7 +53,15 @@ const ScreeningCreator = ({ setUpdate }) => {
     let combinedDateTime;
     if (selectedDate && selectedTime) {
       combinedDateTime = new Date(selectedDate);
-      combinedDateTime.setHours(selectedTime.hour, selectedTime.minute, 0, 0);
+      // Parse string hours and minutes to numbers before setting
+      const hour = parseInt(selectedTime.hour, 10);
+      const minute = parseInt(selectedTime.minute, 10);
+      if (isNaN(hour) || isNaN(minute)) { // Basic validation
+        alert("Invalid time selected.");
+        setLoading(false);
+        return;
+      }
+      combinedDateTime.setHours(hour, minute, 0, 0);
     } else {
       alert("Please select a date and time.");
       setLoading(false);
@@ -47,15 +72,16 @@ const ScreeningCreator = ({ setUpdate }) => {
       const response = await fetch('/api/screenings/', {
         method: 'POST',
         credentials: 'include',
-        body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: combinedDateTime }),
+        body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedAuditorium, startTime: combinedDateTime }),
       });
       const body = await response.json();
       if (response.ok) {
         alert('Screening added successfully!')
         setUpdate(true);
         setSelectedMovie('');
+        setSelectedAuditorium('');
         setSelectedDate(undefined);
-        setSelectedTime({ hour: 12, minute: 0 });
+        setSelectedTime({ hour: "12", minute: "00" });
       } else {
         alert(`${body.status}`);
       }
@@ -85,12 +111,12 @@ const ScreeningCreator = ({ setUpdate }) => {
       <select
         className="select select-bordered"
         value={selectedMovie}
-        onChange={(e) => setSelectedMovie(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedMovie(e.target.value)}
       >
         <option value="">
           -- Välj film --
         </option>
-        {movies.map((movie) => (
+        {movies.map((movie: MovieForSelect) => (
           <option key={movie._id} value={movie._id}>
             {movie.title}
           </option>
@@ -99,15 +125,15 @@ const ScreeningCreator = ({ setUpdate }) => {
       <br />
       <select
         className="select select-bordered"
-        value={selectedScreenings}
-        onChange={(e) => setSelectedScreenings(e.target.value)}
+        value={selectedAuditorium}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedAuditorium(e.target.value)}
       >
         <option value="">
           -- Välj salong --
         </option>
-        {screenings.map((screening) => (
-          <option key={screening._id} value={screening._id}>
-            {screening.name}
+        {auditoriums.map((auditorium: AuditoriumForSelect) => (
+          <option key={auditorium._id} value={auditorium._id}>
+            {auditorium.name}
           </option>
         ))}
       </select>

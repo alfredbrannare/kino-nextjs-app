@@ -1,7 +1,12 @@
 import { VideoOff } from 'lucide-react';
-import React from 'react';
+import React, { FC } from 'react';
 
-const TrailerCard = ({ trailerKey, title }) => {
+type Props = {
+	trailerKey?: string | null;
+	title: string;
+};
+
+const TrailerCard: FC<Props> = ({ trailerKey, title }) => {
 	return (
 		<div className="relative overflow-hidden rounded-lg shadow-lg aspect-video">
 			{trailerKey ? (

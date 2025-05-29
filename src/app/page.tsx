@@ -7,31 +7,25 @@ import MovieCardSkeleton from "../components/MovieCardSkeleton";
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/user/AuthData";
-import EventCardSkeleton from "@/components/events/MovieCardSkeleton";
 import Image from 'next/image';
-import { AuthContextType, EventType, LiveEventsType } from '@/ts/types';
+import { AuthContextType, EventType, LiveEventsType, MovieType } from '@/ts/types';
+import EventCardSkeleton from '@/components/events/MovieCardSkeleton';
 
-interface Movie {
-  _id: string;
-  title: string;
-  description: string;
-  year: string;
-  image: string;
-  rating: string;
-  runtime: string;
-  genres: string;
-  inCinemas: boolean;
-  trailerKey?: string;
+interface MovieWithDefiniteTrailerKey extends MovieType {
+  trailerKey: string;
 }
 
+function movieHasTrailerKey(movie: MovieType): movie is MovieWithDefiniteTrailerKey {
+  return typeof movie.trailerKey === 'string' && movie.trailerKey.length > 0;
+}
 
 const Main = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<MovieType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [events, setEvents] = useState<EventType[]>([]);
   const [liveEvents, setLiveEvents] = useState<LiveEventsType[]>([]);
-  const [upcomingMovies, setUpcomigMovies] = useState<Movie[]>([]);
+  const [upcomingMovies, setUpcomigMovies] = useState<MovieType[]>([])
   const { isLoggedIn, isLoading } = useAuth() as AuthContextType;
 
   useEffect(() => {
@@ -74,7 +68,8 @@ const Main = () => {
     const fetchCurrentMovies = async () => {
       try {
         const res = await fetch("/api/screenings/currently-showing");
-        const data = await res.json();
+        // Type the expected API response
+        const data: MovieType[] = await res.json();
         setMovies(data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -90,7 +85,8 @@ const Main = () => {
     const fetchUpcomingMovies = async () => {
       try {
         const res = await fetch("/api/screenings/upcoming-movies");
-        const data = await res.json();
+        // Type the expected API response
+        const data: MovieType[] = await res.json();
         setUpcomigMovies(data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -102,7 +98,7 @@ const Main = () => {
     fetchUpcomingMovies();
   }, []);
 
-  const trailerMovies = movies.filter((movie) => movie.trailerKey);
+   const trailerMovies = movies.filter(movieHasTrailerKey);
   // const [currentSlide, setCurrentSlide] = useState(0);
 
   // const nextSlide = () =>
@@ -137,17 +133,17 @@ const Main = () => {
 
               {/* Grid for the cards */}
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
-                {(loading ? Array.from({ length: 5 }) : movies).map(
-                  (movie, i) => (
-                    <div key={i} className="flex justify-center">
-                      {loading ? (
+                {loading
+                  ? Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} className="flex justify-center">
                         <MovieCardSkeleton />
-                      ) : (
+                      </div>
+                    ))
+                  : movies.map((movie) => ( // movie is now correctly typed as MovieType
+                      <div key={movie._id} className="flex justify-center">
                         <MovieCard movie={movie} />
-                      )}
-                    </div>
-                  )
-                )}
+                      </div>
+                    ))}
               </div>
             </section>
             <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
@@ -168,17 +164,17 @@ const Main = () => {
               )}
 
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
-                {(loading ? Array.from({ length: 5 }) : upcomingMovies).map(
-                  (movie, i) => (
-                    <div key={i} className="flex justify-start">
-                      {loading ? (
+                {loading
+                  ? Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} className="flex justify-start">
                         <MovieCardSkeleton />
-                      ) : (
+                      </div>
+                    ))
+                  : upcomingMovies.map((movie) => ( // movie is now correctly typed as MovieType
+                      <div key={movie._id} className="flex justify-start">
                         <MovieCard movie={movie} />
-                      )}
-                    </div>
-                  )
-                )}
+                      </div>
+                    ))}
               </div>
             </section>
             <div>

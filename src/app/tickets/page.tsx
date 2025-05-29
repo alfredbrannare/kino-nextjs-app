@@ -56,7 +56,7 @@ export default function TicketsPage() {
 
           {/* Screenings / Booking Buttons */}
           <div className="mt-6">
-            {movie.screenings.length === 0 ? (
+            {!movie.screenings || movie.screenings.length === 0 ? (
               <p className="text-sm text-center sm:text-left text-[#CDCDCD]">Inga visningar för tillfället.</p>
             ) : (
               <div className="flex flex-wrap gap-1 justify-center sm:justify-start">
@@ -86,7 +86,7 @@ export default function TicketsPage() {
                           }),
                           sal: s.auditorium,
                           maxSeats: (s.bookedCount ?? 0) + (s.availableSeats ?? 0),
-                          bookedCount: s.bookedCount,
+                          bookedCount: s.bookedCount ?? 0,
                         }}
                         size="small"
                       />

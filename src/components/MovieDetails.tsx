@@ -28,7 +28,7 @@ type BookingWithSeats = {
 };
 
 const MovieDetails: FC<Props> = ({ movie }) => {
-  const { isLoggedIn, userData } = useAuth() as AuthContextType;
+  const { isLoggedIn } = useAuth() as AuthContextType;
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [screenings, setScreenings] = useState<ExtendedScreeningType[]>([]);
   const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false); //coditional loading
