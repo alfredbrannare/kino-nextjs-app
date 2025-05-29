@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation";
 import AdminTabs from "@/components/AdminTabs"
 import LiveEventCreator from "@/components/LiveEventCreator"
 import { SquarePen } from "lucide-react";
-import { AuthContextType, EventType } from "@/ts/types";
+import { AuthContextType, EventType, LiveEventToEditType } from "@/ts/types";
 
 const LiveEventsPage = () => {
     const [liveEvents, setLiveEvents] = useState<EventType[]>([])
-    const [loading, setLoading] = useState(true)
-    const [update, setUpdate] = useState(false)
-    const [inputSearch, setInputSearch] = useState('');
+    const [loading, setLoading] = useState<boolean>(true)
+    const [update, setUpdate] = useState<boolean>(false)
+    const [inputSearch, setInputSearch] = useState<string>('');
     const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth() as AuthContextType;
-    const [isEditing, setIsEditing] = useState(false);
-    const [eventToEdit, setEventToEdit] = useState<EventType | null>(null);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [eventToEdit, setEventToEdit] = useState<LiveEventToEditType | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -56,8 +56,17 @@ const LiveEventsPage = () => {
 
     const handleEditClick = (event: EventType) => {
         setIsEditing(true);
-        setEventToEdit(event);
-    }
+        const transformedEvent: LiveEventToEditType = {
+            _id: event._id,
+            title: event.title,
+            time: event.time,
+            date: event.date,
+            image: event.image,
+            runtime: event.runtime !== undefined ? event.runtime.toString() : undefined,
+            description: event.description,
+        };
+        setEventToEdit(transformedEvent);
+    };
 
     if (isAuthLoading || loading) return <p>Loading page data...</p>;
     if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;

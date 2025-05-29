@@ -117,8 +117,11 @@ export interface AuthContextType {
 
 export interface EventType {
   _id: string;
-  title: string;
   image: string;
+  title: string;
+  runtime?: number;
+  date: string;
+  time: string;
   description: string;
 }
 

@@ -4,10 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EventsTabs from "@/components/events/EventsTabs";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Image from "next/image";
+import { EventType } from "@/ts/types";
 
 export default function EventsPageContent() {
-    const [events, setEvents] = useState([]);
-    const [liveEvents, setLiveEvents] = useState([]);
+    const [events, setEvents] = useState<EventType[]>([]);
+    const [liveEvents, setLiveEvents] = useState<EventType[]>([]);
     const searchParams = useSearchParams();
     const initialTab = searchParams.get('tab') || 'tab1';
     const [activeTab, setActiveTab] = useState(initialTab);
@@ -20,11 +22,16 @@ export default function EventsPageContent() {
 
     useEffect(() => {
         Promise.all([
-            fetch("/api/events").then((res) => res.json()),
-            fetch("/api/events/live").then((res) => res.json())
+            fetch("/api/events").then((res) => res.json() as Promise<EventType[]>),
+            fetch("/api/events/live").then((res) => res.json() as Promise<EventType[]>)
         ]).then(([eventData, liveEventData]) => {
-            setEvents(eventData);
-            setLiveEvents(liveEventData);
+            setEvents(eventData || []);
+            setLiveEvents(liveEventData || []);
+        }).catch(error => {
+            console.error("Failed to fetch events:", error);
+            setEvents([]);
+            setLiveEvents([]);
+        }).finally(() => {
             setLoading(false);
         });
     }, []);
@@ -54,14 +61,18 @@ export default function EventsPageContent() {
                         <div className="space-y-10" aria-labelledby="evenemang-titlar">
                             {currentEvents.map((event, index) => (
                                 <div
-                                    key={index}
+                                    key={event._id || index}
                                     className="p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] hover:shadow-[inset_0_0_12px_#fde047,0_0_25px_#fde047] hover:scale-[1.01] transition transform duration-200"
                                 >
-                                    <img
-                                        src={event.image}
-                                        alt={`Omslag för eventet ${event.title}`}
-                                        className="w-full h-60 object-cover rounded-lg"
-                                    />
+                                    <div className="relative w-full h-60"> {}
+                                        <Image
+                                            src={event.image}
+                                            alt={`Omslag för eventet ${event.title}`}
+                                            layout="fill"
+                                            objectFit="cover"
+                                            className="rounded-lg"
+                                        />
+                                    </div>
                                     <h2 className="text-2xl pt-4 font-semibold text-[#CDCDCD]">
                                         {event.title}
                                     </h2>
