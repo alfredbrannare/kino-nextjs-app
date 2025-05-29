@@ -4,11 +4,20 @@ import SeatSelector from "./SeatSelector";
 import TicketSelector from "./TicketSelector";
 import { Clapperboard, Clock, Theater } from "lucide-react";
 import { useAuth } from "../user/AuthData";
+import { AuthContextType, Seat } from "@/ts/types";
+import { FC } from 'react';
+import { TicketSelectionInfo, TicketDetails } from "@/ts/types";
 
-export default function BookingClient({ movieId, screeningTime, auditorium }) {
-    const { isLoggedIn, userId } = useAuth();
-    const [ticketInfo, setTicketInfo] = useState({ total: 0, details: {}, totalPrice: 0 });
-    const [seatsFromDB, setSeatsFromDB] = useState([]);
+type Props = {
+    movieId: string;
+    screeningTime: string;
+    auditorium: string;
+};
+
+const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
+    const { isLoggedIn, userId } = useAuth() as AuthContextType;
+    const [ticketInfo, setTicketInfo] = useState<TicketSelectionInfo>({ total: 0, details: { ordinary: 0, child: 0, retired: 0, student: 0, member: 0 }, totalPrice: 0 });
+    const [seatsFromDB, setSeatsFromDB] = useState<Seat[]>([]);
     const [movieTitle, setMovieTitle] = useState("");
 
     useEffect(() => {
@@ -55,10 +64,10 @@ export default function BookingClient({ movieId, screeningTime, auditorium }) {
 
                 <TicketSelector
                     isLoggedIn={isLoggedIn}
-                    onChange={(total, details) => setTicketInfo({
-                        total,
-                        details,
-                        totalPrice: details.totalPrice
+                    onChange={(total: number, details: TicketDetails, totalPrice: number) => setTicketInfo({
+                        total: total,
+                        details: details,
+                        totalPrice: totalPrice
                     })}
                 />
 
@@ -77,3 +86,5 @@ export default function BookingClient({ movieId, screeningTime, auditorium }) {
         </>
     );
 }
+
+export default BookingClient;

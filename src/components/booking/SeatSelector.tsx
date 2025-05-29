@@ -1,21 +1,47 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import WheelchairModal from "./WheelchairModal";
 import BookingConfirmationModal from "./BookingConfirmationModal";
+import { Seat, TicketDetails } from "@/ts/types";
 
-export default function SeatSelector({ movieId, screeningTime, userId, auditorium, maxSeats, seatsFromDB, ticketInfo }) {
+type Props = {
+    movieTitle: string;
+    movieId: string;
+    screeningTime: string;
+    userId?: string;
+    auditorium: string;
+    maxSeats: number;
+    seatsFromDB: Seat[];
+    ticketInfo: TicketDetails; 
+}
 
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [bookedSeats, setBookedSeats] = useState([]);
-    const [isBooking, setIsBooking] = useState(false);
-    const [bookingSuccess, setBookingSuccess] = useState(false);
-    const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState(null);
-    const [showSeatWarning, setShowSeatWarning] = useState(false);
+interface BookingPayload {
+    movieId: string;
+    screeningTime: string;
+    seats: Seat[];
+    auditorium: string;
+    ticketInfo: TicketDetails;
+    userId?: string;
+}
+
+
+interface SeatBooking extends Seat {
+  isWheelchair: boolean;
+}
+
+const SeatSelector: FC<Props> = ({ movieId, screeningTime, userId, auditorium, maxSeats, seatsFromDB, ticketInfo }) => {
+
+    const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+    const [bookedSeats, setBookedSeats] = useState<Seat[]>([]);
+    const [isBooking, setIsBooking] = useState<boolean>(false);
+    const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
+    const [pendingWheelchairSeat, setPendingWheelchairSeat] = useState<SeatBooking | null>(null);
+    const [showSeatWarning, setShowSeatWarning] = useState<boolean>(false);
     const salong = groupSeatsByRow(seatsFromDB || []);
 
     //Booking confirmation modal
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [confirmedSeats, setConfirmedSeats] = useState([]);
+    const [confirmedSeats, setConfirmedSeats] = useState<Seat[]>([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [movieTitle, setMovieTitle] = useState("");
 
@@ -25,9 +51,9 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             .then((data) => {
                 setBookedSeats(data);
             });
-    }, [movieId, screeningTime]);
+    }, [movieId, screeningTime, auditorium]);
 
-    const toggleSeat = (seat, bypassModal = false) => {
+    const toggleSeat = (seat: Seat, bypassModal = false) => {
         const isSelected = selectedSeats.some(
             (s) => s.row === seat.row && s.seat === seat.seat
         );
@@ -58,7 +84,7 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
         setIsBooking(true);
         setBookingSuccess(false);
 
-        const bookingPayload = {
+        const bookingPayload: BookingPayload = {
             movieId,
             screeningTime,
             seats: selectedSeats,
@@ -102,16 +128,21 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
                     .finally(() => setIsBooking(false));
             });
     };
+    
+     interface LegendProps {
+        color: string;
+        label: string;
+    }
 
-    const Legend = ({ color, label }) => (
+    const Legend: FC<LegendProps> = ({ color, label }) => (
         <div className="flex items-center gap-2">
             <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded ${color}`}></div>
             <span>{label}</span>
         </div>
     );
 
-    function groupSeatsByRow(seats) {
-        const rows = {};
+    function groupSeatsByRow(seats: Seat[]): Seat[][] {
+        const rows: { [key: number]: Seat[] } = {};
         for (const seat of seats) {
             if (!rows[seat.row]) rows[seat.row] = [];
             rows[seat.row].push(seat);
@@ -199,7 +230,9 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
             <WheelchairModal
                 seat={pendingWheelchairSeat}
                 onConfirm={() => {
-                    toggleSeat(pendingWheelchairSeat, true);
+                    if (pendingWheelchairSeat) {
+                        toggleSeat(pendingWheelchairSeat, true);
+                    }
                     setPendingWheelchairSeat(null);
                 }}
                 onCancel={() => {
@@ -219,3 +252,5 @@ export default function SeatSelector({ movieId, screeningTime, userId, auditoriu
         </div>
     );
 };
+
+export default SeatSelector;

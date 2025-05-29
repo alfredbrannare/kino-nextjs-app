@@ -1,12 +1,15 @@
 'use client'
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Params } from '@/ts/types';
+import Image from 'next/image';
+import { MovieType } from '@/ts/types';
 
-const Movie = ({ params }) => {
-  const [movie, setMovie] = useState(null);
+const Movie = ({ params }: Params) => {
+  const [movie, setMovie] = useState<MovieType>();
   const [loading, setLoading] = useState(true);
 
-  const { id } = use(params); // Unwrap the params promise/object
+  const { id } = params;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +34,7 @@ const Movie = ({ params }) => {
     <div className='post'>
       <h1>{movie.title}</h1>
       <span>{movie.description}</span>
-      <img
+      <Image
         className="block mx-auto pt-10 max-w-lg"
         src={movie.image}
         alt={movie.title}

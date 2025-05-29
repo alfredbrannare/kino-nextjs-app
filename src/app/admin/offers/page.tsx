@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../components/user/AuthData";
 import { useRouter } from "next/navigation";
 import AdminTabs from "../../../components/AdminTabs";
+import { AuthContextType, OffersType } from "@/ts/types";
 
 const OffersPage = () => {
-  const [offers, setOffers] = useState([]);
+  const [offers, setOffers] = useState<OffersType[]>([]);
   const [loading, setLoading] = useState(true);
   const [newOffer, setNewOffer] = useState("");
-  const { isAdmin, isLoading: isAuthLoading } = useAuth();
+  const { isAdmin, isLoading: isAuthLoading } = useAuth() as AuthContextType;
   const router = useRouter();
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const OffersPage = () => {
     }
   };
 
-  const deleteOffer = async (id) => {
+  const deleteOffer = async (id: string) => {
     try {
       const res = await fetch(`/api/offers/${id}`, {
         method: "DELETE",

@@ -1,20 +1,21 @@
 "use client"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useAuth } from "@/components/user/AuthData"
 import { useRouter } from "next/navigation";
 import AdminTabs from "@/components/AdminTabs"
 import { SquarePen } from "lucide-react";
 import EventCreator from "@/components/EventCreator";
+import { AuthContextType } from "@/ts/types";
+import { EventType } from "@/ts/types";
 
 const EventsPage = () => {
-    const [Events, setEvents] = useState([])
+    const [events, setEvents] = useState<EventType[]>([])
     const [loading, setLoading] = useState(true)
     const [update, setUpdate] = useState(false)
     const [inputSearch, setInputSearch] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const [eventToEdit, setEventToEdit] = useState(null);
-    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
+    const [eventToEdit, setEventToEdit] = useState<EventType | null>(null);
+    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth() as AuthContextType;
     const router = useRouter();
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const EventsPage = () => {
         setUpdate(false)
     }, [update])
 
-    const deleteEvent = async (id) => {
+    const deleteEvent = async (id: string) => {
         try {
             await fetch(`/api/events/${id}`, {
                 method: "DELETE",
@@ -54,7 +55,7 @@ const EventsPage = () => {
         }
     }
 
-    const handleEditClick = (event) => {
+    const handleEditClick = (event: EventType) => {
         setIsEditing(true);
         setEventToEdit(event);
     }
@@ -62,7 +63,7 @@ const EventsPage = () => {
     if (isAuthLoading || loading) return <p>Loading page data...</p>;
     if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;
 
-    const filteredEvents = Events.filter(event => {
+    const filteredEvents = events.filter(event => {
 
         if (!inputSearch) return true;
 

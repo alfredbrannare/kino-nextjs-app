@@ -1,8 +1,22 @@
 'use client'
+import { DiscountType, Seat, TicketDetails } from "@/ts/types";
 import { Clock, Armchair, BadgeCheck, Clapperboard, Theater, Ticket, User, Baby, GraduationCap, Handshake, Accessibility } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { JSX } from "react/jsx-runtime";
 
-const ticketTypeIcons = {
+interface BookingConfirmationModalProps {
+    auditorium: string;
+    visible: boolean;
+    seats: Seat[];
+    movieTitle: string;
+    screeningTime: string;
+    ticketInfo: TicketDetails;
+    totalPrice: number;
+    onClose: () => void;
+}
+
+const ticketTypeIcons: Record<DiscountType, JSX.Element> = {
     ordinary: <Ticket size={20} className="text-yellow-400" />,
     child: <Baby size={20} className="text-yellow-400" />,
     retired: <User size={20} className="text-yellow-400" />,
@@ -18,7 +32,7 @@ const ticketTypeLabels = {
     member: "Medlem"
 };
 
-export default function BookingConfirmationModal({
+const BookingConfirmationModal: FC<BookingConfirmationModalProps> = ({
     auditorium,
     visible,
     seats,
@@ -26,7 +40,7 @@ export default function BookingConfirmationModal({
     screeningTime,
     ticketInfo,
     totalPrice,
-}) {
+}) => {
     const router = useRouter();
 
 
@@ -85,12 +99,12 @@ export default function BookingConfirmationModal({
                     <div>
                         <p className="font-semibold mb-1 text-center">Biljetter:</p>
                         {Object.entries(ticketInfo)
-                            .filter(([_, count]) => count > 0)
+                            .filter(([, count]) => count > 0)
                             .map(([type, count]) => (
                                 <div key={type} className="flex items-center gap-2 justify-center text-sm text-white">
-                                    {ticketTypeIcons[type] || <Ticket size={20} />}
+                                    {ticketTypeIcons[type as DiscountType] || <Ticket size={20} />}
                                     <span>
-                                        {ticketTypeLabels[type] || type}: {count}
+                                        {ticketTypeLabels[type as DiscountType] || type}: {count}
                                     </span>
                                 </div>
                             ))}
@@ -109,3 +123,5 @@ export default function BookingConfirmationModal({
         </div >
     );
 }
+
+export default BookingConfirmationModal;

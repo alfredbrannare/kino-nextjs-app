@@ -1,12 +1,13 @@
 'use client'
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Params, ScreeningType } from '@/ts/types';
 
-const Movie = ({ params }) => {
-  const [screening, setScreening] = useState(null);
+const Movie = ({ params }: Params) => {
+  const [screening, setScreening] = useState<ScreeningType>();
   const [loading, setLoading] = useState(true);
 
-  const { id } = use(params); // Unwrap the params promise/object
+  const { id } = params;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,15 +15,15 @@ const Movie = ({ params }) => {
         const response = await fetch(`/api/screenings/${id}`);
         const data = await response.json();
 
-        setScreening(data);
+        setScreening(data as ScreeningType);
       } catch (error) {
-        console.error('Error fetching movies:', error);
+        console.error('Error fetching screenings:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [])
+  }, [id])
 
   if (loading) return <p>Loading...</p>
   if (!screening) return <p>Screening not found</p>;

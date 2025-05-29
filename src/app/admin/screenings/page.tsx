@@ -5,13 +5,14 @@ import ScreeningCreator from "../../../components/ScreeningCreator"
 import { useAuth } from "../../../components/user/AuthData"
 import { useRouter } from "next/navigation";
 import AdminTabs from "../../../components/AdminTabs"
+import { AuthContextType, ScreeningType } from "@/ts/types"
 
 const ScreeningsPage = () => {
-	const [screenings, setScreenings] = useState([])
+	const [screenings, setScreenings] = useState<ScreeningType[]>([])
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth() as AuthContextType;
 	const router = useRouter();
 
 	useEffect(() => {
@@ -38,7 +39,7 @@ const ScreeningsPage = () => {
 		setUpdate(false)
 	}, [update])
 
-	const deleteMovie = async (id) => {
+	const deleteMovie = async (id: string) => {
 		try {
 			await fetch(`/api/screenings/${id}`, {
 				method: "DELETE",

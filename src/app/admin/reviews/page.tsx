@@ -1,18 +1,18 @@
 "use client"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useAuth } from "../../../components/user/AuthData"
 import { useRouter } from "next/navigation";
 import AdminTabs from "../../../components/AdminTabs";
+import { AuthContextType, MovieType, ReviewsType } from "@/ts/types";
 
 const ReviewsPage = () => {
-	const [reviews, setReviews] = useState([]);
+	const [reviews, setReviews] = useState<ReviewsType[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [update, setUpdate] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState("");
-	const [movies, setMovies] = useState([]);
+	const [movies, setMovies] = useState<MovieType[]>([]);
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth() as AuthContextType;
 	const router = useRouter();
 
 	useEffect(() => {
@@ -54,7 +54,7 @@ const ReviewsPage = () => {
 		setUpdate(false)
 	}, [selectedMovie, update])
 
-	const deleteReview = async (id) => {
+	const deleteReview = async (id: string) => {
 		try {
 			await fetch(`/api/reviews?movieId=${selectedMovie}&delete=${id}`, {
 				method: "DELETE",

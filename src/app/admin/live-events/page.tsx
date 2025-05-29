@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import AdminTabs from "@/components/AdminTabs"
 import LiveEventCreator from "@/components/LiveEventCreator"
 import { SquarePen } from "lucide-react";
+import { AuthContextType, EventType } from "@/ts/types";
 
 const LiveEventsPage = () => {
-    const [liveEvents, setLiveEvents] = useState([])
+    const [liveEvents, setLiveEvents] = useState<EventType[]>([])
     const [loading, setLoading] = useState(true)
     const [update, setUpdate] = useState(false)
     const [inputSearch, setInputSearch] = useState('');
-    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth();
+    const { isLoggedIn, isAdmin, isLoading: isAuthLoading } = useAuth() as AuthContextType;
     const [isEditing, setIsEditing] = useState(false);
-    const [eventToEdit, setEventToEdit] = useState(null);
+    const [eventToEdit, setEventToEdit] = useState<EventType | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -40,7 +41,7 @@ const LiveEventsPage = () => {
         setUpdate(false)
     }, [update])
 
-    const deleteLiveEvent = async (id) => {
+    const deleteLiveEvent = async (id: string) => {
         try {
             await fetch(`/api/events/live/${id}`, {
                 method: "DELETE",
@@ -53,7 +54,7 @@ const LiveEventsPage = () => {
         }
     }
 
-    const handleEditClick = (event) => {
+    const handleEditClick = (event: EventType) => {
         setIsEditing(true);
         setEventToEdit(event);
     }

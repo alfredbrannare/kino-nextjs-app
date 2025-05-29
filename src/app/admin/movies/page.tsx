@@ -1,17 +1,18 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import MovieCreator from "../../../components/MovieCreator"
-import { useAuth } from "../../../components/user/AuthData"
+import MovieCreator from "@/components/MovieCreator"
+import { useAuth } from "@/components/user/AuthData"
 import { useRouter } from "next/navigation";
-import AdminTabs from "../../../components/AdminTabs"
+import AdminTabs from "@/components/AdminTabs"
+import { AuthContextType, MovieType } from "@/ts/types"
 
 const MoviesPage = () => {
-	const [movies, setMovies] = useState([])
+	const [movies, setMovies] = useState<MovieType[]>([])
 	const [loading, setLoading] = useState(true)
 	const [update, setUpdate] = useState(false)
 	const [inputSearch, setInputSearch] = useState('');
-	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth();
+	const { isLoggedIn, isAdmin, isLoading: isAuthLoading} = useAuth() as AuthContextType;
 	const router = useRouter();
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ const MoviesPage = () => {
 			try {
 				const res = await fetch("/api/movies")
 				const data = await res.json()
-				setMovies(data)
+				setMovies(data as MovieType[])
 			} catch (error) {
 				console.error("Error fetching movies:", error)
 			} finally {
@@ -38,7 +39,7 @@ const MoviesPage = () => {
 		setUpdate(false)
 	}, [update])
 
-	const deleteMovie = async (id) => {
+	const deleteMovie = async (id: string) => {
 		try {
 			await fetch(`/api/movies/${id}`, {
 				method: "DELETE",
@@ -51,7 +52,7 @@ const MoviesPage = () => {
 		}
 	}
 
-	const updateMovie = async (id, inCinemas) => {
+	const updateMovie = async (id:string, inCinemas:boolean) => {
 		await fetch(`/api/movies/${id}`, {
 			method: "PUT",
 			credentials: 'include',
@@ -63,13 +64,13 @@ const MoviesPage = () => {
 	if (isAuthLoading || loading) return <p>Loading page data...</p>;
 	if (!isAdmin) return <p>Access Denied. You are not authorized to view this page.</p>;
 
-	const filteredMovies = movies.filter(movie => {
-
+	const filteredMovies = Array.isArray(movies) ? movies.filter(movie => {
 		if (!inputSearch) return true;
 
 		const movieTitle = movie.title?.toLowerCase() || '';
 		return movieTitle.includes(inputSearch.toLowerCase());
-	});
+	}) : [];
+
 
 	return (
 		<>

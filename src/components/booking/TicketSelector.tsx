@@ -1,8 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import Login from "../Login";
+import { TicketDetails } from "@/ts/types";
 
-export default function TicketSelector({ isLoggedIn = false, onChange }) {
+
+type Props = {
+    isLoggedIn: boolean;
+    onChange: (totalTickets: number, details: TicketDetails, totalPrice:number) => void;
+};
+
+const TicketSelector: FC<Props> = ({ isLoggedIn = false, onChange }) => {
     const [ordinary, setOrdinary] = useState(2);
     const [child, setChild] = useState(0);
     const [retired, setRetired] = useState(0);
@@ -35,7 +42,7 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
                 retired,
                 student,
                 member
-            });
+            }, totalPrice);
         }
     }, [ordinary, child, retired, student, member]);
 
@@ -180,3 +187,5 @@ export default function TicketSelector({ isLoggedIn = false, onChange }) {
         </div>
     );
 }
+
+export default TicketSelector;
