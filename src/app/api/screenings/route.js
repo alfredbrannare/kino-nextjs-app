@@ -2,6 +2,7 @@ import connectDB from 'src/lib/mongodb';
 import Screening from 'src/models/model.screenings';
 import { checkAuth } from 'src/lib/auth';
 import { NextResponse } from 'next/server';
+import Movie from 'src/models/model.movies';
 
 export const GET = async (req) => {
 	try {
@@ -45,7 +46,7 @@ export const POST = async (req) => {
 		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
-  const isAdmin = authenticatedUser.role.includes('admin');
+	const isAdmin = authenticatedUser.role.includes('admin');
 
 	if (!isAdmin) {
 		return NextResponse.json(
@@ -57,6 +58,7 @@ export const POST = async (req) => {
 	try {
 		const body = await req.json();
 		console.log('Received request body:', body);
+		const { movieId, auditoriumId, startTime } = body;
 
 		if (!body.movieId || !body.auditoriumId || !body.startTime) {
 			return new Response(
@@ -67,6 +69,29 @@ export const POST = async (req) => {
 					status: 400,
 					headers: { 'Content-Type': 'application/json' },
 				}
+			);
+		}
+
+		const movie = await Movie.findById(movieId);
+		if (!movie) {
+			return NextResponse.json({ message: 'Movie not found' }, { status: 404 });
+		}
+
+		const durationMinutes = parseInt(movie.runtime, 10);
+		const duration = isNaN(durationMinutes) ? 120 : durationMinutes;
+
+		const start = new Date(startTime);
+		const end = new Date(start.getTime() + duration * 60000);
+
+		const conflict = await Screening.findOne({
+			auditoriumId,
+			startTime: { $lt: end },
+		}).where('startTime').gt(new Date(start.getTime() - duration * 60000));
+
+		if (conflict) {
+			return NextResponse.json(
+				{ message: 'There is already a screening in this auditorium at that time.' },
+				{ status: 409 }
 			);
 		}
 
