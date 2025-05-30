@@ -1,3 +1,19 @@
+## Motivation for choosing Tailwind CSS and DaisyUI
+
+- In the development of our project, we chose to use Tailwind Css in combination with DaisyUI as our UI framework. This decision is based on:
+
+- Fast and flexible development
+  Tailwind allows for rapid and responsive design. It removes the need to write traditional CSS, speeding up the development process and simplifying code maintenance.
+
+- Consistent design with less code
+  Tailwind enables a consistent design system using utility classes. This allows us to create intuitive reusable and easy to modifiable UI components without reinventing styles for each element.
+
+- DaisyUI -
+  DaisyUI has a component-based UI kit, it is a plugin for Tailwind that provides pre-designed, clean and accessible UI components such as buttons, modals, cards, tables and more, fully compatible with Tailwind’s utility classes and are easy to customize.
+
+- Active community support -
+  Both Tailwind CSS and DaisyUI have large, active communities and strong documentation. This made it easier for us to onboard and find solutions and best practices
+
 ## Screenings API
 
 ### GET the 5 Nearest Upcoming Screenings
@@ -328,16 +344,18 @@
 - **Example Response**:
 
 ```
-  {
-  "\_id": "682c408c51ae0f3436daaabe",
-  "title": "Fidelio",
-  "time": "19:00",
-  "date": "2025-06-10",
-  "image": "https://example.com/event-image.jpg",
-  "description": "Fidelio, Beethovens enda opera och hans storslagna hyllning till kärleken.",
-  "genre": "Opera",
-  "runtime": 123,
-  }
+
+{
+"\_id": "682c408c51ae0f3436daaabe",
+"title": "Fidelio",
+"time": "19:00",
+"date": "2025-06-10",
+"image": "https://example.com/event-image.jpg",
+"description": "Fidelio, Beethovens enda opera och hans storslagna hyllning till kärleken.",
+"genre": "Opera",
+"runtime": 123,
+}
+
 ```
 
 ### DELETE an Event by ID (Admin only)
@@ -349,9 +367,11 @@
 - **Example Response**:
 
 ```
-  {
-  "message": "Live event deleted successfully"
-  }
+
+{
+"message": "Live event deleted successfully"
+}
+
 ```
 
 ### PUT Update an Event by ID (Admin only)
@@ -362,35 +382,39 @@
 - **Request Body**:
 
 ```
-  {
-  "title": "Updated Event Title",
-  "time": "20:00",
-  "date": "2025-06-11",
-  "image": "https://example.com/updated-event-image.jpg",
-  "description": "Updated description of the live event.",
-  "genre": "Updated genre of the live event",
-  "runtime": 123
-  }
+
+{
+"title": "Updated Event Title",
+"time": "20:00",
+"date": "2025-06-11",
+"image": "https://example.com/updated-event-image.jpg",
+"description": "Updated description of the live event.",
+"genre": "Updated genre of the live event",
+"runtime": 123
+}
+
 ```
 
 - **Response**:
 
 ```
-  {
-  "message": "Event \"Updated Event Title\" was successfully updated!",
-  "event": {
-  "\_id": "60e5b7f9b8a1c72d6c9f1234",
-  "title": "Updated Event Title",
-  "time": "20:00",
-  "date": "2025-06-11",
-  "image": "https://example.com/updated-event-image.jpg",
-  "description": "Updated description of the live event.",
-  "genre": "Updated genre of the live event",
-  "runtime": 123,
-  "inCinemas": false,
-  "\_\_v": 0
-  }
-  }
+
+{
+"message": "Event \"Updated Event Title\" was successfully updated!",
+"event": {
+"\_id": "60e5b7f9b8a1c72d6c9f1234",
+"title": "Updated Event Title",
+"time": "20:00",
+"date": "2025-06-11",
+"image": "https://example.com/updated-event-image.jpg",
+"description": "Updated description of the live event.",
+"genre": "Updated genre of the live event",
+"runtime": 123,
+"inCinemas": false,
+"\_\_v": 0
+}
+}
+
 ```
 
 ### Instructions for Using the Auth Context
@@ -463,8 +487,14 @@ You can also conditionally render components based on whether the user is logged
 
 ### GET `/api/auditoriums/[slug]`
 
-**Method:** `GET`  
-**Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
+<<<<<<< HEAD
+
+# **Method:** `GET`
+
+**Method:** `GET`
+
+> > > > > > > origin/main
+> > > > > > > **Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
 
 **URL Parameters:**
 

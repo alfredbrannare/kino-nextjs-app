@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { LogOut, LockKeyhole, Popcorn, Ticket, MoreVertical, Pencil, Trash2, MapPin, Armchair, Banknote, Calendar, Award } from 'lucide-react';
 import Link from "next/link";
 import Image from "next/image";
+import ErrorMessage from "src/components/ErrorMessage";
 
 export default function MembershipPage() {
   const { userData, isLoggedIn, isLoading, loading, logout, isAdmin, checkUser } = useAuth();
@@ -18,7 +19,10 @@ export default function MembershipPage() {
   const menuRef = useRef(null);
   const [expandedTickets, setExpandedTickets] = useState({});
   const [showAllTickets, setShowAllTickets] = useState(false);
-  const sortedBookings = [...booking].sort((a, b) => new Date(a.screeningTime) - new Date(b.screeningTime));
+  const sortedBookings = [...booking].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const [offersError, setOfferError] = useState(null);
+  const [userError, setUserError] = useState(null);
+  const [meError, setMeError] = useState(null);
 
   const toggleExpand = useCallback((id) => {
     setExpandedTickets((prev) => ({
@@ -35,6 +39,7 @@ export default function MembershipPage() {
         setOffers(data.offers || []);
       } catch (error) {
         console.error("Error fetching offers:", error);
+        setOfferError('Vi har för tillfället problem att hämta dina erbjudanden');
       }
     };
     fetchOffers();
@@ -48,14 +53,18 @@ export default function MembershipPage() {
 
   useEffect(() => {
     const getBookings = async () => {
-      const response = await fetch('/api/bookings/user', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      const data = await response.json();
-
-      setBooking(Array.isArray(data) ? data : []);
-    }
+      try {
+        const response = await fetch('/api/bookings/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await response.json();
+        setBooking(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        setUserError('Vi har för tillfället problem att hämta dina bokningar');
+      }
+    };
     getBookings();
   }, []);
 
@@ -286,7 +295,11 @@ export default function MembershipPage() {
             <h3 className="text-xl font-bold text-[#CDCDCD]  pb-1 mb-4 flex justify-center items-center gap-2">
               <Ticket size={40} /> Dina Biljetter
             </h3>
-            {booking.length === 0 ? (
+            {userError ? (
+              <ErrorMessage
+                error={userError}
+              />
+            ) : booking.length === 0 ? (
               <p className="text-center text-[#CDCDCD]">Inga bokningar hittades.</p>
             ) : (
               <ul className="space-y-4">
@@ -369,7 +382,11 @@ export default function MembershipPage() {
               <Popcorn size={40} /> Veckans erbjudande
             </h3>
             <ul className="space-y-2 list-none ml-0 font-bold text-yellow-400 text-lg">
-              {offers.length > 0 ? (
+              {offersError ? (
+                <ErrorMessage
+                  error={offersError}
+                />
+              ) : offers.length > 0 ? (
                 offers.map((offer, index) => (
                   <li key={index}>{offer.text}</li>
                 ))
