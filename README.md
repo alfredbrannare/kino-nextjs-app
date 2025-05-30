@@ -331,6 +331,7 @@
   ...
 ]
 
+```
 
 ## Live Events API
 
@@ -414,7 +415,7 @@
 }
 }
 
-````
+```
 
 ### Instructions for Using the Auth Context
 
@@ -485,13 +486,22 @@ You can also conditionally render components based on whether the user is logged
 ## Auditoriums API
 
 ### GET `/api/auditoriums/[slug]`
+
+<<<<<<< HEAD
+
+# **Method:** `GET`
+
 **Method:** `GET`
-**Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
+
+> > > > > > > origin/main
+> > > > > > > **Description:** Fetches auditorium data including seat layout based on the given slug. Used by the booking system to render available seats in the correct layout.
 
 **URL Parameters:**
+
 - `slug` (required): The unique identifier for the auditorium (e.g. `city`, `big-hall`)
 
 **Response:**
+
 ```json
 {
   "_id": "68164b2ef469735514b5f89a",
@@ -505,7 +515,7 @@ You can also conditionally render components based on whether the user is logged
   "totalSeats": 56,
   "__v": 0
 }
-````
+```
 
 ---
 
@@ -532,13 +542,13 @@ You can also conditionally render components based on whether the user is logged
 
 ```json
 [
-	{ "row": 1, "seat": 5, "type": "ordinary" },
-	{ "row": 1, "seat": 6, "type": "ordinary" },
-	{ "row": 1, "seat": 7, "type": "child" },
-	{ "row": 2, "seat": 7, "type": "member" },
-	{ "row": 4, "seat": 4, "type": "student" },
-	{ "row": 4, "seat": 5, "type": "student" },
-	{ "row": 9, "seat": 1, "type": "retired" }
+  { "row": 1, "seat": 5, "type": "ordinary" },
+  { "row": 1, "seat": 6, "type": "ordinary" },
+  { "row": 1, "seat": 7, "type": "child" },
+  { "row": 2, "seat": 7, "type": "member" },
+  { "row": 4, "seat": 4, "type": "student" },
+  { "row": 4, "seat": 5, "type": "student" },
+  { "row": 9, "seat": 1, "type": "retired" }
 ]
 ```
 
@@ -553,20 +563,20 @@ You can also conditionally render components based on whether the user is logged
 
 ```json
 {
-	"movieId": "681b3a14a20707b6cf797187",
-	"screeningTime": "2025-05-28T14:00:00.000Z",
-	"auditorium": "city",
-	"seats": [
-		{ "row": 1, "seat": 7 },
-		{ "row": 1, "seat": 8 }
-	],
-	"ticketInfo": {
-		"ordinary": 0,
-		"child": 0,
-		"retired": 0,
-		"student": 0,
-		"member": 2
-	}
+  "movieId": "681b3a14a20707b6cf797187",
+  "screeningTime": "2025-05-28T14:00:00.000Z",
+  "auditorium": "city",
+  "seats": [
+    { "row": 1, "seat": 7 },
+    { "row": 1, "seat": 8 }
+  ],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 2
+  }
 }
 ```
 
@@ -574,20 +584,20 @@ You can also conditionally render components based on whether the user is logged
 
 ```json
 {
-	"booking": {
-		"_id": "681f2d47e17e8fa94212a123",
-		"movieId": "681b3a14a20707b6cf797187",
-		"screeningTime": "2025-05-28T14:00:00.000Z",
-		"auditorium": "city",
-		"seats": [
-			{ "row": 1, "seat": 7, "type": "member" },
-			{ "row": 1, "seat": 8, "type": "member" }
-		],
-		"userId": "681a25fc1b75d872c0c502ab",
-		"totalPrice": 210,
-		"__v": 0
-	},
-	"movieTitle": "Lilo & Stitch"
+  "booking": {
+    "_id": "681f2d47e17e8fa94212a123",
+    "movieId": "681b3a14a20707b6cf797187",
+    "screeningTime": "2025-05-28T14:00:00.000Z",
+    "auditorium": "city",
+    "seats": [
+      { "row": 1, "seat": 7, "type": "member" },
+      { "row": 1, "seat": 8, "type": "member" }
+    ],
+    "userId": "681a25fc1b75d872c0c502ab",
+    "totalPrice": 210,
+    "__v": 0
+  },
+  "movieTitle": "Lilo & Stitch"
 }
 ```
 
@@ -626,17 +636,17 @@ When submitting the booking, the request is automatically linked to the authenti
 
 ```json
 {
-	"movieId": "...",
-	"screeningTime": "...",
-	"auditorium": "city",
-	"seats": [{ "row": 1, "seat": 4 }],
-	"ticketInfo": {
-		"ordinary": 0,
-		"child": 0,
-		"retired": 0,
-		"student": 0,
-		"member": 1
-	}
+  "movieId": "...",
+  "screeningTime": "...",
+  "auditorium": "city",
+  "seats": [{ "row": 1, "seat": 4 }],
+  "ticketInfo": {
+    "ordinary": 0,
+    "child": 0,
+    "retired": 0,
+    "student": 0,
+    "member": 1
+  }
 }
 ```
 
@@ -652,14 +662,14 @@ When a booking is made, the backend also:
 
 ```js
 Screening.findOneAndUpdate(
-	{
-		movieId,
-		startTime: new Date(screeningTime),
-		auditoriumId: auditoriumDoc._id,
-	},
-	{
-		$push: { bookedSeats: booking._id },
-	}
+  {
+    movieId,
+    startTime: new Date(screeningTime),
+    auditoriumId: auditoriumDoc._id,
+  },
+  {
+    $push: { bookedSeats: booking._id },
+  }
 );
 ```
 
@@ -667,3 +677,22 @@ This ensures that:
 
 - Booked seats are correctly linked to their screening
 - Future requests can show which seats are taken for each showtime
+
+---
+
+## Teststrategies
+
+To run the following tests:
+
+1. Ensure the app is running locally at `http://localhost:3000` using `npm run dev`.
+2. Open the Cypress Test Runner with `npm run cypress:open`.
+3. Select specific file and run
+
+### Cypress E2E Test: Movie Management (`allMoviesFlow.cy.js`)
+
+This Cypress E2E test validates the user flow for movie filtering and sorting. The test performs the following:
+
+- Navigates to the 'FILMER' page.
+- Searches for 'Minecraft' and confirms the movie is displayed.
+- Clears the search field and ensures all movies are displayed again.
+- Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed first.
