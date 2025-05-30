@@ -3,15 +3,23 @@
 import { useEffect, useState } from 'react';
 import Views from 'src/components/views/Views';
 import Link from 'next/link';
+import ErrorMessage from 'src/components/ErrorMessage';
 
 export default function TicketsPage() {
   const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('/api/movies-with-screenings');
-      const data = await res.json();
-      setMovies(data);
+      try {
+        const res = await fetch('/api/movies-with-screenings');
+        const data = await res.json();
+        setMovies(data);
+
+      } catch (err) {
+        console.error('Error fetching movies with screenings:', error);
+        setError('Vi har förtillfället problem att hämta alla biljetter')
+      }
     };
 
     fetchData();
@@ -20,8 +28,11 @@ export default function TicketsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
       <h1 className="text-4xl font-bold text-[#CDCDCD] mb-8 text-center">Biljetter</h1>
-
-      {movies.map((movie) => (
+      {error ? (
+        <ErrorMessage
+          error={error}
+        />
+      ) : movies.map((movie) => (
         <div
           key={movie._id}
           className="p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]"

@@ -8,11 +8,15 @@ import TrailerCarousel from "src/components/TrailerCarousel/TrailerCarousel";
 import Link from "next/link";
 import { useAuth } from "src/components/user/AuthData";
 import EventCardSkeleton from "src/components/events/MovieCardSkeleton";
+import ErrorMessage from "src/components/ErrorMessage";
 
 const Main = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [currentMoviesError, setCurrentMoviesError] = useState(null);
+  const [upcomingMoviesError, setUpcomingMoviesError] = useState(null);
+  const [eventsError, setEventsError] = useState(null);
+  const [liveEventsError, setLiveEventsError] = useState(null);
   const [events, setEvents] = useState([]);
   const [liveEvents, setLiveEvents] = useState([]);
   const [upcomingMovies, setUpcomigMovies] = useState([]);
@@ -28,7 +32,7 @@ const Main = () => {
         setLiveEvents(limitedData);
       } catch (error) {
         console.error('Error fetching events:', error);
-        setError('Vi har för tillfället problem med att hämta evenemang');
+        setLiveEventsError('Vi har för tillfället problem med att hämta live evenemang');
       } finally {
         setLoading(false);
       }
@@ -46,7 +50,7 @@ const Main = () => {
         setEvents(limitedData);
       } catch (error) {
         console.error('Error fetching events:', error);
-        setError('Vi har för tillfället problem med att hämta evenemang');
+        setEventsError('Vi har för tillfället problem med att hämta evenemang');
       } finally {
         setLoading(false);
       }
@@ -62,7 +66,7 @@ const Main = () => {
         setMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
-        setError('Vi har för tillfället problem med att hämta filmer.');
+        setCurrentMoviesError('Vi har för tillfället problem med att hämta filmer.');
       } finally {
         setLoading(false);
       }
@@ -78,7 +82,7 @@ const Main = () => {
         setUpcomigMovies(data);
       } catch (error) {
         console.error('Error fetching movies:', error);
-        setError('Vi har för tillfället problem med att hämta filmer.');
+        setUpcomingMoviesError('Vi har för tillfället problem med att hämta kommande filmer.');
       } finally {
         setLoading(false);
       }
@@ -105,14 +109,10 @@ const Main = () => {
             <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">VISAS JUST NU</h2>
 
-              {error && (
-                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
-                  <div className="text-center text-black flex flex-col items-center">
-                    <Info />
-                    <span className="font-bold text-xl">Fel</span>
-                    <strong className="text-sm text-black font-bold text-xl">{error}</strong>
-                  </div>
-                </div>
+              {currentMoviesError && (
+                <ErrorMessage
+                  error={currentMoviesError}
+                />
               )}
 
               {/* Grid for the cards */}
@@ -131,14 +131,10 @@ const Main = () => {
             <section className="w-full max-w-screen-xl mx-auto px-4 my-6">
               <h2 className="text-3xl text-[#CDCDCD] font-bold text-center">KOMMANDE FILMER</h2>
 
-              {error && (
-                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
-                  <div className="text-center text-black flex flex-col items-center">
-                    <Info />
-                    <span className="font-bold text-xl">Fel</span>
-                    <strong className="text-sm text-black font-bold text-xl">{error}</strong>
-                  </div>
-                </div>
+              {upcomingMoviesError && (
+                <ErrorMessage
+                  error={upcomingMoviesError}
+                />
               )}
 
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
@@ -161,6 +157,11 @@ const Main = () => {
               </div>
               <section className="my-12 text-center">
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                {liveEventsError && (
+                  <ErrorMessage
+                    error={liveEventsError}
+                  />
+                )}
                 {loading ? (
                   <EventCardSkeleton></EventCardSkeleton>
                 ) : liveEvents.map((event) => (
@@ -203,6 +204,11 @@ const Main = () => {
               </section>
               <section>
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
+                {eventsError && (
+                  <ErrorMessage
+                    error={eventsError}
+                  />
+                )}
                 {loading ? (
                   <EventCardSkeleton></EventCardSkeleton>
                 ) : events.map((event) => (
@@ -243,7 +249,7 @@ const Main = () => {
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
                 {isLoading ? (
-                  <div className="min-h-[150px]"/>
+                  <div className="min-h-[150px]" />
                 ) : !isLoggedIn ? (
                   <Login />
                 ) : null}
@@ -253,14 +259,14 @@ const Main = () => {
                 <div className="bg-[#2B0404] rounded-2xl shadow-lg p-6 max-w-6xl mx-auto">
                   <div className="hero-content flex-col lg:flex-row-reverse">
                     <div className="aspect-3/2 w-full max-w-sm">
-                    <img
-                      src="/KinoEntrance.png"
-                      width="384"
-                      height="256"
-                      loading="lazy"
-                      className="w-full max-w-sm h-auto"
-                      alt="Kino Entrance"
-                    />
+                      <img
+                        src="/KinoEntrance.png"
+                        width="384"
+                        height="256"
+                        loading="lazy"
+                        className="w-full max-w-sm h-auto"
+                        alt="Kino Entrance"
+                      />
                     </div>
                     <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                       <h1 className="text-3xl font-bold text-[#CDCDCD]">DIN LOKALA BIOGRAF</h1>
@@ -282,14 +288,14 @@ const Main = () => {
                   <div className="bg-[#2B0404] py-0 px-4">
                     <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8 max-w-6xl mx-auto">
                       <div className="aspect-3/2 w-full max-w-sm">
-                      <img
-                        src="/KinoDoors.png"
-                        width="384"
-                        height="256"
-                        loading="lazy"
-                        className="w-full max-w-sm h-auto"
-                        alt="Kino Entrance"
-                      />
+                        <img
+                          src="/KinoDoors.png"
+                          width="384"
+                          height="256"
+                          loading="lazy"
+                          className="w-full max-w-sm h-auto"
+                          alt="Kino Entrance"
+                        />
                       </div>
                       <div className="w-full max-w-md mx-auto text-center lg:text-right mt-8 lg:mt-0">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">ANNORLUNDA OCH UNIKT</h1>
@@ -324,14 +330,14 @@ const Main = () => {
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row-reverse max-w-6xl mx-auto bg-[#2B0404]">
                       <div className="aspect-[3/2] w-full max-w-sm">
-                      <img
-                        src="/KinoScreen.png"
-                        width="384"
-                        height="256"
-                        loading="lazy"
-                        className="w-full max-w-sm h-auto"
-                        alt="Kino Entrance"
-                      />
+                        <img
+                          src="/KinoScreen.png"
+                          width="384"
+                          height="256"
+                          loading="lazy"
+                          className="w-full max-w-sm h-auto"
+                          alt="Kino Entrance"
+                        />
                       </div>
                       <div className="text-center lg:text-left mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">BÄTTRE LJUD OCH BILD ÄN HEMMA</h1>
@@ -348,14 +354,14 @@ const Main = () => {
                   <div className="hero bg-[#2B0404] py-0 px-4">
                     <div className="hero-content flex-col min-w-0 lg:flex-row max-w-6xl mx-auto bg-[#2B0404]">
                       <div className="aspect-[3/2] w-full max-w-sm">
-                      <img
-                        src="/KinoSeats.png"
-                        width="384"
-                        height="256"
-                        loading="lazy"
-                        className="w-full max-w-sm h-auto"
-                        alt="Kino Entrance"
-                      />
+                        <img
+                          src="/KinoSeats.png"
+                          width="384"
+                          height="256"
+                          loading="lazy"
+                          className="w-full max-w-sm h-auto"
+                          alt="Kino Entrance"
+                        />
                       </div>
                       <div className="text-center lg:text-right mt-8 lg:mt-0 mx-4 max-w-xl lg:max-w-md w-full">
                         <h1 className="text-3xl font-bold text-[#CDCDCD]">MAT OCH DRYCK VID DIN PLATS</h1>
