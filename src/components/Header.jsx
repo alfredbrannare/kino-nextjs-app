@@ -129,6 +129,7 @@ const Header = () => {
                 <button
                   onClick={logout}
                   className="text-[#CDCDCD] hover:cursor-pointer hover:text-red-400 transition-transform hover:scale-110"
+                  aria-label="Logga ut"
                   title="Logga ut"
                 >
                   <LogOut size={24} />
