@@ -47,6 +47,7 @@ const ScreeningCreator = ({ setUpdate }) => {
       const response = await fetch('/api/screenings/', {
         method: 'POST',
         credentials: 'include',
+        headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({ movieId: selectedMovie, auditoriumId: selectedScreenings, startTime: combinedDateTime }),
       });
       const body = await response.json();
@@ -57,7 +58,7 @@ const ScreeningCreator = ({ setUpdate }) => {
         setSelectedDate(undefined);
         setSelectedTime({ hour: 12, minute: 0 });
       } else {
-        alert(`${body.status}`);
+        alert(body.message || body.status || 'Something went wrong.');
       }
     } catch (err) {
       console.log('Screening is not found', err);
