@@ -9,7 +9,7 @@ export const GET = async (req, { params }) => {
   const id = await params.id;
   await connectDB();
   const screenings = await Screening.findById(id).populate("movieId", "title")
-  .populate("auditoriumId", "name seats");
+  .populate("auditoriumId", "name slug capacity seats");
 
   return new Response(JSON.stringify(screenings), {
     status: 200,

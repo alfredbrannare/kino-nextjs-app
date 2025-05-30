@@ -200,11 +200,11 @@ const MovieDetails = ({ movie }) => {
 									<Link
 										key={screening._id}
 										href={{
-											pathname: `/auditoriums/city`,
+											pathname: `/auditoriums/${screening.auditoriumId.slug}`,
 											query: {
 												movieId: screening.movieId._id,
 												screeningTime: screening.startTime,
-												auditorium: 'city',
+												auditorium: screening.auditoriumId.slug,
 											},
 										}}>
 										<Views

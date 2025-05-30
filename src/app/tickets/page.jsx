@@ -60,12 +60,12 @@ export default function TicketsPage() {
                   <Link
                     key={s._id}
                     href={{
-                      pathname: `/auditoriums/city`,
+                      pathname: `/auditoriums/${s.auditorium.slug}`,
                       query: {
                         movieId: movie._id,
                         movieTitle: movie.title,
                         screeningTime: s.startTime,
-                        auditorium: s.auditorium,
+                        auditorium: s.auditorium.slug,
                       },
                     }}
                   >
@@ -80,7 +80,7 @@ export default function TicketsPage() {
                             hour: '2-digit',
                             minute: '2-digit',
                           }),
-                          sal: s.auditorium,
+                          sal: s.auditorium.name,
                           maxSeats: s.bookedCount + s.availableSeats,
                           bookedCount: s.bookedCount,
                         }}
