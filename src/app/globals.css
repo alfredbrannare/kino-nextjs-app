@@ -1,11 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 body {
-	background: #2b0404;
-	margin: 0;
-	padding: 0;
-
+  background: #2b0404;
+  margin: 0;
+  padding: 0;
 }
 /*  main {
 	max-width: 1280px;
@@ -17,12 +16,11 @@ body {
   }
 } */
 
-
 @media (min-width: 750px) {
-	.custom-sm\:hidden {
-	  display: none;
-	}
-	.custom-sm\:flex {
-	  display: flex;
-	}
+  .custom-sm\:hidden {
+    display: none;
   }
+  .custom-sm\:flex {
+    display: flex;
+  }
+}
