@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import SeatSelector from "./SeatSelector";
 import TicketSelector from "./TicketSelector";
 import { Clapperboard, Clock, Theater } from "lucide-react";
@@ -7,24 +8,37 @@ import { useAuth } from "../user/AuthData";
 
 export default function BookingClient({ movieId, screeningTime, auditorium }) {
     const { isLoggedIn, userId } = useAuth();
+    const router = useRouter();
+
     const [ticketInfo, setTicketInfo] = useState({ total: 0, details: {}, totalPrice: 0 });
     const [seatsFromDB, setSeatsFromDB] = useState([]);
     const [movieTitle, setMovieTitle] = useState("");
 
     useEffect(() => {
+        if (!movieId || !screeningTime || !auditorium) return;
+
+        const validateScreening = async () => {
+            const res = await fetch(`/api/screenings/validate?movieId=${movieId}&screeningTime=${screeningTime}&auditorium=${auditorium}`);
+            if (!res.ok) {
+                router.replace("/404");
+            }
+        };
+
+        validateScreening();
+    }, [movieId, screeningTime, auditorium, router]);
+
+    useEffect(() => {
         if (!movieId) return;
         fetch(`/api/movies/${movieId}`)
-            .then(res => res.json())
-            .then(data => {
-                setMovieTitle(data.title);
-            })
-            .catch(err => console.error("Failed to fetch movie title", err));
+            .then((res) => res.json())
+            .then((data) => setMovieTitle(data.title))
+            .catch((err) => console.error("Failed to fetch movie title", err));
     }, [movieId]);
 
     useEffect(() => {
         fetch(`/api/auditoriums/${auditorium}`)
-            .then(res => res.json())
-            .then(data => setSeatsFromDB(data.seats));
+            .then((res) => res.json())
+            .then((data) => setSeatsFromDB(data.seats));
     }, [auditorium]);
 
     return (
@@ -37,10 +51,11 @@ export default function BookingClient({ movieId, screeningTime, auditorium }) {
                     </div>
                     <div className="flex items-center gap-2 justify-center text-sm">
                         <Clock size={24} className="text-yellow-400" />Tid:
-                        <p className="text-white text-lg">{new Date(screeningTime).toLocaleString("sv-SE", {
-                            dateStyle: "short",
-                            timeStyle: "short"
-                        }) || "..."}
+                        <p className="text-white text-lg">
+                            {new Date(screeningTime).toLocaleString("sv-SE", {
+                                dateStyle: "short",
+                                timeStyle: "short",
+                            }) || "..."}
                         </p>
                     </div>
                     <div className="flex items-center gap-2 justify-center text-sm">
@@ -55,11 +70,13 @@ export default function BookingClient({ movieId, screeningTime, auditorium }) {
 
                 <TicketSelector
                     isLoggedIn={isLoggedIn}
-                    onChange={(total, details) => setTicketInfo({
-                        total,
-                        details,
-                        totalPrice: details.totalPrice
-                    })}
+                    onChange={(total, details) =>
+                        setTicketInfo({
+                            total,
+                            details,
+                            totalPrice: details.totalPrice,
+                        })
+                    }
                 />
 
                 <h3 className="text-l mt-10 mb-10">Klicka på stolarna för att välja platser</h3>

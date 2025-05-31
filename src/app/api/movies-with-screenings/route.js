@@ -35,7 +35,10 @@ export const GET = async () => {
       const enriched = {
         _id: screening._id,
         startTime: screening.startTime,
-        auditorium: screening.auditoriumId.name,
+        auditorium: {
+          name: screening.auditoriumId.name,
+          slug: screening.auditoriumId.slug,
+        },
         availableSeats,
         bookedCount,
       };
