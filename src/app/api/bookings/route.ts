@@ -1,18 +1,18 @@
-import connectDB from "@/lib/mongodb";
-import Booking from "@/models/model.booking";
-import Movie from "@/models/model.movies";
-import Auditorium from "@/models/model.auditorium";
-import Screening from "@/models/model.screenings";
-import { checkAuth } from "@/lib/auth";
-import User from "@/models/model.users";
-import { NextRequest } from "next/server";
-import { BookingType, Seat } from "@/ts/types";
-import { DiscountType } from "@/ts/types";
+import connectDB from '@/lib/mongodb';
+import Booking from '@/models/model.booking';
+import Movie from '@/models/model.movies';
+import Auditorium from '@/models/model.auditorium';
+import Screening from '@/models/model.screenings';
+import { checkAuth } from '@/lib/auth';
+import User from '@/models/model.users';
+import { NextRequest } from 'next/server';
+import { BookingType, Seat } from '@/ts/types';
+import { DiscountType } from '@/ts/types';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const movieId = searchParams.get("movieId");
-  const screeningTime = searchParams.get("screeningTime");
+  const movieId = searchParams.get('movieId');
+  const screeningTime = searchParams.get('screeningTime');
 
   try {
     await connectDB();
@@ -21,8 +21,8 @@ export async function GET(request: NextRequest) {
     const allSeats = bookings.flatMap((b) => b.seats);
     return Response.json(allSeats);
   } catch (err) {
-    console.error("GET /bookings error:", err);
-    return Response.json({ error: "Något gick fel" }, { status: 500 });
+    console.error('GET /bookings error:', err);
+    return Response.json({ error: 'Något gick fel' }, { status: 500 });
   }
 }
 
@@ -38,8 +38,8 @@ export async function POST(request: NextRequest) {
 
     if (!movieId || !screeningTime || !seats || !auditorium || !ticketInfo) {
       return Response.json(
-        { error: "Missing required booking fields" },
-        { status: 400 }
+        { error: 'Missing required booking fields' },
+        { status: 400 },
       );
     }
 
@@ -49,14 +49,15 @@ export async function POST(request: NextRequest) {
 
     const isOverlap = seats.some((incoming: Seat) =>
       alreadyBooked.some(
-        (booked) => booked.row === incoming.row && booked.seat === incoming.seat
-      )
+        (booked) =>
+          booked.row === incoming.row && booked.seat === incoming.seat,
+      ),
     );
 
     if (isOverlap) {
       return Response.json(
-        { error: "One or more seats already booked" },
-        { status: 409 }
+        { error: 'One or more seats already booked' },
+        { status: 409 },
       );
     }
 
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
       await User.findByIdAndUpdate(
         userId,
         { $inc: { points: totalPrice } },
-        { new: true }
+        { new: true },
       );
     }
 
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
     // Get auditoriumId
     const auditoriumDoc = await Auditorium.findOne({ slug: auditorium });
     if (!auditoriumDoc) {
-      return Response.json({ error: "Auditorium not found" }, { status: 404 });
+      return Response.json({ error: 'Auditorium not found' }, { status: 404 });
     }
 
     // Add booking to Screening.bookedSeats[]
@@ -131,19 +132,19 @@ export async function POST(request: NextRequest) {
       },
       {
         $push: { bookedSeats: booking._id },
-      }
+      },
     );
 
     // Return booking + movie title
     return Response.json(
       {
         booking,
-        movieTitle: movie?.title || "Okänd titel",
+        movieTitle: movie?.title || 'Okänd titel',
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (err) {
-    console.error("Booking error", err);
-    return Response.json({ error: "Något gick fel" }, { status: 500 });
+    console.error('Booking error', err);
+    return Response.json({ error: 'Något gick fel' }, { status: 500 });
   }
 }

@@ -1,8 +1,8 @@
 // app/api/reviews/route.js
-import connectDB from "@/lib/mongodb";
-import Review from "@/models/model.reviews";
-import { checkAuth } from "@/lib/auth";
-import { NextRequest, NextResponse } from "next/server";
+import connectDB from '@/lib/mongodb';
+import Review from '@/models/model.reviews';
+import { checkAuth } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   await connectDB();
@@ -13,14 +13,18 @@ export async function POST(request: NextRequest) {
 
   if (!authenticatedUser)
     return new Response(
-      JSON.stringify({ success: false, message: "Missing Login" }),
-      { status: 401 }
+      JSON.stringify({ success: false, message: 'Missing Login' }),
+      {
+        status: 401,
+      },
     );
 
   if (!movieId || !rating || !text) {
     return new Response(
-      JSON.stringify({ success: false, message: "Missing fields" }),
-      { status: 400 }
+      JSON.stringify({ success: false, message: 'Missing fields' }),
+      {
+        status: 400,
+      },
     );
   }
 
@@ -41,7 +45,9 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error) {
       return new Response(
         JSON.stringify({ success: false, message: error.message }),
-        { status: 500 }
+        {
+          status: 500,
+        },
       );
     }
   }
@@ -49,12 +55,14 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
-  const movieId = searchParams.get("movieId");
+  const movieId = searchParams.get('movieId');
 
   if (!movieId) {
     return new Response(
-      JSON.stringify({ success: false, message: "Missing movieId" }),
-      { status: 400 }
+      JSON.stringify({ success: false, message: 'Missing movieId' }),
+      {
+        status: 400,
+      },
     );
   }
 
@@ -67,7 +75,9 @@ export async function GET(request: NextRequest) {
     if (error instanceof Error) {
       return new Response(
         JSON.stringify({ success: false, message: error.message }),
-        { status: 500 }
+        {
+          status: 500,
+        },
       );
     }
   }
@@ -77,29 +87,29 @@ export const DELETE = async (req: NextRequest) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
   if (!authenticatedUser) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role.includes("admin");
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(
-      { message: "You dont have the right to use this feature!" },
-      { status: 403 }
+      { message: 'You dont have the right to use this feature!' },
+      { status: 403 },
     );
   }
 
   const { searchParams } = new URL(req.url);
-  const movieId = searchParams.get("movieId");
-  const deleteR = searchParams.get("delete");
+  const movieId = searchParams.get('movieId');
+  const deleteR = searchParams.get('delete');
 
   if (!movieId || !deleteR) {
     return new Response(
       JSON.stringify({
         success: false,
-        message: "Missing movieId or deleteId",
+        message: 'Missing movieId or deleteId',
       }),
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -109,8 +119,10 @@ export const DELETE = async (req: NextRequest) => {
   } catch (error) {
     console.error(error);
     return new Response(
-      JSON.stringify({ success: false, message: "Error deleting review" }),
-      { status: 500 }
+      JSON.stringify({ success: false, message: 'Error deleting review' }),
+      {
+        status: 500,
+      },
     );
   }
 };

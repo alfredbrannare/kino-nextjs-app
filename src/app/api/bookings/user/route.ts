@@ -1,7 +1,7 @@
-import { checkAuth } from "@/lib/auth";
-import Booking from "@/models/model.booking";
-import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { checkAuth } from '@/lib/auth';
+import Booking from '@/models/model.booking';
+import { NextResponse } from 'next/server';
+import connectDB from '@/lib/mongodb';
 
 export const GET = async () => {
   try {
@@ -9,15 +9,18 @@ export const GET = async () => {
     const authenticatedUser = await checkAuth();
 
     if (!authenticatedUser) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
     const userId = authenticatedUser._id;
 
-    const bookings = await Booking.find({ userId }).populate("movieId", "title");
+    const bookings = await Booking.find({ userId }).populate(
+      'movieId',
+      'title',
+    );
     return new Response(JSON.stringify(bookings), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   } catch (error) {
@@ -25,8 +28,8 @@ export const GET = async () => {
       JSON.stringify({ error: `Error gettings users:${error}` }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+        headers: { 'Content-Type': 'application/json' },
+      },
     );
   }
 };

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const seatSchema = new mongoose.Schema({
   row: Number,
@@ -6,7 +6,7 @@ const seatSchema = new mongoose.Schema({
   isWheelchair: Boolean,
   type: {
     type: String,
-    enum: ["ordinary", "child", "retired", "student", "member"],
+    enum: ['ordinary', 'child', 'retired', 'student', 'member'],
     required: true,
   },
 });
@@ -15,14 +15,14 @@ const bookingSchema = new mongoose.Schema(
   {
     movieId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Movies",
+      ref: 'Movies',
       required: true,
     },
     screeningTime: String,
     seats: [seatSchema],
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: 'Users',
       required: false,
     },
     auditorium: String,
@@ -30,10 +30,10 @@ const bookingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Booking =
-  mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
+  mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
 
 export default Booking;

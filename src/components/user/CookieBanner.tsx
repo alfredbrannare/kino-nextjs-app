@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { useState, useEffect, CSSProperties } from 'react';
 
@@ -28,9 +28,10 @@ const CookieBanner = () => {
   return (
     <div style={styles.banner}>
       <p style={styles.text}>
-        Vi använder nödvändiga cookies för att säkerställa att webbplatsen fungerar.
-        För närvarande är webbplatsen under utveckling och all användardata kommer att raderas vid lanseringen.
-        Genom att klicka på &quot;Acceptera&quot; godkänner du detta.
+        Vi använder nödvändiga cookies för att säkerställa att webbplatsen
+        fungerar. För närvarande är webbplatsen under utveckling och all
+        användardata kommer att raderas vid lanseringen. Genom att klicka på
+        &quot;Acceptera&quot; godkänner du detta.
       </p>
       <button onClick={handleAccept} style={styles.button}>
         Acceptera
@@ -75,7 +76,7 @@ const styles: { [key: string]: CSSProperties } = {
     cursor: 'pointer',
     fontWeight: 'bold',
     flexShrink: 0,
-  }
+  },
 };
 
 export default CookieBanner;

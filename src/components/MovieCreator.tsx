@@ -1,9 +1,9 @@
-import { FC, useState,} from "react";
+import { FC, useState } from 'react';
 
 type Props = {
   setUpdate: (value: boolean) => void;
-}
-const MovieCreator:FC<Props> = ({ setUpdate }) => {
+};
+const MovieCreator: FC<Props> = ({ setUpdate }) => {
   const [id, setId] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -18,9 +18,11 @@ const MovieCreator:FC<Props> = ({ setUpdate }) => {
       const body = await response.json();
       if (response.ok) {
         setId('');
-        alert(`Film is added successfully !br / ${JSON.stringify(body.movie)}}`)
+        alert(
+          `Film is added successfully !br / ${JSON.stringify(body.movie)}}`,
+        );
         setUpdate(true);
-      }else{
+      } else {
         alert(`${body.status}`);
       }
     } catch (err) {
@@ -30,15 +32,15 @@ const MovieCreator:FC<Props> = ({ setUpdate }) => {
     }
   };
   return (
-    <div className="pt-10 text-center">
+    <div className='pt-10 text-center'>
       <input
-      className="input"
-        type="text"
-        placeholder="IMDb id (tt512332)"
+        className='input'
+        type='text'
+        placeholder='IMDb id (tt512332)'
         value={id}
         onChange={(e) => setId(e.target.value)}
       />
-      <button className="btn" onClick={addFilm} disabled={loading}>
+      <button className='btn' onClick={addFilm} disabled={loading}>
         {loading ? 'Ny film...' : 'Ny film'}
       </button>
     </div>

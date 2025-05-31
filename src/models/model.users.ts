@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -15,16 +15,16 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: [
-      "user",
-      "admin",
-      "user silver",
-      "user guld",
-      "user kinoguru",
-      "admin silver",
-      "admin guld",
-      "admin kinoguru",
+      'user',
+      'admin',
+      'user silver',
+      'user guld',
+      'user kinoguru',
+      'admin silver',
+      'admin guld',
+      'admin kinoguru',
     ],
-    default: "user",
+    default: 'user',
   },
   points: {
     type: Number,
@@ -32,14 +32,14 @@ const userSchema = new mongoose.Schema({
   },
   benefits: {
     type: [String],
-    default: ["2 små läsk för priset av en!"],
+    default: ['2 små läsk för priset av en!'],
   },
   profilePicture: {
     type: String,
-    default: "",
+    default: '',
   },
 });
 
-const User = mongoose.models.Users || mongoose.model("Users", userSchema);
+const User = mongoose.models.Users || mongoose.model('Users', userSchema);
 
 export default User;

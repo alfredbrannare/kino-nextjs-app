@@ -1,7 +1,13 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { UserType } from "@/ts/types";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
+import { UserType } from '@/ts/types';
 
 interface AuthContextType {
   userData: UserType | null;
@@ -39,8 +45,6 @@ export const AuthDataProvider = ({ children }: AuthDataProviderProps) => {
         setLoggedIn(true);
         //Roles
         setAdmin(user?.role.includes('admin') ?? false);
-
-
       } else {
         setAdmin(false);
         setLoggedIn(false);
@@ -48,7 +52,7 @@ export const AuthDataProvider = ({ children }: AuthDataProviderProps) => {
         console.log('Error checking token:', data.message);
       }
     } catch (error) {
-      console.error("Failed to check token:", error);
+      console.error('Failed to check token:', error);
       setLoggedIn(false);
       setAdmin(false);
       setUserData(null);
@@ -56,7 +60,6 @@ export const AuthDataProvider = ({ children }: AuthDataProviderProps) => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     checkUser();
@@ -79,11 +82,21 @@ export const AuthDataProvider = ({ children }: AuthDataProviderProps) => {
   };
 
   return (
-    <AuthData.Provider value={{ userData, isLoggedIn, isLoading, logout, login, checkUser, isAdmin }}>
+    <AuthData.Provider
+      value={{
+        userData,
+        isLoggedIn,
+        isLoading,
+        logout,
+        login,
+        checkUser,
+        isAdmin,
+      }}
+    >
       {children}
     </AuthData.Provider>
   );
-}
+};
 
 export const useAuth = () => {
   const context = useContext(AuthData);

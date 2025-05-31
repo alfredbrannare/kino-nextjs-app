@@ -1,9 +1,11 @@
-import connectDB from "@/lib/mongodb";
-import Movie from "@/models/model.movies";
-import { NextRequest, NextResponse } from "next/server";
-import { checkAuth } from "@/lib/auth";
+import connectDB from '@/lib/mongodb';
+import Movie from '@/models/model.movies';
+import { NextRequest, NextResponse } from 'next/server';
+import { checkAuth } from '@/lib/auth';
 
-export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string[] }> },
 ) => {
   await connectDB();
   const id = (await params).id;
@@ -11,30 +13,32 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
 
   return new Response(JSON.stringify(movie), {
     status: 200,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
 };
 
-export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string[] }> },
 ) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role.includes("admin");
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(
-      { message: "You dont have the right to use this feature!" },
-      { status: 403 }
+      { message: 'You dont have the right to use this feature!' },
+      { status: 403 },
     );
   }
 
   try {
-      const id = (await params).id;
+    const id = (await params).id;
 
     await Movie.findByIdAndDelete(id);
   } catch (error) {
@@ -42,21 +46,23 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ i
   }
 };
 
-export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: string[] }> }
+export const PUT = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string[] }> },
 ) => {
   await connectDB();
   const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const isAdmin = authenticatedUser.role.includes("admin");
+  const isAdmin = authenticatedUser.role.includes('admin');
 
   if (!isAdmin) {
     return NextResponse.json(
-      { message: "You dont have the right to use this feature!" },
-      { status: 403 }
+      { message: 'You dont have the right to use this feature!' },
+      { status: 403 },
     );
   }
 
@@ -67,7 +73,7 @@ export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: 
   const updatedMovie = await Movie.findByIdAndUpdate(
     id,
     { inCinemas },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   return NextResponse.json(updatedMovie, { status: 200 });

@@ -1,5 +1,5 @@
-import connectDB from "../../../lib/mongodb";
-import Auditorium from "@/models/model.auditorium";
+import connectDB from '../../../lib/mongodb';
+import Auditorium from '@/models/model.auditorium';
 
 export const GET = async () => {
   try {
@@ -8,13 +8,13 @@ export const GET = async () => {
     return new Response(JSON.stringify(auditorium), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   } catch (error) {
     return new Response(JSON.stringify({ error: `Database error: ${error}` }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 };

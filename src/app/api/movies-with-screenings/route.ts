@@ -1,8 +1,8 @@
-import connectDB from "@/lib/mongodb";
-import Movie from "@/models/model.movies";
-import Screenings from "@/models/model.screenings";
-import "@/models/model.auditorium";
-import { BookingType } from "@/ts/types";
+import connectDB from '@/lib/mongodb';
+import Movie from '@/models/model.movies';
+import Screenings from '@/models/model.screenings';
+import '@/models/model.auditorium';
+import { BookingType } from '@/ts/types';
 
 type EnrichedScreening = {
   _id: string;
@@ -21,24 +21,24 @@ export const GET = async () => {
     const screenings = await Screenings.find({
       startTime: { $gte: new Date() },
     }) // only future screenings
-      .populate("movieId")
-      .populate("auditoriumId")
+      .populate('movieId')
+      .populate('auditoriumId')
       .populate({
-        path: "bookedSeats",
+        path: 'bookedSeats',
         populate: {
-          path: "seats",
+          path: 'seats',
         },
       });
 
     // Group screenings by movie
-    const screeningsByMovie:Record<string, EnrichedScreening[]>  = {};
+    const screeningsByMovie: Record<string, EnrichedScreening[]> = {};
     for (const screening of screenings) {
       const movieId = screening.movieId._id.toString();
 
       const bookedCount = screening.bookedSeats?.reduce(
         (sum: number, booking: BookingType) =>
           sum + (booking.seats?.length || 0),
-        0
+        0,
       );
 
       const totalSeats = screening.auditoriumId?.seats?.length || 100;
@@ -67,11 +67,11 @@ export const GET = async () => {
 
     return new Response(JSON.stringify(result), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error("Error in /api/movies-with-screenings:", error);
-    return new Response(JSON.stringify({ error: "Server error" }), {
+    console.error('Error in /api/movies-with-screenings:', error);
+    return new Response(JSON.stringify({ error: 'Server error' }), {
       status: 500,
     });
   }

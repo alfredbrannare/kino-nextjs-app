@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const auditoriumSchema = new mongoose.Schema({
   name: {
@@ -19,6 +19,7 @@ const auditoriumSchema = new mongoose.Schema({
 });
 
 const Auditorium =
-  mongoose.models.Auditoriums || mongoose.model("Auditoriums", auditoriumSchema);
+  mongoose.models.Auditoriums ||
+  mongoose.model('Auditoriums', auditoriumSchema);
 
 export default Auditorium;

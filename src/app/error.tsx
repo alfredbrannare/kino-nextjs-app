@@ -14,11 +14,20 @@ export default function GlobalError({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <html lang="sv">
+    <html lang='sv'>
       <body>
-        <div style={{ textAlign: 'center', marginTop: '50px', padding: '20px' }}>
+        <div
+          style={{ textAlign: 'center', marginTop: '50px', padding: '20px' }}
+        >
           <ErrorMessage error='Ett oväntat fel har inträffat. Försök igen.' />
-          <button onClick={() => reset()} style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer' }}>
+          <button
+            onClick={() => reset()}
+            style={{
+              marginTop: '20px',
+              padding: '10px 20px',
+              cursor: 'pointer',
+            }}
+          >
             Försök igen
           </button>
         </div>

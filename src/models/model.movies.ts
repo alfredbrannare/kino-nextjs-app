@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const moviesSchema = new mongoose.Schema({
   title: String,
@@ -12,6 +12,6 @@ const moviesSchema = new mongoose.Schema({
   trailerKey: { type: String, default: null },
 });
 
-const Movie = mongoose.models.Movies || mongoose.model("Movies", moviesSchema);
+const Movie = mongoose.models.Movies || mongoose.model('Movies', moviesSchema);
 
 export default Movie;

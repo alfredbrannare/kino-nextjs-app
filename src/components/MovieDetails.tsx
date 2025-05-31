@@ -1,17 +1,23 @@
-"use client";
-import Link from "next/link";
-import Views from "./views/Views";
-import ReviewForm from "./reviews/ReviewForm";
-import { FC, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { useAuth } from "@/components/user/AuthData";
-import RatingCard from "./movies/singel/RatingCard";
-import MovieHeader from "./movies/singel/MovieHeader";
-import dynamic from "next/dynamic";
-import Login from "./Login";
-import Image from "next/image";
-import { AuthContextType, MovieType, ReviewsType, ScreeningType, UserType } from "@/ts/types";
-import ErrorMessage from "./ErrorMessage";
+'use client';
+import Link from 'next/link';
+import Views from './views/Views';
+import ReviewForm from './reviews/ReviewForm';
+import { FC, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useAuth } from '@/components/user/AuthData';
+import RatingCard from './movies/singel/RatingCard';
+import MovieHeader from './movies/singel/MovieHeader';
+import dynamic from 'next/dynamic';
+import Login from './Login';
+import Image from 'next/image';
+import {
+  AuthContextType,
+  MovieType,
+  ReviewsType,
+  ScreeningType,
+  UserType,
+} from '@/ts/types';
+import ErrorMessage from './ErrorMessage';
 
 // TODO fix check for backend for rating
 type Props = {
@@ -37,12 +43,12 @@ const MovieDetails: FC<Props> = ({ movie }) => {
   const [reviewsError, setReviewsError] = useState<string | null>(null);
   // dynamic stuff
 
-  const ReviewsList = dynamic(() => import("./reviews/ReviewsList"), {
+  const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
     ssr: false,
-    loading: () => <p className="text-center">Laddar recensioner...</p>, // Optional fallback
+    loading: () => <p className='text-center'>Laddar recensioner...</p>, // Optional fallback
   });
 
-  const TrailerCard = dynamic(() => import("./movies/singel/TrailerCard"), {
+  const TrailerCard = dynamic(() => import('./movies/singel/TrailerCard'), {
     ssr: false,
   });
 
@@ -55,7 +61,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const reviewsEl = document.getElementById(`reviews-section`);
@@ -70,10 +76,10 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         if (res.ok) {
           setReviews(data.reviews);
         } else {
-          console.error("Failed to fetch reviews:", data.message);
+          console.error('Failed to fetch reviews:', data.message);
         }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error('Error fetching reviews:', error);
         setReviewsError('Vi har för tillfället problem att hämta recensioner');
       }
     };
@@ -92,24 +98,24 @@ const MovieDetails: FC<Props> = ({ movie }) => {
               bookedSeatsAsArray?.reduce(
                 (sum, booking: BookingWithSeats) =>
                   sum + (booking.seats?.length || 0),
-                0
+                0,
               ) || 0; // Ensure bookedCount is a number, default to 0
 
             return {
               ...apiScreening,
               bookedCount,
               tid: new Date(apiScreening.startTime).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
+                hour: '2-digit',
+                minute: '2-digit',
               }),
-              sal: apiScreening.auditoriumId?.name || "Okänd salong",
+              sal: apiScreening.auditoriumId?.name || 'Okänd salong',
             };
-          }
+          },
         );
 
         setScreenings(enrichedData);
       } catch (error) {
-        console.error("Error fetching screenings", error);
+        console.error('Error fetching screenings', error);
       }
     };
 
@@ -134,79 +140,77 @@ const MovieDetails: FC<Props> = ({ movie }) => {
     rating: string;
     text: string;
   }) => {
-    const response = await fetch("/api/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+    const response = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ movieId, rating, text }),
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Review saved:", data.review);
+      console.log('Review saved:', data.review);
       // refresh reviews here
       const res = await fetch(`/api/reviews?movieId=${movie._id}`);
       const latest = await res.json();
       setReviews(latest.reviews);
     } else {
-      console.error("Failed to save review");
+      console.error('Failed to save review');
     }
   };
 
   return (
     <>
-      <div className="bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500">
+      <div className='bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500'>
         {/* Left colum Main info and booking */}
-        <div className="flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3">
+        <div className='flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3'>
           {/* title, metaInfo description */}
 
           <MovieHeader
             title={movie.title}
             description={movie.description}
             ageRating={
-              typeof movie.ageRating === "string"
+              typeof movie.ageRating === 'string'
                 ? isNaN(parseInt(movie.ageRating, 10))
                   ? 10
                   : parseInt(movie.ageRating, 10)
-                : movie.ageRating ?? 10
+                : (movie.ageRating ?? 10)
             }
             duration={
-              typeof movie.runtime === "number"
+              typeof movie.runtime === 'number'
                 ? movie.runtime.toString()
-                : movie.runtime ?? "1.40"
+                : (movie.runtime ?? '1.40')
             }
             genre={
               movie.genres
                 ? Array.isArray(movie.genres)
-                  ? movie.genres.join(", ")
+                  ? movie.genres.join(', ')
                   : movie.genres
-                : "Horror"
+                : 'Horror'
             }
           />
         </div>
 
-        <div className="order-6 mt-10 md:order-2 col-span-full md:col-span-2 ">
+        <div className='order-6 mt-10 md:order-2 col-span-full md:col-span-2 '>
           {/* rating */}
-          <RatingCard
-            rating={parseFloat(movie.rating || "0") || 0}
-          />
+          <RatingCard rating={parseFloat(movie.rating || '0') || 0} />
         </div>
 
-        <div className="flex flex-col justify-between order-3 h-full mt-4 md:col-span-3">
+        <div className='flex flex-col justify-between order-3 h-full mt-4 md:col-span-3'>
           {/* description */}
-          <div className="pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg">
-            <p className="m-2 text-xl text-center md:m-4 md:text-left">
+          <div className='pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg'>
+            <p className='m-2 text-xl text-center md:m-4 md:text-left'>
               {movie.description}
             </p>
           </div>
-          <div className="justify-center">
-            <div className="justify-end m-4 ">
+          <div className='justify-center'>
+            <div className='justify-end m-4 '>
               <TrailerCard trailerKey={movie.trailerKey} title={movie.title} />
             </div>
           </div>
         </div>
 
-        <div className="flex justify-center order-2 md:order-4 col-span-full md:col-span-2 ">
+        <div className='flex justify-center order-2 md:order-4 col-span-full md:col-span-2 '>
           {/* Poster */}
           {/* <img
 						src={movie.image}
@@ -219,23 +223,21 @@ const MovieDetails: FC<Props> = ({ movie }) => {
             width={400}
             height={600}
             priority
-            className="object-contain rounded-lg shadow-lg"
+            className='object-contain rounded-lg shadow-lg'
           />
         </div>
-        <div className="row-start-5 col-span-full md:col-span-5 md:row-start-3">
-          <div className="bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 ">
-            <h2 className="mb-4 text-3xl font-bold text-center">
+        <div className='row-start-5 col-span-full md:col-span-5 md:row-start-3'>
+          <div className='bg-[#2B0404] shadow-lg rounded-lg p-6 shadow max-h-full my-4 '>
+            <h2 className='mb-4 text-3xl font-bold text-center'>
               Välj visning
             </h2>
 
             {/* date select */}
-            <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+            <div className='grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2'>
               {screenings.length === 0 ? (
-                <div className="col-span-full flex justify-center items-center">
-                                  <ErrorMessage
-                                    error={'Inga visningar hittades.'}
-                                  />
-                                </div>
+                <div className='col-span-full flex justify-center items-center'>
+                  <ErrorMessage error={'Inga visningar hittades.'} />
+                </div>
               ) : (
                 screenings.map((screening) => (
                   <Link
@@ -245,21 +247,21 @@ const MovieDetails: FC<Props> = ({ movie }) => {
                       query: {
                         movieId: screening.movieId._id,
                         screeningTime: screening.startTime,
-                        auditorium: "city",
+                        auditorium: 'city',
                       },
                     }}
                   >
                     <Views
                       views={{
                         tid: new Date(screening.startTime).toLocaleString(
-                          "sv-SE",
+                          'sv-SE',
                           {
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }
+                            weekday: 'short',
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
                         ),
                         sal: screening.auditoriumId.name,
                         maxSeats: screening.auditoriumId.capacity ?? 100,
@@ -273,15 +275,15 @@ const MovieDetails: FC<Props> = ({ movie }) => {
           </div>
         </div>
         <div
-          id="reviews-section"
-          className="bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14"
+          id='reviews-section'
+          className='bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14'
         >
-          <h2 className="m-4 text-2xl font-bold">Reviews</h2>
-          <div className="md:w-md">
+          <h2 className='m-4 text-2xl font-bold'>Reviews</h2>
+          <div className='md:w-md'>
             <div>
               {!isLoggedIn ? (
-                <div className="flex items-center justify-center gap-2 mx-4 text-xl">
-                  <span className="inline-block">
+                <div className='flex items-center justify-center gap-2 mx-4 text-xl'>
+                  <span className='inline-block'>
                     <Login />
                   </span>
                   <span>för att lämna en review</span>
@@ -293,16 +295,13 @@ const MovieDetails: FC<Props> = ({ movie }) => {
                 />
               )}
             </div>
-                        <div className="mb-5">
-                          {reviewsError ? (
-                            <ErrorMessage
-                              error={reviewsError}
-                            />
-                          ) : (
-                            <ReviewsList
-                              reviews={reviews} />
-                          )}
-                        </div>
+            <div className='mb-5'>
+              {reviewsError ? (
+                <ErrorMessage error={reviewsError} />
+              ) : (
+                <ReviewsList reviews={reviews} />
+              )}
+            </div>
           </div>
         </div>
       </div>

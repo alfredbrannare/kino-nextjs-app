@@ -1,7 +1,7 @@
-import connectDB from "@/lib/mongodb";
-import LiveEvents from "@/models/model.live_events";
-import { checkAuth } from "@/lib/auth";
-import { NextRequest, NextResponse } from "next/server";
+import connectDB from '@/lib/mongodb';
+import LiveEvents from '@/models/model.live_events';
+import { checkAuth } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async () => {
   try {
@@ -11,7 +11,7 @@ export const GET = async () => {
   } catch (error) {
     return NextResponse.json(
       { error: `Database error: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
@@ -21,10 +21,10 @@ export const POST = async (req: NextRequest) => {
   const authenticatedUser = await checkAuth();
 
   if (!authenticatedUser) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  if (authenticatedUser.role !== "admin") {
-    return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+  if (authenticatedUser.role !== 'admin') {
+    return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
   }
 
   try {
@@ -41,16 +41,16 @@ export const POST = async (req: NextRequest) => {
       !runtime
     ) {
       return NextResponse.json(
-        { message: "Missing required fields" },
-        { status: 400 }
+        { message: 'Missing required fields' },
+        { status: 400 },
       );
     }
 
     const existing = await LiveEvents.findOne({ title, date });
     if (existing) {
       return NextResponse.json(
-        { message: "Event already exists" },
-        { status: 409 }
+        { message: 'Event already exists' },
+        { status: 409 },
       );
     }
 
@@ -69,7 +69,7 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     return NextResponse.json(
       { error: `Internal Server Error: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

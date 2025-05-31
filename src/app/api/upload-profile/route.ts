@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData();
-    const file= formData.get('file');
+    const file = formData.get('file');
 
     if (!(file instanceof File)) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
@@ -30,35 +30,43 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: 'profile_pics',
-          public_id: `user_${user._id}`,
-          overwrite: true,
-        },
-        (error, result) => {
-          if (error || !result) return reject(error);
-          resolve(result);
-        }
-      );
+    const uploadResult = await new Promise<UploadApiResponse>(
+      (resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'profile_pics',
+            public_id: `user_${user._id}`,
+            overwrite: true,
+          },
+          (error, result) => {
+            if (error || !result) return reject(error);
+            resolve(result);
+          },
+        );
 
-      stream.end(buffer);
-    });
+        stream.end(buffer);
+      },
+    );
 
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
       { profilePicture: uploadResult.secure_url },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedUser) {
-      return NextResponse.json({ error: 'User not found for update' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'User not found for update' },
+        { status: 404 },
+      );
     }
 
     return NextResponse.json({ profilePicture: updatedUser.profilePicture });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Something went wrong' },
+      { status: 500 },
+    );
   }
 }

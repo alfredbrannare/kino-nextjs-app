@@ -1,36 +1,36 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { MovieType } from '@/ts/types'
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { MovieType } from '@/ts/types';
 
 const Movie = () => {
-  const [movie, setMovie] = useState<MovieType | undefined>()
-  const [loading, setLoading] = useState(true)
+  const [movie, setMovie] = useState<MovieType | undefined>();
+  const [loading, setLoading] = useState(true);
 
-  const params = useParams()
-  const id = params?.id as string
+  const params = useParams();
+  const id = params?.id as string;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/movies/${id}`)
-        const data = await res.json()
-        setMovie(data)
+        const res = await fetch(`/api/movies/${id}`);
+        const data = await res.json();
+        setMovie(data);
       } catch (err) {
-        console.error('Error fetching movie:', err)
+        console.error('Error fetching movie:', err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    if (id) fetchData()
-  }, [id])
+    if (id) fetchData();
+  }, [id]);
 
-  if (loading) return <p>Loading...</p>
-  if (!movie) return <p>Movie not found</p>
+  if (loading) return <p>Loading...</p>;
+  if (!movie) return <p>Movie not found</p>;
 
   return (
     <div className='post'>
@@ -47,7 +47,7 @@ const Movie = () => {
         Back
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default Movie
+export default Movie;

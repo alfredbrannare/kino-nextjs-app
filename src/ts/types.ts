@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export type Params = {
   params: {
@@ -15,11 +15,11 @@ export type Context = {
 };
 
 export type DiscountType =
-  | "ordinary"
-  | "child"
-  | "retired"
-  | "student"
-  | "member";
+  | 'ordinary'
+  | 'child'
+  | 'retired'
+  | 'student'
+  | 'member';
 
 export interface Seat {
   isWheelchair: boolean;
