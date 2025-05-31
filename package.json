@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.5",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "cypress": "^14.4.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.1"
   }

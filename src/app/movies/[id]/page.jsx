@@ -3,6 +3,7 @@
 import MovieDetails from 'src/components/MovieDetails';
 import MovieDetailsSkeleton from 'src/components/movies/singel/skeleton/MovieDetailsSkeleton';
 import { headers } from 'next/headers';
+import ErrorMessage from 'src/components/ErrorMessage';
 
 const Movie = async ({ params }) => {
 	// const [movie, setMovie] = useState(null);
@@ -31,7 +32,7 @@ const Movie = async ({ params }) => {
 		);
 	} catch (error) {
 		console.error('Error fetching movie:', error);
-		return <p className="text-2xl text-center">Movie not found</p>;
+		return <ErrorMessage error="Movie not found" />;
 	}
 
 	// useEffect(() => {
