@@ -1,26 +1,28 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import MovieCard from "@/components/MovieCard";
 import SearchMoviesInput from "@/components/movies/SearchMoviesInput";
 import SortMoviesDropdown from "@/components/movies/SortMoviesDropdown";
 import { fetchMovies } from "@/lib/fetchMovies";
 import { searchMovies } from "@/utils/movies/searchMovies";
-import { sortMovies } from "@/utils/movies/sortMovies";
+import { sortMovies, SortOption } from "@/utils/movies/sortMovies";
 import MovieCardSkeleton from "@/components/MovieCardSkeleton";
+import { MovieType } from "@/ts/types";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function MoviePageContent() {
-    const [unsortedMovies, setUnsort] = useState([]);
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [sortOptions, setSortOptions] = useState('');
-    const [searchInput, setSearchInput] = useState('');
+    const [unsortedMovies, setUnsortedMovies] = useState<MovieType[]>([]);
+    const [movies, setMovies] = useState<MovieType[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [sortOptions, setSortOptions] = useState<SortOption | ''>('');
+    const [searchInput, setSearchInput] = useState<string>('');
 
     useEffect(() => {
         const loadMovies = async () => {
             try {
                 const data = await fetchMovies();
-                setUnsort(data);
+                setUnsortedMovies(data);
             } catch (error) {
                 console.error('Error fetching movies', error);
                 setError('Vi har för tillfället problem med att hämta filmerna');
@@ -33,13 +35,13 @@ export default function MoviePageContent() {
 
     useEffect(() => {
         const filteredMovies = searchMovies(unsortedMovies, searchInput);
-        const sortedAndFilteredMovies = sortMovies(filteredMovies, sortOptions);
+        const sortedAndFilteredMovies = sortMovies(filteredMovies, sortOptions as SortOption);
         setMovies(sortedAndFilteredMovies);
     }, [searchInput, sortOptions, unsortedMovies]);
 
 
-    const handleSortChange = (event) => {
-        setSortOptions(event.target.value);
+    const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setSortOptions(event.target.value as SortOption);
     };
 
     return (
@@ -49,7 +51,7 @@ export default function MoviePageContent() {
             <div className="relative mx-auto w-full border-4 rounded-md border-yellow-400 shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15] xl:min-w-[1280px]">
 
                 <div className="sticky top-0 bg-[#2b0404] z-10 mt-2 mx-5 py-4 px-4 controls-container flex flex-row justify-center">
-                    <SearchMoviesInput value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }}></SearchMoviesInput>
+                    <SearchMoviesInput value={searchInput} onChange={(event: ChangeEvent<HTMLInputElement>) => { setSearchInput(event.target.value) }}></SearchMoviesInput>
                     <SortMoviesDropdown value={sortOptions} onChange={handleSortChange}></SortMoviesDropdown>
                 </div>
                 {!loading && searchInput && movies.length === 0 && (
@@ -62,6 +64,10 @@ export default function MoviePageContent() {
                         Array.from({ length: 8 }).map((_, i) => (
                             <MovieCardSkeleton key={i} className="flex-shrink-0" />
                         ))
+                    ) : error ? (
+                        <ErrorMessage
+                            error={error}
+                        />
                     ) : movies.map((movie) => (
                         <MovieCard
                             key={movie._id}

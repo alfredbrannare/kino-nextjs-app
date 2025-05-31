@@ -6,6 +6,7 @@ import EventsTabs from "@/components/events/EventsTabs";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Image from "next/image";
 import { EventType } from "@/ts/types";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function EventsPageContent() {
     const [events, setEvents] = useState<EventType[]>([]);
@@ -14,6 +15,7 @@ export default function EventsPageContent() {
     const initialTab = searchParams.get('tab') || 'tab1';
     const [activeTab, setActiveTab] = useState(initialTab);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const tabs = [
         { id: "tab1", label: "Live på Kino" },
@@ -32,6 +34,10 @@ export default function EventsPageContent() {
             setEvents([]);
             setLiveEvents([]);
         }).finally(() => {
+            setLoading(false);
+        }).catch((err) => {
+            console.error('Error fetching events:', err);
+            setError('Vi har för tillfället problem med att hämta evenemang');
             setLoading(false);
         });
     }, []);
@@ -57,6 +63,8 @@ export default function EventsPageContent() {
                 >
                     {loading ? (
                         <LoadingSpinner />
+                    ) : error ? (
+                        <ErrorMessage error={error} />
                     ) : (
                         <div className="space-y-10" aria-labelledby="evenemang-titlar">
                             {currentEvents.map((event, index) => (

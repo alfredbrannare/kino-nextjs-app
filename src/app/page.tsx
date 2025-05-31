@@ -4,12 +4,12 @@ import TrailerCarousel from "@/components/TrailerCarousel/TrailerCarousel";
 import MovieCard from "../components/MovieCard";
 import Link from "next/link";
 import MovieCardSkeleton from "../components/MovieCardSkeleton";
-import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/user/AuthData";
 import Image from 'next/image';
 import { AuthContextType, EventType, LiveEventsType, MovieType } from '@/ts/types';
 import EventCardSkeleton from '@/components/events/MovieCardSkeleton';
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface MovieWithDefiniteTrailerKey extends MovieType {
   trailerKey: string;
@@ -22,7 +22,10 @@ function movieHasTrailerKey(movie: MovieType): movie is MovieWithDefiniteTrailer
 const Main = () => {
   const [movies, setMovies] = useState<MovieType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [currentMoviesError, setCurrentMoviesError] = useState<string | null>(null);
+  const [upcomingMoviesError, setUpcomingMoviesError] = useState<string | null>(null);
+  const [eventsError, setEventsError] = useState<string | null>(null);
+  const [liveEventsError, setLiveEventsError] = useState<string | null>(null);
   const [events, setEvents] = useState<EventType[]>([]);
   const [liveEvents, setLiveEvents] = useState<LiveEventsType[]>([]);
   const [upcomingMovies, setUpcomigMovies] = useState<MovieType[]>([])
@@ -38,7 +41,7 @@ const Main = () => {
         setLiveEvents(limitedData);
       } catch (error) {
         console.error('Error fetching events:', error);
-        setError('Vi har för tillfället problem med att hämta evenemang');
+        setLiveEventsError('Vi har för tillfället problem med att hämta live evenemang');
       } finally {
         setLoading(false);
       }
@@ -56,7 +59,7 @@ const Main = () => {
         setEvents(limitedData);
       } catch (error) {
         console.error('Error fetching events:', error);
-        setError('Vi har för tillfället problem med att hämta evenemang');
+        setEventsError('Vi har för tillfället problem med att hämta evenemang');
       } finally {
         setLoading(false);
       }
@@ -72,8 +75,8 @@ const Main = () => {
         const data: MovieType[] = await res.json();
         setMovies(data);
       } catch (error) {
-        console.error("Error fetching movies:", error);
-        setError("Vi har för tillfället problem med att hämta filmer.");
+        console.error('Error fetching movies:', error);
+        setCurrentMoviesError('Vi har för tillfället problem med att hämta filmer.');
       } finally {
         setLoading(false);
       }
@@ -89,8 +92,8 @@ const Main = () => {
         const data: MovieType[] = await res.json();
         setUpcomigMovies(data);
       } catch (error) {
-        console.error("Error fetching movies:", error);
-        setError("Vi har för tillfället problem med att hämta filmer.");
+        console.error('Error fetching movies:', error);
+        setUpcomingMoviesError('Vi har för tillfället problem med att hämta kommande filmer.');
       } finally {
         setLoading(false);
       }
@@ -119,16 +122,10 @@ const Main = () => {
                 VISAS JUST NU
               </h2>
 
-              {error && (
-                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
-                  <div className="text-center text-black flex flex-col items-center">
-                    <Info />
-                    <span className="font-bold text-xl">Fel</span>
-                    <strong className="text-sm text-black font-bold text-xl">
-                      {error}
-                    </strong>
-                  </div>
-                </div>
+              {currentMoviesError && (
+                <ErrorMessage
+                  error={currentMoviesError}
+                />
               )}
 
               {/* Grid for the cards */}
@@ -151,16 +148,10 @@ const Main = () => {
                 KOMMANDE FILMER
               </h2>
 
-              {error && (
-                <div className="alert alert-warning shadow-lg justify-center mx-auto my-10 max-w-full">
-                  <div className="text-center text-black flex flex-col items-center">
-                    <Info />
-                    <span className="font-bold text-xl">Fel</span>
-                    <strong className="text-sm text-black font-bold text-xl">
-                      {error}
-                    </strong>
-                  </div>
-                </div>
+              {upcomingMoviesError && (
+                <ErrorMessage
+                  error={upcomingMoviesError}
+                />
               )}
 
               <div className="flex flex-row overflow-auto px-2 py-8 w-full xl:justify-center">
@@ -188,6 +179,11 @@ const Main = () => {
               </div>
               <section className="my-12 text-center">
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">LIVE PÅ KINO</h1>
+                {liveEventsError && (
+                  <ErrorMessage
+                    error={liveEventsError}
+                  />
+                )}
                 {loading ? (
                   <EventCardSkeleton></EventCardSkeleton>
                 ) : liveEvents.map((event) => (
@@ -230,6 +226,11 @@ const Main = () => {
               </section>
               <section>
                 <h1 className="text-3xl text-[#CDCDCD] font-bold text-center">EVENEMANG</h1>
+                {eventsError && (
+                  <ErrorMessage
+                    error={eventsError}
+                  />
+                )}
                 {loading ? (
                   <EventCardSkeleton></EventCardSkeleton>
                 ) : events.map((event) => (
@@ -270,7 +271,7 @@ const Main = () => {
                   AV FILMÄLSKARE - FÖR FILMÄLSKARE
                 </h3>
                 {isLoading ? (
-                  <div className="min-h-[150px]"/>
+                  <div className="min-h-[150px]" />
                 ) : !isLoggedIn ? (
                   <Login />
                 ) : null}

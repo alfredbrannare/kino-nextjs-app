@@ -1,6 +1,12 @@
-const MovieCardSkeleton = () => {
+import React, { FC } from 'react';
+
+type Props = {
+  className?: string;
+};
+
+const MovieCardSkeleton: FC<Props> = ({ className }) => {
     return (
-        <div className="skeleton min-w-72 min-h-96 max-w-72 max-h-96 mx-2 my-2"></div>
+        <div className={`animate-pulse bg-gray-700 rounded-lg shadow-lg m-2 w-48 ${className || ''}`}></div>
     )
 }
 

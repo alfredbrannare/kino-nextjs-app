@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 
 type Props = {
     value: string;
-    onChange: () => void;
+    onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 const SortMoviesDropdown:FC<Props> = ({ value, onChange }) => {
     return (

@@ -4,12 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Login from './Login';
 import { useAuth } from './user/AuthData';
-import { UserRound } from 'lucide-react';
+import { UserRound, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const Header = () => {
   const pathname = usePathname() || '';
-  const { isLoggedIn, isLoading, userData } = useAuth();
+  const { isLoggedIn, logout, isLoading, userData } = useAuth();
   return (
     <header>
       <nav className="navbar bg-[#2B0404] shadow-sm py-5 px-4">
@@ -112,21 +112,31 @@ const Header = () => {
               </li>
             </ul>
           </div>
-          <div className="navbar-end mr-6">
+          <div className="navbar-end flex items-center space-x-4 mr-6">
             {isLoading ? (
               <span className="loading"></span>
-            ) : !isLoggedIn ? (
-              <Login />
+            ) : isLoggedIn ? (
+              <>
+                <Link
+                  href="/membership"
+                  className="flex items-center gap-2 text-yellow-400 hover:text-white transition-transform hover:scale-110"
+                >
+                  <span className="font-semibold text-sm">
+                    {userData?.name || userData?.email || 'Medlem'}
+                  </span>
+                  <UserRound size={24} />
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-[#CDCDCD] hover:cursor-pointer hover:text-red-400 transition-transform hover:scale-110"
+                  aria-label="Logga ut"
+                  title="Logga ut"
+                >
+                  <LogOut size={24} />
+                </button>
+              </>
             ) : (
-              <Link
-                href="/membership"
-                className="hover:scale-110 mr-1 flex items-center gap-2 text-yellow-400 hover:text-white transition-colors"
-              >
-                <span className="font-semibold text-sm">
-                  {userData?.name || userData?.email || 'Medlem'}
-                </span>
-                <UserRound className="hover:scale-110 mr-1" />
-              </Link>
+              <Login />
             )}
           </div>
         </div>

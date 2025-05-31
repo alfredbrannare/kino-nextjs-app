@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { AuthContextType, BookingType, OffersType } from "@/ts/types";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function MembershipPage() {
   const {
@@ -45,6 +46,8 @@ export default function MembershipPage() {
     (a, b) =>
       new Date(a.screeningTime).getTime() - new Date(b.screeningTime).getTime()
   );
+  const [offersError, setOfferError] = useState<string | null>(null);
+  const [userError, setUserError] = useState<string | null>(null);
 
   const toggleExpand = useCallback((id: string) => {
     setExpandedTickets((prev) => ({
@@ -61,6 +64,7 @@ export default function MembershipPage() {
         setOffers(data.offers || []);
       } catch (error) {
         console.error("Error fetching offers:", error);
+        setOfferError('Vi har för tillfället problem att hämta dina erbjudanden');
       }
     };
     fetchOffers();
@@ -74,13 +78,17 @@ export default function MembershipPage() {
 
   useEffect(() => {
     const getBookings = async () => {
-      const response = await fetch("/api/bookings/user", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-
-      setBooking(Array.isArray(data) ? data : []);
+      try {
+        const response = await fetch('/api/bookings/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await response.json();
+        setBooking(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        setUserError('Vi har för tillfället problem att hämta dina bokningar');
+      }
     };
     getBookings();
   }, []);
@@ -235,11 +243,7 @@ export default function MembershipPage() {
                 )}
               </div>
             )}
-            <LogOut
-              size={24}
-              className="cursor-pointer hover:scale-110 transition"
-              onClick={logout}
-            />
+            <LogOut size={24} data-testid="logout-icon" className="cursor-pointer hover:scale-110 transition" onClick={logout} />
           </div>
 
           <div className="flex flex-col items-center justify-center flex-grow">
@@ -347,10 +351,12 @@ export default function MembershipPage() {
             <h3 className="text-xl font-bold text-[#CDCDCD]  pb-1 mb-4 flex justify-center items-center gap-2">
               <Ticket size={40} /> Dina Biljetter
             </h3>
-            {booking.length === 0 ? (
-              <p className="text-center text-[#CDCDCD]">
-                Inga bokningar hittades.
-              </p>
+            {userError ? (
+              <ErrorMessage
+                error={userError}
+              />
+            ) : booking.length === 0 ? (
+              <p className="text-center text-[#CDCDCD]">Inga bokningar hittades.</p>
             ) : (
               <ul className="space-y-4">
                 {(showAllTickets ? sortedBookings : sortedBookings.slice(0, 2))
@@ -440,8 +446,14 @@ export default function MembershipPage() {
               <Popcorn size={40} /> Veckans erbjudande
             </h3>
             <ul className="space-y-2 list-none ml-0 font-bold text-yellow-400 text-lg">
-              {offers.length > 0 ? (
-                offers.map((offer, index) => <li key={index}>{offer.text}</li>)
+              {offersError ? (
+                <ErrorMessage
+                  error={offersError}
+                />
+              ) : offers.length > 0 ? (
+                offers.map((offer, index) => (
+                  <li key={index}>{offer.text}</li>
+                ))
               ) : (
                 <li className="text-center">Inga aktuella erbjudanden.</li>
               )}

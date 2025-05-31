@@ -1,7 +1,9 @@
 import { FC, useState } from 'react';
+import { UserType } from '@/ts/types'; // Make sure UserType is imported
 
 type Props = {
 	handleAddReview: (reviewData: { rating: string; text: string }) => void;
+	userData: UserType | null; // Add userData to the Props
 }
 
 const ReviewForm:FC<Props> = ({ handleAddReview }) => {

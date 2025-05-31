@@ -2,6 +2,7 @@
 // import { useEffect, useState, use } from 'react';
 import MovieDetails from '@/components/MovieDetails';
 import { headers } from 'next/headers';
+import ErrorMessage from '@/components/ErrorMessage';
 
 const Movie = async ({ params }: { params: Promise<{ id: string[] }> }
 ) => {
@@ -26,12 +27,12 @@ const Movie = async ({ params }: { params: Promise<{ id: string[] }> }
 		const movie = await res.json();
 		return (
 			<div className="post">
-				<MovieDetails movie={movie} />
+				<MovieDetails movie={movie} userData={null} />
 			</div>
 		);
 	} catch (error) {
 		console.error('Error fetching movie:', error);
-		return <p className="text-2xl text-center">Movie not found</p>;
+		return <ErrorMessage error="Movie not found" />;
 	}
 
 	// useEffect(() => {

@@ -10,11 +10,13 @@ import MovieHeader from "./movies/singel/MovieHeader";
 import dynamic from "next/dynamic";
 import Login from "./Login";
 import Image from "next/image";
-import { AuthContextType, MovieType, ReviewsType, ScreeningType } from "@/ts/types";
+import { AuthContextType, MovieType, ReviewsType, ScreeningType, UserType } from "@/ts/types";
+import ErrorMessage from "./ErrorMessage";
 
 // TODO fix check for backend for rating
 type Props = {
   movie: MovieType;
+  userData: UserType | null;
 };
 
 interface ExtendedScreeningType extends ScreeningType {
@@ -28,10 +30,11 @@ type BookingWithSeats = {
 };
 
 const MovieDetails: FC<Props> = ({ movie }) => {
-  const { isLoggedIn } = useAuth() as AuthContextType;
+  const { isLoggedIn, userData } = useAuth() as AuthContextType;
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [screenings, setScreenings] = useState<ExtendedScreeningType[]>([]);
   const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false); //coditional loading
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
   // dynamic stuff
 
   const ReviewsList = dynamic(() => import("./reviews/ReviewsList"), {
@@ -71,6 +74,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
+        setReviewsError('Vi har för tillfället problem att hämta recensioner');
       }
     };
     //- Patrik
@@ -227,9 +231,11 @@ const MovieDetails: FC<Props> = ({ movie }) => {
             {/* date select */}
             <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
               {screenings.length === 0 ? (
-                <p className="text-sm text-gray-400">
-                  Inga visningar hittades.
-                </p>
+                <div className="col-span-full flex justify-center items-center">
+                                  <ErrorMessage
+                                    error={'Inga visningar hittades.'}
+                                  />
+                                </div>
               ) : (
                 screenings.map((screening) => (
                   <Link
@@ -283,14 +289,20 @@ const MovieDetails: FC<Props> = ({ movie }) => {
               ) : (
                 <ReviewForm
                   handleAddReview={handleAddReview}
+                  userData={userData ?? null}
                 />
               )}
             </div>
-            <div className="mb-5">
-              {/* ReviewsList */}
-
-              <ReviewsList reviews={reviews} />
-            </div>
+                        <div className="mb-5">
+                          {reviewsError ? (
+                            <ErrorMessage
+                              error={reviewsError}
+                            />
+                          ) : (
+                            <ReviewsList
+                              reviews={reviews} />
+                          )}
+                        </div>
           </div>
         </div>
       </div>
