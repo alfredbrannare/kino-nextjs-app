@@ -1,7 +1,7 @@
-import { checkAuth } from "../../../../lib/auth";
+import { checkAuth } from "@/lib/auth";
 import Booking from "@/models/model.booking";
 import { NextResponse } from "next/server";
-import connectDB from "../../../../lib/mongodb";
+import connectDB from "@/lib/mongodb";
 
 export const GET = async () => {
   try {
