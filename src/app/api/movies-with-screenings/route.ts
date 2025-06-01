@@ -7,7 +7,10 @@ import { BookingType } from '@/ts/types';
 type EnrichedScreening = {
   _id: string;
   startTime: Date;
-  auditorium: string;
+  auditorium: {
+    name: string;
+    slug: string;
+  };
   availableSeats: number;
   bookedCount: number;
 };
@@ -47,7 +50,10 @@ export const GET = async () => {
       const enriched = {
         _id: screening._id,
         startTime: screening.startTime,
-        auditorium: screening.auditoriumId.name,
+        auditorium: {
+          name: screening.auditoriumId.name,
+          slug: screening.auditoriumId.slug,
+        },
         availableSeats,
         bookedCount,
       };
@@ -59,7 +65,6 @@ export const GET = async () => {
       screeningsByMovie[movieId].push(enriched);
     }
 
-    // Combine movies with their screenings
     const result = movies.map((movie) => ({
       ...movie.toObject(),
       screenings: screeningsByMovie[movie._id.toString()] || [],
@@ -71,7 +76,7 @@ export const GET = async () => {
     });
   } catch (error) {
     console.error('Error in /api/movies-with-screenings:', error);
-    return new Response(JSON.stringify({ error: 'Server error' }), {
+    return new Response(JSON.stringify({ error: 'Server error' + error }), {
       status: 500,
     });
   }

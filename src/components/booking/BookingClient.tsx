@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import SeatSelector from './SeatSelector';
 import TicketSelector from './TicketSelector';
 import { Clapperboard, Clock, Theater } from 'lucide-react';
@@ -16,6 +17,7 @@ type Props = {
 
 const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
   const { isLoggedIn, userId } = useAuth() as AuthContextType;
+  const router = useRouter();
   const [ticketInfo, setTicketInfo] = useState<TicketSelectionInfo>({
     total: 0,
     details: { ordinary: 0, child: 0, retired: 0, student: 0, member: 0 },
@@ -23,14 +25,25 @@ const BookingClient: FC<Props> = ({ movieId, screeningTime, auditorium }) => {
   });
   const [seatsFromDB, setSeatsFromDB] = useState<Seat[]>([]);
   const [movieTitle, setMovieTitle] = useState<string>('');
+  useEffect(() => {
+    if (!movieId || !screeningTime || !auditorium) return;
 
+    const validateScreening = async () => {
+      const res = await fetch(
+        `/api/screenings/validate?movieId=${movieId}&screeningTime=${screeningTime}&auditorium=${auditorium}`,
+      );
+      if (!res.ok) {
+        router.replace('/404');
+      }
+    };
+
+    validateScreening();
+  }, [movieId, screeningTime, auditorium, router]);
   useEffect(() => {
     if (!movieId) return;
     fetch(`/api/movies/${movieId}`)
       .then((res) => res.json())
-      .then((data) => {
-        setMovieTitle(data.title);
-      })
+      .then((data) => setMovieTitle(data.title))
       .catch((err) => console.error('Failed to fetch movie title', err));
   }, [movieId]);
 

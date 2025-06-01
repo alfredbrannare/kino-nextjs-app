@@ -15,7 +15,7 @@ export const GET = async (
   await connectDB();
   const screenings = await Screening.findById(id)
     .populate('movieId', 'title')
-    .populate('auditoriumId', 'name seats');
+    .populate('auditoriumId', 'name slug capacity seats');
 
   return new Response(JSON.stringify(screenings), {
     status: 200,

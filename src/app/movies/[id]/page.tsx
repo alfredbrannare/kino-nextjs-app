@@ -4,15 +4,16 @@ import MovieDetails from '@/components/MovieDetails';
 import { headers } from 'next/headers';
 import ErrorMessage from '@/components/ErrorMessage';
 
-const Movie = async ({ params }: { params: Promise<{ id: string[] }> }) => {
-  // const [movie, setMovie] = useState(null);
-  // const [loading, setLoading] = useState(true);
+interface MoviePageProps {
+  params: { id: string };
+}
 
-  // const { id } = use(params); // Unwrap the params promise/object
-  const id = (await params).id;
+const Movie = async ({ params }: MoviePageProps) => {
+  const { id } = params;
 
   // get host from headers to build URL
-  const host = (await headers()).get('host');
+  const headersList = await headers(); // headers() is synchronous
+  const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
   const baseUrl = `${protocol}://${host}`;
 
@@ -20,53 +21,18 @@ const Movie = async ({ params }: { params: Promise<{ id: string[] }> }) => {
     const res = await fetch(`${baseUrl}/api/movies/${id}`, {
       cache: 'no-store',
     });
-
-    if (!res.ok) throw new Error('Failed to fetch Movie');
+    if (!res.ok) throw new Error(`Failed to fetch Movie (status: ${res.status})`);
 
     const movie = await res.json();
     return (
       <div className='post'>
-        <MovieDetails movie={movie} userData={null} />
+        <MovieDetails movie={movie} />
       </div>
     );
   } catch (error) {
     console.error('Error fetching movie:', error);
     return <ErrorMessage error='Movie not found' />;
   }
-
-  // useEffect(() => {
-  // 	const fetchData = async () => {
-  // 		try {
-  // 			const response = await fetch(`/api/movies/${id}`);
-  // 			const data = await response.json();
-
-  // 			setMovie(data);
-  // 			console.log(movie);
-  // 		} catch (error) {
-  // 			console.error('Error fetching movies:', error);
-  // 		} finally {
-  // 			setLoading(false);
-  // 		}
-  // 	};
-  // 	fetchData();
-  // }, [id]);
-
-  // if (loading) return <div className="w-full h-32 skeleton"> </div>
-  // if (loading)
-  // 	return (
-  // 		<div className="md:w-300">
-  // 			<MovieDetailsSkeleton />
-  // 		</div>
-  // 	);
-  // if (loading) return <p>Loading...</p>
-
-  // if (!movie) return <p>Movie not found</p>;
-
-  // return (
-  // 	<div className="post">
-  // 		<MovieDetails movie={movie} />
-  // 	</div>
-  // );
 };
 
 export default Movie;

@@ -39,12 +39,16 @@ export interface BookingType {
 }
 
 export interface ScreeningType {
-  movieId: MovieType;
-  auditoriumId: AuditoriumType;
+  movieId: MovieType | string;
+  auditoriumId: AuditoriumType | string;
   _id: string;
   startTime: string;
   auditorium: string;
-  bookedSeats: number;
+  bookedSeats?: {
+    row: number;
+    seat: number;
+  }[];
+  bookingId?: string;
   screeningTime: string;
   availableSeats?: number;
   bookedCount?: number;
@@ -53,9 +57,16 @@ export interface ScreeningType {
 export interface AuditoriumType {
   _id: string;
   name: string;
-  capacity: number;
-  seats: Seat;
   slug: string;
+  capacity?: number;
+}
+
+export interface ScreeningWithPopulatedAuditoriumType {
+  _id: string;
+  startTime: string | Date;
+  auditorium: AuditoriumType;
+  bookedCount?: number;
+  availableSeats?: number;
 }
 
 export interface MovieType {
@@ -72,7 +83,7 @@ export interface MovieType {
   runtime?: string | number;
   trailerKey?: string;
   inCinemas?: boolean;
-  screenings?: ScreeningType[];
+  screenings?: ScreeningWithPopulatedAuditoriumType[];
 }
 
 export interface ReviewsType {
@@ -165,3 +176,13 @@ export type LiveEventToEditType = {
   runtime?: string;
   description?: string;
 };
+
+export interface BookingPageParamsProps {
+  params: {
+    slug: string;
+  };
+  searchParams: {
+    movieId: string;
+    screeningTime: string;
+  };
+}

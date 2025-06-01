@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
     };
     const screenings = await Screening.find(query)
       .populate('movieId', 'title')
-      .populate('auditoriumId', 'name capacity')
+      .populate('auditoriumId', 'name slug capacity')
       .populate('bookedSeats', 'seats');
 
     return new Response(JSON.stringify(screenings), {

@@ -37,8 +37,7 @@ export default function TicketsPage() {
         movies.map((movie) => (
           <div
             key={movie._id}
-            className='p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]'
-          >
+            className='p-6 border border-yellow-400 rounded-xl shadow-[inset_0_0_10px_#facc15,0_0_20px_#facc15]'>
             <div className='flex flex-col sm:flex-row gap-6'>
               <Image
                 src={movie.image}
@@ -77,15 +76,17 @@ export default function TicketsPage() {
                     <Link
                       key={s._id}
                       href={{
-                        pathname: `/auditoriums/city`,
+                        pathname: `/auditoriums/${s.auditorium.slug}`,
                         query: {
                           movieId: movie._id,
                           movieTitle: movie.title,
-                          screeningTime: s.startTime,
-                          auditorium: s.auditorium,
+                          screeningTime:
+                            s.startTime instanceof Date
+                              ? s.startTime.toISOString()
+                              : s.startTime,
+                          auditorium: s.auditorium.slug,
                         },
-                      }}
-                    >
+                      }}>
                       <div className='transform scale-90 p-0 m-0'>
                         <Views
                           key={s._id}
@@ -97,7 +98,7 @@ export default function TicketsPage() {
                               hour: '2-digit',
                               minute: '2-digit',
                             }),
-                            sal: s.auditorium,
+                            sal: s.auditorium.name,
                             maxSeats:
                               (s.bookedCount ?? 0) + (s.availableSeats ?? 0),
                             bookedCount: s.bookedCount ?? 0,
