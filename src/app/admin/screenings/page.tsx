@@ -63,8 +63,11 @@ const ScreeningsPage = () => {
   const filteredScreenings = screenings.filter((screening) => {
     if (!inputSearch) return true;
 
-    const movieTitle = screening.movieId?.title?.toLowerCase() || '';
-    return movieTitle.includes(inputSearch.toLowerCase());
+    const title =
+      typeof screening.movieId === 'object' && screening.movieId.title
+        ? screening.movieId.title.toLowerCase()
+        : '';
+    return title.includes(inputSearch.toLowerCase());
   });
 
   return (
@@ -86,18 +89,28 @@ const ScreeningsPage = () => {
         </h1>
         <br />
         {filteredScreenings
-          .sort((a, b) => a.movieId.title.localeCompare(b.movieId.title))
+          .sort((a, b) => {
+            const titleA =
+              typeof a.movieId === 'object' && a.movieId.title ? a.movieId.title : '';
+            const titleB =
+              typeof b.movieId === 'object' && b.movieId.title ? b.movieId.title : '';
+            return titleA.localeCompare(titleB);
+          })
           .map((screening) => (
             <div
               key={screening._id}
               className='block mx-auto p-4 mb-3 bg-base-300 flex justify-between gap-5 max-w-200 '
             >
               <h2 className=''>
-                {screening.movieId
+                {typeof screening.movieId === 'object' && screening.movieId.title
                   ? screening.movieId.title
                   : 'No movie title available'}
               </h2>
-              <h2 className=''>{screening.auditoriumId.name}</h2>
+              <h2 className=''>
+                {typeof screening.auditoriumId === 'object' && screening.auditoriumId.name
+                  ? screening.auditoriumId.name
+                  : 'No auditorium name'}
+              </h2>
               <h2 className=''>
                 {new Date(screening.startTime).toLocaleString('sv-SE', {
                   dateStyle: 'medium',

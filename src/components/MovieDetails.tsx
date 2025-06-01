@@ -186,7 +186,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         <div className='flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3'>
           <MovieHeader
             title={movie.title}
-            description={movie.description}
+          // description={movie.description}
             ageRating={
               typeof movie.ageRating === 'string'
                 ? isNaN(parseInt(movie.ageRating, 10))
