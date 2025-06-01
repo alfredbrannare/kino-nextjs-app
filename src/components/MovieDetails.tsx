@@ -15,20 +15,24 @@ import {
   MovieType,
   ReviewsType,
   ScreeningType,
-  UserType,
+  AuditoriumType,
 } from '@/ts/types';
 import ErrorMessage from './ErrorMessage';
 
-// TODO fix check for backend for rating
 type Props = {
   movie: MovieType;
-  userData: UserType | null;
 };
 
-interface ExtendedScreeningType extends ScreeningType {
+interface ExtendedScreeningType
+  extends Omit<ScreeningType, 'auditoriumId' | 'auditorium'> {
   bookedCount: number;
   tid: string;
-  sal: string;
+  resolvedSal: string;
+  resolvedAuditoriumSlug?: string;
+  resolvedAuditoriumCapacity?: number;
+  _id: string;
+  movieId: MovieType | string;
+  startTime: string;
 }
 
 type BookingWithSeats = {
@@ -39,13 +43,12 @@ const MovieDetails: FC<Props> = ({ movie }) => {
   const { isLoggedIn, userData } = useAuth() as AuthContextType;
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [screenings, setScreenings] = useState<ExtendedScreeningType[]>([]);
-  const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false); //coditional loading
+  const [shouldLoadReviews, setShouldLoadReviews] = useState<boolean>(false);
   const [reviewsError, setReviewsError] = useState<string | null>(null);
-  // dynamic stuff
 
   const ReviewsList = dynamic(() => import('./reviews/ReviewsList'), {
     ssr: false,
-    loading: () => <p className='text-center'>Laddar recensioner...</p>, // Optional fallback
+    loading: () => <p className='text-center'>Laddar recensioner...</p>,
   });
 
   const TrailerCard = dynamic(() => import('./movies/singel/TrailerCard'), {
@@ -99,16 +102,35 @@ const MovieDetails: FC<Props> = ({ movie }) => {
                 (sum, booking: BookingWithSeats) =>
                   sum + (booking.seats?.length || 0),
                 0,
-              ) || 0; // Ensure bookedCount is a number, default to 0
+              ) || 0;
+
+            let resolvedSal = 'Okänd salong';
+            let resolvedAuditoriumSlug: string | undefined = undefined;
+            let resolvedAuditoriumCapacity: number | undefined = undefined;
+
+            if (
+              typeof apiScreening.auditoriumId === 'object' &&
+              apiScreening.auditoriumId !== null
+            ) {
+              const auditorium = apiScreening.auditoriumId as AuditoriumType;
+              resolvedSal = auditorium.name || 'Okänd salong';
+              resolvedAuditoriumSlug = auditorium.slug;
+              resolvedAuditoriumCapacity = auditorium.capacity;
+            }
 
             return {
-              ...apiScreening,
+              _id: apiScreening._id,
+              movieId: apiScreening.movieId,
+              startTime: apiScreening.startTime,
+              screeningTime: apiScreening.startTime,
               bookedCount,
               tid: new Date(apiScreening.startTime).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
               }),
-              sal: apiScreening.auditoriumId?.name || 'Okänd salong',
+              resolvedSal,
+              resolvedAuditoriumSlug,
+              resolvedAuditoriumCapacity,
             };
           },
         );
@@ -123,7 +145,6 @@ const MovieDetails: FC<Props> = ({ movie }) => {
       fetchScreenings();
     }
 
-    // fetch reviews only when section is in view
     if (shouldLoadReviews && movie._id) {
       fetchReviews();
     }
@@ -162,13 +183,10 @@ const MovieDetails: FC<Props> = ({ movie }) => {
   return (
     <>
       <div className='bg-[#250303] max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-2 border border-yellow-500'>
-        {/* Left colum Main info and booking */}
         <div className='flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3'>
-          {/* title, metaInfo description */}
-
           <MovieHeader
             title={movie.title}
-            description={movie.description}
+          // description={movie.description}
             ageRating={
               typeof movie.ageRating === 'string'
                 ? isNaN(parseInt(movie.ageRating, 10))
@@ -192,12 +210,10 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         </div>
 
         <div className='order-6 mt-10 md:order-2 col-span-full md:col-span-2 '>
-          {/* rating */}
           <RatingCard rating={parseFloat(movie.rating || '0') || 0} />
         </div>
 
         <div className='flex flex-col justify-between order-3 h-full mt-4 md:col-span-3'>
-          {/* description */}
           <div className='pb-0 mx-4 mb-8 border border-yellow-500 rounded-lg shadow shadow-lg'>
             <p className='m-2 text-xl text-center md:m-4 md:text-left'>
               {movie.description}
@@ -211,12 +227,6 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         </div>
 
         <div className='flex justify-center order-2 md:order-4 col-span-full md:col-span-2 '>
-          {/* Poster */}
-          {/* <img
-						src={movie.image}
-						alt={movie.title}
-						className="self-start object-contain w-full max-w-md rounded-lg shadow-lg"
-					/> */}
           <Image
             src={movie.image}
             alt={movie.title}
@@ -231,8 +241,6 @@ const MovieDetails: FC<Props> = ({ movie }) => {
             <h2 className='mb-4 text-3xl font-bold text-center'>
               Välj visning
             </h2>
-
-            {/* date select */}
             <div className='grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2'>
               {screenings.length === 0 ? (
                 <div className='col-span-full flex justify-center items-center'>
@@ -243,14 +251,18 @@ const MovieDetails: FC<Props> = ({ movie }) => {
                   <Link
                     key={screening._id}
                     href={{
-                      pathname: `/auditoriums/city`,
+                      pathname: screening.resolvedAuditoriumSlug
+                        ? `/auditoriums/${screening.resolvedAuditoriumSlug}`
+                        : '#',
                       query: {
-                        movieId: screening.movieId._id,
+                        movieId:
+                          typeof screening.movieId === 'string'
+                            ? screening.movieId
+                            : screening.movieId._id,
                         screeningTime: screening.startTime,
-                        auditorium: 'city',
+                        auditorium: screening.resolvedAuditoriumSlug || '',
                       },
-                    }}
-                  >
+                    }}>
                     <Views
                       views={{
                         tid: new Date(screening.startTime).toLocaleString(
@@ -263,8 +275,8 @@ const MovieDetails: FC<Props> = ({ movie }) => {
                             minute: '2-digit',
                           },
                         ),
-                        sal: screening.auditoriumId.name,
-                        maxSeats: screening.auditoriumId.capacity ?? 100,
+                        sal: screening.resolvedSal,
+                        maxSeats: screening.resolvedAuditoriumCapacity ?? 100,
                         bookedCount: screening.bookedCount,
                       }}
                     />
@@ -276,8 +288,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         </div>
         <div
           id='reviews-section'
-          className='bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14'
-        >
+          className='bg-[#2B0404] shadow-lg rounded-lg col-span-full w-full justify-center md:order-5 order-7 mx-auto md:justify-center flex flex-col items-center mt-4 md:mt-14'>
           <h2 className='m-4 text-2xl font-bold'>Reviews</h2>
           <div className='md:w-md'>
             <div>

@@ -2,6 +2,7 @@ import connectDB from '@/lib/mongodb';
 import Screening from '@/models/model.screenings';
 import { checkAuth } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import Movie from '@/models/model.movies';
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -18,7 +19,7 @@ export const GET = async (req: NextRequest) => {
     };
     const screenings = await Screening.find(query)
       .populate('movieId', 'title')
-      .populate('auditoriumId', 'name capacity')
+      .populate('auditoriumId', 'name slug capacity')
       .populate('bookedSeats', 'seats');
 
     return new Response(JSON.stringify(screenings), {
@@ -57,6 +58,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
     console.log('Received request body:', body);
+    const { movieId, auditoriumId, startTime } = body;
 
     if (!body.movieId || !body.auditoriumId || !body.startTime) {
       return new Response(
@@ -67,6 +69,29 @@ export const POST = async (req: NextRequest) => {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         },
+        );
+            }
+        
+            const movie = await Movie.findById(movieId);
+            if (!movie) {
+              return NextResponse.json({ message: 'Movie not found' }, { status: 404 });
+            }
+        
+            const durationMinutes = parseInt(movie.runtime, 10);
+            const duration = isNaN(durationMinutes) ? 120 : durationMinutes;
+        
+            const start = new Date(startTime);
+            const end = new Date(start.getTime() + duration * 60000);
+        
+            const conflict = await Screening.findOne({
+              auditoriumId,
+              startTime: { $lt: end },
+            }).where('startTime').gt(start.getTime() - duration * 60000);
+        
+            if (conflict) {
+              return NextResponse.json(
+                { message: 'There is already a screening in this auditorium at that time.' },
+                { status: 409 }
       );
     }
 

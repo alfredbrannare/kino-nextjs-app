@@ -13,10 +13,36 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const movieId = searchParams.get('movieId');
   const screeningTime = searchParams.get('screeningTime');
+  const auditoriumSlug = searchParams.get('auditorium');
 
   try {
     await connectDB();
-    const bookings = await Booking.find({ movieId, screeningTime });
+    
+    if (!auditoriumSlug || !movieId || !screeningTime) {
+      return Response.json(
+        { error: 'Missing required query parameters: auditorium, movieId, or screeningTime' },
+        { status: 400 },
+      );
+    }
+
+    const auditorium = await Auditorium.findOne({ slug: auditoriumSlug });
+    if (!auditorium) {
+      return Response.json({ error: 'Salong hittades inte' }, { status: 404 });
+    }
+    
+    const screening = await Screening.findOne({
+      movieId,
+      startTime: new Date(screeningTime),
+      auditoriumId: auditorium._id,
+    });
+
+    if (!screening) {
+      return Response.json([], { status: 200 });
+    }
+
+    const bookings = await Booking.find({
+      _id: { $in: screening.bookedSeats },
+    });
 
     const allSeats = bookings.flatMap((b) => b.seats);
     return Response.json(allSeats);

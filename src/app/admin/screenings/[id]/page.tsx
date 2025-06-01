@@ -32,18 +32,30 @@ const ScreeningPage = () => {
   if (!screening) return <p>Screening not found</p>;
 
   return (
-    <div className='post'>
-      <h1>{screening.movieId.title}</h1>
-      <span>{screening.auditoriumId.name}</span>
-      <br />
-      <span>
-        {new Date(screening.startTime).toLocaleString('sv-SE', {
-          dateStyle: 'medium',
-          timeStyle: 'short',
-        })}
-      </span>
-      <br />
-      <Link className='btn' href='/admin/screenings'>
+    <div className='container mx-auto p-4'>
+      <h1 className='text-3xl font-bold mb-2'>
+        {typeof screening.movieId === 'object' && screening.movieId !== null
+          ? screening.movieId.title
+          : `Movie (ID: ${screening.movieId})`}
+      </h1>
+      <div className='mb-4 text-gray-700'>
+        <p>
+          <strong>Auditorium:</strong>{' '}
+          {typeof screening.auditoriumId === 'object' &&
+          screening.auditoriumId !== null
+            ? screening.auditoriumId.name
+            : `Auditorium (ID: ${screening.auditoriumId})`}
+        </p>
+        <p>
+          <strong>Start Time:</strong>{' '}
+          {new Date(screening.startTime).toLocaleString('sv-SE', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          })}
+        </p>
+      </div>
+
+      <Link href='/admin/screenings' className='text-blue-500 hover:underline'>
         Back
       </Link>
     </div>
