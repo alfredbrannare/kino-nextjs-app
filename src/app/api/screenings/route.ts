@@ -60,17 +60,12 @@ export const POST = async (req: NextRequest) => {
     console.log('Received request body:', body);
     const { movieId, auditoriumId, startTime } = body;
 
-    if (!body.movieId || !body.auditoriumId || !body.startTime) {
-      return new Response(
-        JSON.stringify({
-          status: 'movieId, auditoriumIdis and startTime is required',
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        },
-        );
-            }
+if (!body.movieId || !body.auditoriumId || !body.startTime) {
+  return NextResponse.json(
+    { message: 'movieId, auditoriumId and startTime are required' },
+    { status: 400 },
+  );
+}
         
             const movie = await Movie.findById(movieId);
             if (!movie) {
@@ -106,15 +101,11 @@ export const POST = async (req: NextRequest) => {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch {
-    return new Response(
-      JSON.stringify({
-        status: 'Server is not responding.',
-      }),
-      {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
-  }
+  } catch (err) {
+  console.error('Error creating screening:', err);
+  return NextResponse.json(
+    { message: 'Server error while creating screening.' },
+    { status: 500 },
+  );
+}
 };
