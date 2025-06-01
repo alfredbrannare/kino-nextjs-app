@@ -87,6 +87,42 @@
   ]
   ```
 
+### Screening Validation API
+
+#### POST `/api/screenings/validate`
+
+**Method:** `POST`  
+**Description:** Validates whether a screening exists based on a combination of `movieId`, `auditorium` (slug), and `screeningTime`.  
+Used to prevent invalid navigation to nonexistent screenings (e.g. via manipulated URLs).
+
+**Request Body:**
+
+
+```json
+{
+  "movieId": "681b3a14a20707b6cf797187",
+  "screeningTime": "2025-05-28T14:00:00.000Z",
+  "auditorium": "city"
+}
+```
+
+
+**Response:**
+Returns a JSON object indicating whether a valid screening exists.
+
+
+```json
+{ "isValid": true }
+```
+
+
+**Error Responses:**
+- `400 Bad Request`: If any required field is missing or malformed
+- `200 OK` with `"isValid": false`: If no matching screening was found
+
+**Use Case:**
+This endpoint is called by the frontend before displaying the seat selector for a screening. If `isValid` is `false`, the frontend displays an error.
+
 ## Review API
 
 ### POST a New Review
@@ -464,38 +500,60 @@ status:
 
 ## Auditoriums API
 
+### Overview
+Auditoriums represent the different cinema halls available for movie screenings.
+
+Each auditorium has a unique `slug` and a complete seat layout, including any wheelchair-accessible seats.
+
+Each seat may optionally include the boolean field `"isWheelchair": true` to indicate accessibility. These seats are visually distinguished with a blue square/seat in the frontend.
+
+This information is used for rendering the seat selector and validating bookings.
+
+Auditoriums are stored as documents in the MongoDB database and can be added manually.
+
 ### GET `/api/auditoriums/[slug]`
-
-<<<<<<< HEAD
-
-# **Method:** `GET`
 
 **Method:** `GET`
 
-> > > > > > > origin/main **Description:** Fetches auditorium data including
-> > > > > > > seat layout based on the given slug. Used by the booking system to
-> > > > > > > render available seats in the correct layout.
+**Description:** Fetches auditorium data including seat layout based on the given slug.
+Used by the booking system to render available seats in the correct layout.
 
 **URL Parameters:**
 
 - `slug` (required): The unique identifier for the auditorium (e.g. `city`,
-  `big-hall`)
+  `grand`)
 
-**Response:**
+**Example Auditorium Documents:**
 
 ```json
 {
-  "_id": "68164b2ef469735514b5f89a",
   "name": "Uppsala City",
-  "slug": "city",
+  "capacity": 58,
   "seats": [
-    { "row": 1, "seat": 1, "isWheelchair": true },
-    { "row": 1, "seat": 2, "isWheelchair": false },
-    { "row": 1, "seat": 3, "isWheelchair": false }
+    { "row": 1, "seat": 1 },
+    { "row": 1, "seat": 2 },
+    { "row": 1, "seat": 3 },
+    ...
+    { "row": 8, "seat": 10, "isWheelchair": true }
   ],
-  "totalSeats": 56,
-  "__v": 0
+  "slug": "city"
 }
+
+
+```
+```json
+{
+  "name": "Salong Grand",
+  "slug": "grand",
+  "capacity": 120,
+  "seats": [
+    { "row": 1, "seat": 1 },
+    { "row": 1, "seat": 2 },
+    ...
+    { "row": 12, "seat": 10, "isWheelchair": true }
+  ]
+}
+
 ```
 
 ---
