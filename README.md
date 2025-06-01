@@ -696,3 +696,15 @@ This Cypress E2E test validates the user flow for movie filtering and sorting. T
 - Searches for 'Minecraft' and confirms the movie is displayed.
 - Clears the search field and ensures all movies are displayed again.
 - Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed first.
+
+### A Deployment:
+
+- The short backstory:
+A long time ago in our first courses when We still didn’t understand what Express was, we came across Render.com and created a small API route where we got our first response in JSON.
+
+- Nowadays:
+The service is basically a website connected to GitHub that provides users with a free slice of server time which shuts down after 15 minutes of inactivity.
+Render service itself is very flexible and easy to scale.
+From the very beginning we deployed the site to production so we could monitor it during development and ensure it worked without errors — and it did that perfectly!
+After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
+It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
