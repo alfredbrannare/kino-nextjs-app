@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
   if (!authenticatedUser) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  if (authenticatedUser.role !== 'admin') {
+  if (!authenticatedUser.role.includes('admin')) {
     return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
   }
 

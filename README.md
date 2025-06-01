@@ -689,3 +689,11 @@ The test performs the following:
 - Clears the search field and ensures all movies are displayed again.
 - Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed
   first.
+
+### API Unit/Integration Tests (Jest)
+
+These tests cover the API route handlers. To run the following tests:
+
+1. In the project root, start the MongoDB service: `docker-compose up -d mongo`.
+2. Run Tests: `npm run test`
+3. Stop mongoDB server: `docker stop mongo_kino_test`
