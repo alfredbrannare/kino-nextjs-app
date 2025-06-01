@@ -176,3 +176,13 @@ export type LiveEventToEditType = {
   runtime?: string;
   description?: string;
 };
+
+export interface BookingPageParamsProps {
+  params: {
+    slug: string;
+  };
+  searchParams: {
+    movieId: string;
+    screeningTime: string;
+  };
+}

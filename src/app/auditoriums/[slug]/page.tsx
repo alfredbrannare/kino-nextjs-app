@@ -1,7 +1,7 @@
 import BookingClient from '@/components/booking/BookingClient';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { NextRequest } from 'next/server';
+import { BookingPageParamsProps } from '@/ts/types';
 
 export const metadata = {
   title: 'Boka biljetter – Kino Uppsala',
@@ -9,15 +9,9 @@ export const metadata = {
     'Välj biljetter och sittplatser till din föreställning och genomför bokningen enkelt online.',
 };
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
-) {
-  const slug = (await params).slug;
-
-  const { searchParams } = new URL(request.url);
-  const movieId = searchParams.get('movieId');
-  const screeningTime = searchParams.get('screeningTime');
+export default async function Page({ params, searchParams }: BookingPageParamsProps) {
+  const { slug } = params;
+  const { movieId, screeningTime } = searchParams;
 
   if (!movieId || !screeningTime) {
     return <p className='text-center mt-10 text-gray-400'>Laddar visning...</p>;
@@ -30,6 +24,7 @@ export async function GET(
 
   const res = await fetch(
     `${baseUrl}/api/screenings/validate?movieId=${movieId}&screeningTime=${screeningTime}&auditorium=${slug}`,
+    { cache: 'no-store' }
   );
 
   if (!res.ok) {
