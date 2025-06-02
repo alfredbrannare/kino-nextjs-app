@@ -91,7 +91,7 @@ const ScreeningCreator: FC<Props> = ({ setUpdate }) => {
         setSelectedDate(undefined);
         setSelectedTime({ hour: '12', minute: '00' });
       } else {
-        alert(`${body.status}` || 'Something went wrong.');
+        alert(body?.message || body?.status || 'Something went wrong');
       }
     } catch (err) {
       console.log('Screening is not found', err);
