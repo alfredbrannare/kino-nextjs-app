@@ -689,3 +689,15 @@ The test performs the following:
 - Clears the search field and ensures all movies are displayed again.
 - Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed
   first.
+
+### Cypress E2E test: Event flow (`eventPage.cy.js`)
+
+this Cypress test validates the user flow for the event page and performs the
+following
+
+- Navigating from the homepage to the "Star Wars Maraton" event.
+- Clicking the "LÄS MER" link.
+- Ensuring the user is routed to the /events page.
+- Verifying the correct default tab ("Evenemang") is active.
+- Switching to the "Live på Kino" tab.
+- Ensuring the "Swan Lake" heading is visible on that tab.
