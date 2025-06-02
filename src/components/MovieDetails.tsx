@@ -186,7 +186,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
         <div className='flex flex-col justify-center order-1 gap-6 mt-10 text-center col-span-full md:text-left md:col-span-3'>
           <MovieHeader
             title={movie.title}
-          // description={movie.description}
+            // description={movie.description}
             ageRating={
               typeof movie.ageRating === 'string'
                 ? isNaN(parseInt(movie.ageRating, 10))
@@ -244,7 +244,7 @@ const MovieDetails: FC<Props> = ({ movie }) => {
             <div className='grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2'>
               {screenings.length === 0 ? (
                 <div className='col-span-full flex justify-center items-center'>
-                  <ErrorMessage error={'Inga visningar hittades.'} />
+                  <p>Inga visningar hittades.</p>
                 </div>
               ) : (
                 screenings.map((screening) => (
