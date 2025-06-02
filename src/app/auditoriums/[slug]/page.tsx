@@ -18,8 +18,8 @@ export default async function Page({ params, searchParams }: BookingPageParamsPr
   }
 
   const headersList = await headers();
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const host = headersList.get('host') || 'localhost:3000';
+  const protocol = headersList.get('x-forwarded-proto') || 'http';
   const baseUrl = `${protocol}://${host}`;
 
   const res = await fetch(
