@@ -13,15 +13,17 @@ const Movie = async ({ params }: MoviePageProps) => {
 
   // get host from headers to build URL
   const headersList = await headers(); // headers() is synchronous
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const host = headersList.get('host') || 'localhost:3000';
+  const protocol = headersList.get('x-forwarded-proto') || 'http';
+  // const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
   const baseUrl = `${protocol}://${host}`;
 
   try {
     const res = await fetch(`${baseUrl}/api/movies/${id}`, {
       cache: 'no-store',
     });
-    if (!res.ok) throw new Error(`Failed to fetch Movie (status: ${res.status})`);
+    if (!res.ok)
+      throw new Error(`Failed to fetch Movie (status: ${res.status})`);
 
     const movie = await res.json();
     return (

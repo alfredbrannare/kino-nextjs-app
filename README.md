@@ -748,18 +748,6 @@ The test performs the following:
 - Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed
   first.
 
-### A Deployment:
-
-- The short backstory:
-A long time ago in our first courses when We still didn’t understand what Express was, we came across Render.com and created a small API route where we got our first response in JSON.
-
-- Nowadays:
-The service is basically a website connected to GitHub that provides users with a free slice of server time which shuts down after 15 minutes of inactivity.
-Render service itself is very flexible and easy to scale.
-From the very beginning we deployed the site to production so we could monitor it during development and ensure it worked without errors — and it did that perfectly!
-After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
-It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
-
 ### Cypress E2E test: Event flow (`eventPage.cy.js`)
 
 this Cypress test validates the user flow for the event page and performs the
@@ -772,11 +760,44 @@ following
 - Switching to the "Live på Kino" tab.
 - Ensuring the "Swan Lake" heading is visible on that tab.
 
+### Cypress E2E Test: Home Page (`home.cy.js`)
+
+This Cypress E2E test validates the core content visibility and navigation on the Kino homepage.
+The test performs the following:
+
+- Visits the home page (/).
+- Confirms that key sections are rendered: VISAS JUST NU, KOMMANDE FILMER and LIVE PÅ KINO.
+- Clicks the "SE ALLA FILMER" button and verifies redirection to the /movies page.
+
+### Cypress E2E Test: Login (`loginFlow.cy.js`)
+
+This Cypress E2E test verifies the login and logout flow for a user.
+The test performs the following:
+
+- Mocks the unauthenticated state (GET /api/user/me returns 401).
+- Logs in using test credentials (POST /api/user/login).
+- Mocks the authenticated user response after login.
+- Verifies redirection to the Medlemssida and confirms:
+- The username is displayed.
+- The text "Dina Biljetter" is visible.
+- Logs the user out (POST /api/user/logout).
+- Confirms redirection to the home page (/) and checks that "KOMMANDE FILMER" is visible.
+
+### Cypress E2E Test: Tickets Page (ticketPage.cy.js)
+
+This Cypress E2E test verifies the behavior of the Tickets page when displaying movies and their screenings.
+The test performs the following:
+
+- Mocks a successful API response with two test movies. One with a screening and one without any screenings.
+- Visits the /tickets page and confirms: (1) The page title "Biljetter" is visible. (2) Movie details (title, runtime, genre, description) are correctly displayed. (3) Screenings are shown for movies that have them. (4) A fallback message is shown for movies without screenings.
+- Mocks a failed API response (500) and confirms that an error message is displayed to the user.
+
 ### Cypress E2E Test: Booking Flow (`bookingFlow.cy.js`)
 
 This Cypress E2E test validates the user flow for the booking process.
 
-It uses a real screening created specifically for testing:
+It uses a real screening created specifically for testing and focuses on user experience:
+
 `/auditoriums/city?movieId=683c4c2d778a4d61786d10b2&screeningTime=2040-01-01T11:00:00.000Z`
 
 The test does not save any real bookings — the backend is fully mocked to:
@@ -792,3 +813,16 @@ The test performs the following:
 - The text “Bokning bekräftad!”
 - The movie title “Testfilm”
 - A total price of “280 kr”
+
+
+## A Deployment:
+
+- The short backstory:
+A long time ago in our first courses when We still didn’t understand what Express was, we came across Render.com and created a small API route where we got our first response in JSON.
+
+- Nowadays:
+The service is basically a website connected to GitHub that provides users with a free slice of server time which shuts down after 15 minutes of inactivity.
+Render service itself is very flexible and easy to scale.
+From the very beginning we deployed the site to production so we could monitor it during development and ensure it worked without errors — and it did that perfectly!
+After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
+It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
