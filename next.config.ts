@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['res.cloudinary.com', 'image.tmdb.org', 'i.scdn.co'],
+    domains: ['res.cloudinary.com', 'image.tmdb.org', 'i.scdn.co', 'img.freepik.com', 'live.staticflickr.com'],
     remotePatterns: [
       {
         protocol: 'https',

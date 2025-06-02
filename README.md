@@ -793,7 +793,6 @@ The test performs the following:
 - Mocks a failed API response (500) and confirms that an error message is displayed to the user.
 
 ### Cypress E2E Test: Booking Flow (`bookingFlow.cy.js`)
-
 This Cypress E2E test validates the user flow for the booking process.
 
 It uses a real screening created specifically for testing and focuses on user experience:
@@ -813,6 +812,14 @@ The test performs the following:
 - The text “Bokning bekräftad!”
 - The movie title “Testfilm”
 - A total price of “280 kr”
+
+### API Unit/Integration Tests (Jest)
+
+These tests cover the API route handlers. To run the following tests:
+
+1. In the project root, start the MongoDB service: `docker-compose up -d mongo`.
+2. Run Tests: `npm run test`
+3. Stop mongoDB server: `docker stop mongo_kino_test`
 
 
 ## A Deployment:
