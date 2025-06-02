@@ -1,7 +1,9 @@
 describe('User Flow: All movies with sorting and search filtering (Desktop Version)', () => {
-  const searchBar = '[placeholder="Skriv in filmtitel..."]';
+  const searchBar = '[placeholder="Sök filmer..."]';
   const movieCard = 'article.group.relative';
   const dropdown = 'select';
+  const movieRatingSelector = 'span[aria-label$="rating"]'; // Consistent naming
+  let previousRating = Infinity; // Initialize with a very high value for descending check
 
   it('navigates to the all movies page, searches, and clears search, and sorts for highest rated', () => {
     // Set the viewport to a common desktop resolution.
@@ -9,6 +11,9 @@ describe('User Flow: All movies with sorting and search filtering (Desktop Versi
 
     // Ensure we are on the start page.
     cy.visit('http://localhost:3000');
+
+    // Accept cookie for easier visuals in cypress
+    cy.contains('button', 'Acceptera').click();
 
     // Click on 'FILMER' in the navigation.
     cy.get('.navbar-center').contains('a', 'FILMER').click();
@@ -34,7 +39,28 @@ describe('User Flow: All movies with sorting and search filtering (Desktop Versi
     // Select 'Högst betyg' from the dropdown.
     cy.get(dropdown).select('Högst betyg');
 
-    // After sorting, ensure the first movie card contains 'Interstellar'.
-    cy.get(movieCard).first().should('contain', 'Interstellar');
+    // Add a small wait to ensure the DOM re-renders after sorting
+    cy.wait(500);
+
+    // After sorting, verify ratings are in descending order
+    cy.get(movieCard).each(($card, index) => {
+      const $ratingSpan = $card.find(movieRatingSelector);
+
+      cy.wrap($card)
+        .find('h2')
+        .invoke('text')
+        .then((movieTitle) => {
+          if ($ratingSpan.length > 0) {
+            const ariaLabel = $ratingSpan.attr('aria-label');
+            const ratingParts = ariaLabel.split(' out of 10 rating');
+
+            if (ratingParts.length > 0 && ratingParts[0] !== '') {
+              const currentRating = parseFloat(ratingParts[0]);
+              expect(currentRating).to.be.lte(previousRating);
+              previousRating = currentRating;
+            }
+          }
+        });
+    });
   });
 });
