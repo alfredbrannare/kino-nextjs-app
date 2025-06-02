@@ -755,6 +755,59 @@ The test performs the following:
 - Sorts the movies by 'Högst betyg' and confirms the MovieCards are in
   descending order.
 
+### Cypress E2E test: Event flow (`eventPage.cy.js`)
+
+this Cypress test validates the user flow for the event page and performs the
+following
+
+- Navigating from the homepage to the "Star Wars Maraton" event.
+- Clicking the "LÄS MER" link.
+- Ensuring the user is routed to the /events page.
+- Verifying the correct default tab ("Evenemang") is active.
+- Switching to the "Live på Kino" tab.
+- Ensuring the "Swan Lake" heading is visible on that tab.
+
+### Cypress E2E Test: Home Page (`home.cy.js`)
+
+This Cypress E2E test validates the core content visibility and navigation on the Kino homepage.
+The test performs the following:
+
+- Visits the home page (/).
+- Confirms that key sections are rendered: VISAS JUST NU, KOMMANDE FILMER and LIVE PÅ KINO.
+- Clicks the "SE ALLA FILMER" button and verifies redirection to the /movies page.
+
+### Cypress E2E Test: Login (`loginFlow.cy.js`)
+
+This Cypress E2E test verifies the login and logout flow for a user.
+The test performs the following:
+
+- Mocks the unauthenticated state (GET /api/user/me returns 401).
+- Logs in using test credentials (POST /api/user/login).
+- Mocks the authenticated user response after login.
+- Verifies redirection to the Medlemssida and confirms:
+- The username is displayed.
+- The text "Dina Biljetter" is visible.
+- Logs the user out (POST /api/user/logout).
+- Confirms redirection to the home page (/) and checks that "KOMMANDE FILMER" is visible.
+
+### Cypress E2E Test: Tickets Page (ticketPage.cy.js)
+
+This Cypress E2E test verifies the behavior of the Tickets page when displaying movies and their screenings.
+The test performs the following:
+
+- Mocks a successful API response with two test movies. One with a screening and one without any screenings.
+- Visits the /tickets page and confirms: (1) The page title "Biljetter" is visible. (2) Movie details (title, runtime, genre, description) are correctly displayed. (3) Screenings are shown for movies that have them. (4) A fallback message is shown for movies without screenings.
+- Mocks a failed API response (500) and confirms that an error message is displayed to the user.
+
+### API Unit/Integration Tests (Jest)
+
+These tests cover the API route handlers. To run the following tests:
+
+1. In the project root, start the MongoDB service: `docker-compose up -d mongo`.
+2. Run Tests: `npm run test`
+3. Stop mongoDB server: `docker stop mongo_kino_test`
+
+
 ### A Deployment:
 
 - The short backstory: A long time ago in our first courses when We still didn’t

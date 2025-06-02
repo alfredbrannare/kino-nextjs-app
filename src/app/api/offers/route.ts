@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const user = await checkAuth();
-    if (!user || user.role !== 'admin') {
+    if (!user || !user.role.includes('admin')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
