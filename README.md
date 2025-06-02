@@ -771,3 +771,24 @@ following
 - Verifying the correct default tab ("Evenemang") is active.
 - Switching to the "Live på Kino" tab.
 - Ensuring the "Swan Lake" heading is visible on that tab.
+
+### Cypress E2E Test: Booking Flow (`bookingFlow.cy.js`)
+
+This Cypress E2E test validates the user flow for the booking process.
+
+It uses a real screening created specifically for testing:
+`/auditoriums/city?movieId=683c4c2d778a4d61786d10b2&screeningTime=2040-01-01T11:00:00.000Z`
+
+The test does not save any real bookings — the backend is fully mocked to:
+- Return an empty array when checking for already booked seats.
+- Simulate a successful booking response without persisting anything.
+
+The test performs the following:
+- Navigates to the screening URL.
+- Selects two additional ordinary tickets (on top of two preselected).
+- Selects four available seats.
+- Clicks the "Boka platser" button.
+- Confirms that the BookingConfirmationModal appears with:
+- The text “Bokning bekräftad!”
+- The movie title “Testfilm”
+- A total price of “280 kr”
