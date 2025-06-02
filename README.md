@@ -792,6 +792,14 @@ The test performs the following:
 - Visits the /tickets page and confirms: (1) The page title "Biljetter" is visible. (2) Movie details (title, runtime, genre, description) are correctly displayed. (3) Screenings are shown for movies that have them. (4) A fallback message is shown for movies without screenings.
 - Mocks a failed API response (500) and confirms that an error message is displayed to the user.
 
+### API Unit/Integration Tests (Jest)
+
+These tests cover the API route handlers. To run the following tests:
+
+1. In the project root, start the MongoDB service: `docker-compose up -d mongo`.
+2. Run Tests: `npm run test`
+3. Stop mongoDB server: `docker stop mongo_kino_test`
+
 
 ### A Deployment:
 
@@ -805,3 +813,4 @@ From the very beginning we deployed the site to production so we could monitor i
 After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
 It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
 
+>>>>>>> b666d0b91d091bc7bb0a2b0774398e776a6c3785
