@@ -791,3 +791,17 @@ The test performs the following:
 - Mocks a successful API response with two test movies. One with a screening and one without any screenings.
 - Visits the /tickets page and confirms: (1) The page title "Biljetter" is visible. (2) Movie details (title, runtime, genre, description) are correctly displayed. (3) Screenings are shown for movies that have them. (4) A fallback message is shown for movies without screenings.
 - Mocks a failed API response (500) and confirms that an error message is displayed to the user.
+
+
+### A Deployment:
+
+- The short backstory:
+A long time ago in our first courses when We still didn’t understand what Express was, we came across Render.com and created a small API route where we got our first response in JSON.
+
+- Nowadays:
+The service is basically a website connected to GitHub that provides users with a free slice of server time which shuts down after 15 minutes of inactivity.
+Render service itself is very flexible and easy to scale.
+From the very beginning we deployed the site to production so we could monitor it during development and ensure it worked without errors — and it did that perfectly!
+After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
+It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
+
