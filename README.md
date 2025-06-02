@@ -92,11 +92,12 @@
 #### POST `/api/screenings/validate`
 
 **Method:** `POST`  
-**Description:** Validates whether a screening exists based on a combination of `movieId`, `auditorium` (slug), and `screeningTime`.  
-Used to prevent invalid navigation to nonexistent screenings (e.g. via manipulated URLs).
+**Description:** Validates whether a screening exists based on a combination of
+`movieId`, `auditorium` (slug), and `screeningTime`.  
+Used to prevent invalid navigation to nonexistent screenings (e.g. via
+manipulated URLs).
 
 **Request Body:**
-
 
 ```json
 {
@@ -106,22 +107,20 @@ Used to prevent invalid navigation to nonexistent screenings (e.g. via manipulat
 }
 ```
 
-
-**Response:**
-Returns a JSON object indicating whether a valid screening exists.
-
+**Response:** Returns a JSON object indicating whether a valid screening exists.
 
 ```json
 { "isValid": true }
 ```
 
-
 **Error Responses:**
+
 - `400 Bad Request`: If any required field is missing or malformed
 - `200 OK` with `"isValid": false`: If no matching screening was found
 
-**Use Case:**
-This endpoint is called by the frontend before displaying the seat selector for a screening. If `isValid` is `false`, the frontend displays an error.
+**Use Case:** This endpoint is called by the frontend before displaying the seat
+selector for a screening. If `isValid` is `false`, the frontend displays an
+error.
 
 ## Review API
 
@@ -501,22 +500,29 @@ status:
 ## Auditoriums API
 
 ### Overview
+
 Auditoriums represent the different cinema halls available for movie screenings.
 
-Each auditorium has a unique `slug` and a complete seat layout, including any wheelchair-accessible seats.
+Each auditorium has a unique `slug` and a complete seat layout, including any
+wheelchair-accessible seats.
 
-Each seat may optionally include the boolean field `"isWheelchair": true` to indicate accessibility. These seats are visually distinguished with a blue square/seat in the frontend.
+Each seat may optionally include the boolean field `"isWheelchair": true` to
+indicate accessibility. These seats are visually distinguished with a blue
+square/seat in the frontend.
 
-This information is used for rendering the seat selector and validating bookings.
+This information is used for rendering the seat selector and validating
+bookings.
 
-Auditoriums are stored as documents in the MongoDB database and can be added manually.
+Auditoriums are stored as documents in the MongoDB database and can be added
+manually.
 
 ### GET `/api/auditoriums/[slug]`
 
 **Method:** `GET`
 
-**Description:** Fetches auditorium data including seat layout based on the given slug.
-Used by the booking system to render available seats in the correct layout.
+**Description:** Fetches auditorium data including seat layout based on the
+given slug. Used by the booking system to render available seats in the correct
+layout.
 
 **URL Parameters:**
 
@@ -541,6 +547,7 @@ Used by the booking system to render available seats in the correct layout.
 
 
 ```
+
 ```json
 {
   "name": "Salong Grand",
@@ -745,20 +752,25 @@ The test performs the following:
 - Navigates to the 'FILMER' page.
 - Searches for 'Minecraft' and confirms the movie is displayed.
 - Clears the search field and ensures all movies are displayed again.
-- Sorts the movies by 'Högst betyg' and confirms 'Interstellar' is displayed
-  first.
+- Sorts the movies by 'Högst betyg' and confirms the MovieCards are in
+  descending order.
 
 ### A Deployment:
 
-- The short backstory:
-A long time ago in our first courses when We still didn’t understand what Express was, we came across Render.com and created a small API route where we got our first response in JSON.
+- The short backstory: A long time ago in our first courses when We still didn’t
+  understand what Express was, we came across Render.com and created a small API
+  route where we got our first response in JSON.
 
-- Nowadays:
-The service is basically a website connected to GitHub that provides users with a free slice of server time which shuts down after 15 minutes of inactivity.
-Render service itself is very flexible and easy to scale.
-From the very beginning we deployed the site to production so we could monitor it during development and ensure it worked without errors — and it did that perfectly!
-After every commit it automatically detects that the site needs to be rebuilt and runs npm run build, run and install. It also provides a convenient and secure environment for environment variables.
-It might be a bit pricey but our database is hosted on MongoDB Atlas and so far that has been enough for us.
+- Nowadays: The service is basically a website connected to GitHub that provides
+  users with a free slice of server time which shuts down after 15 minutes of
+  inactivity. Render service itself is very flexible and easy to scale. From the
+  very beginning we deployed the site to production so we could monitor it
+  during development and ensure it worked without errors — and it did that
+  perfectly! After every commit it automatically detects that the site needs to
+  be rebuilt and runs npm run build, run and install. It also provides a
+  convenient and secure environment for environment variables. It might be a bit
+  pricey but our database is hosted on MongoDB Atlas and so far that has been
+  enough for us.
 
 ### Cypress E2E test: Event flow (`eventPage.cy.js`)
 
