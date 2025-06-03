@@ -799,6 +799,27 @@ The test performs the following:
 - Visits the /tickets page and confirms: (1) The page title "Biljetter" is visible. (2) Movie details (title, runtime, genre, description) are correctly displayed. (3) Screenings are shown for movies that have them. (4) A fallback message is shown for movies without screenings.
 - Mocks a failed API response (500) and confirms that an error message is displayed to the user.
 
+### Cypress E2E Test: Booking Flow (`bookingFlow.cy.js`)
+This Cypress E2E test validates the user flow for the booking process.
+
+It uses a real screening created specifically for testing and focuses on user experience:
+
+`/auditoriums/city?movieId=683c4c2d778a4d61786d10b2&screeningTime=2040-01-01T11:00:00.000Z`
+
+The test does not save any real bookings — the backend is fully mocked to:
+- Return an empty array when checking for already booked seats.
+- Simulate a successful booking response without persisting anything.
+
+The test performs the following:
+- Navigates to the screening URL.
+- Selects two additional ordinary tickets (on top of two preselected).
+- Selects four available seats.
+- Clicks the "Boka platser" button.
+- Confirms that the BookingConfirmationModal appears with:
+- The text “Bokning bekräftad!”
+- The movie title “Testfilm”
+- A total price of “280 kr”
+
 ### API Unit/Integration Tests (Jest)
 
 These tests cover the API route handlers. To run the following tests:
@@ -807,8 +828,20 @@ These tests cover the API route handlers. To run the following tests:
 2. Run Tests: `npm run test`
 3. Stop mongoDB server: `docker stop mongo_kino_test`
 
+### Cypress E2E test: Event flow (`eventPage.cy.js`)
 
-### A Deployment:
+this Cypress test validates the user flow for the event page and performs the
+following
+
+- Navigating from the homepage to the "Star Wars Maraton" event.
+- Clicking the "LÄS MER" link.
+- Ensuring the user is routed to the /events page.
+- Verifying the correct default tab ("Evenemang") is active.
+- Switching to the "Live på Kino" tab.
+- Ensuring the "Swan Lake" heading is visible on that tab.
+
+
+## A Deployment:
 
 - The short backstory: A long time ago in our first courses when We still didn’t
   understand what Express was, we came across Render.com and created a small API
@@ -824,15 +857,3 @@ These tests cover the API route handlers. To run the following tests:
   convenient and secure environment for environment variables. It might be a bit
   pricey but our database is hosted on MongoDB Atlas and so far that has been
   enough for us.
-
-### Cypress E2E test: Event flow (`eventPage.cy.js`)
-
-this Cypress test validates the user flow for the event page and performs the
-following
-
-- Navigating from the homepage to the "Star Wars Maraton" event.
-- Clicking the "LÄS MER" link.
-- Ensuring the user is routed to the /events page.
-- Verifying the correct default tab ("Evenemang") is active.
-- Switching to the "Live på Kino" tab.
-- Ensuring the "Swan Lake" heading is visible on that tab.
